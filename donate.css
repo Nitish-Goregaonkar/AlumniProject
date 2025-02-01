@@ -1,0 +1,262 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 700px;
+    margin: 50px auto;
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    text-align: center;
+    font-size: 30px;
+    margin-bottom: 20px;
+    color: #6a1b9a; /* Purple */
+    transition: font-size 0.3s ease;
+}
+
+label {
+    font-weight: bold;
+    display: inline-block;
+    margin-right: 10px;
+    color: #333;
+}
+
+/* Styling for each section */
+.section {
+    background-color: #f0f4f8; /* Light background color for sections */
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+}
+
+input, textarea, select {
+    width: calc(100% - 22px);
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    display: inline-block;
+}
+
+textarea {
+    resize: none;
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: #f4a261; /* Orange color */
+    box-shadow: 0 0 5px rgba(244, 162, 97, 0.6); /* Focused shadow with orange color */
+}
+
+/* Styling for name fields and amounts */
+.name-fields {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.amount-field {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.currency {
+    font-weight: bold;
+}
+
+.donation-type, .payment-methods {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+/* Styling for the 'Type of Donation' section */
+.donation-type-container {
+    margin-bottom: 20px;
+}
+
+.donation-type input[type="radio"] {
+    margin-right: 10px;
+    accent-color: #f4a261; /* Orange color for radio button */
+}
+
+.donation-type label {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+}
+
+.donation-type input[type="radio"]:hover + label {
+    color: #e07b3c; /* Lighter orange color on hover */
+}
+
+.donation-type input[type="radio"]:checked + label {
+    color: #f4a261; /* Selected color for radio buttons */
+}
+
+/* Styling for payment method options */
+.payment-methods-container {
+    display: flex;
+    flex-direction: column;  /* Changed to column */
+    margin-bottom: 20px;
+}
+
+.payment-methods-container label {
+    display: inline-block;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Button styling */
+button {
+    width: 200px;
+    padding: 14px;
+    background-color: #6a1b9a; /* Purple color for button */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    margin: 20px auto; /* Center the button horizontally */
+    display: block; /* Make the button a block element to apply auto margin */
+}
+
+button:hover {
+    background-color: #4a1579; /* Darker purple on hover */
+    transform: scale(1.05);
+}
+
+/* Spacing and styling for submit button */
+button:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(106, 27, 154, 0.6); /* Focused shadow in purple */
+}
+
+/* Style for the PayPal logo and other images */
+.paypal-logo {
+    width: 50px;
+    vertical-align: middle;
+}
+
+.required {
+    color: red;
+}
+
+/* Add spacing and style for section labels */
+.section label {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 8px;
+    display: block;
+}
+
+/* Additional padding for inputs */
+input, textarea {
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 16px;
+}
+
+/* Styling for the section headings */
+.donation-type-container, .payment-methods-container {
+    margin-bottom: 20px;
+}
+
+/* Style for the Payment Methods container */
+.payment-methods-container {
+    margin-bottom: 20px; /* Space between sections */
+}
+
+/* Flexbox for the payment method section to align items horizontally */
+/* Add spacing and style for each section's label */
+.payment-methods {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    margin-top: 10px;
+}
+
+/* Style for the Debit or Credit Card text */
+/* Adjusting the Debit or Credit Card label to fit within 2 lines */
+.debit-credit-card {
+    font-size: 16px;
+    font-weight: bold;
+    margin-left: 10px; /* Space between the radio button and text */
+    white-space: normal;  /* Allow text to wrap to the next line if necessary */
+    width: 100%; /* Make the label take up the full width available */
+    word-wrap: break-word; /* Ensure long words break appropriately */
+}
+
+/* Add space for PayPal logo */
+.paypal-logo {
+    width: 65px;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
+/* Initially hide the credit card details */
+.hidden {
+    display: none;
+}
+
+#credit-card-details {
+    margin-top: 10px;
+}
+
+/* Add smooth transition for hover states */
+button {
+    width: 200px; /* Set a fixed width for the button */
+    padding: 14px;
+    background-color: #6a1b9a; /* Purple color for button */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    margin: 20px auto; /* Center the button horizontally */
+    display: block; /* Make the button a block element to apply auto margin */
+}
+
+button:hover {
+    background-color: #4a1579; /* Darker purple on hover */
+    transform: scale(1.05);
+}
+
+/* Adding responsiveness to form */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+    }
+
+    h2 {
+        font-size: 25px;
+    }
+
+    input, textarea, select {
+        font-size: 14px;
+    }
+
+    button {
+        font-size: 16px;
+    }
+}
