@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+    <link rel="stylesheet" href="registration.css">
+    <style>
+        .location-container {
+            display: flex;
+            align-items: center;
+            position: relative;
+            width: 100%;
+        }
+        .location-container input {
+            width: 85%;
+         padding-left: 30px; /* Space for the icon */
+        }
+        .location-container button {
+            position: relative;
+            margin-left: 10px;
+            width: 40px;
+            height: 40px;
+            font-size: 16px;
+            padding: 0;
+            background-color: #6a1b9a;
+            color: white;
+            border-radius: 50%;
+            cursor: pointer;
+            display: inline-block;
+        }
+        .location-container button:hover {
+            background-color: #4a1579;
+        }
+        .location-container span {
+            font-size: 0.9rem;
+            color: #6a1b9a;
+            margin-left: 5px;
+            font-weight: bold;
+            line-height: 40px;
+            white-space: nowrap;
+            margin-top: 0px;
+        }
+        .location-container .loading {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+            color: #6a1b9a;
+        }
+    </style>
+</head>
+<body>
+    <section class="container">
+        <header>Registration Form</header>
+        <form action="#" class="form">
+            <div class="input-box">
+                <label>Full Name</label>
+                <input type="text" placeholder="Enter full name" required>
+            </div>
+            <div class="input-box">
+                <label>Email Address</label>
+                <input type="email" placeholder="Enter email address" required>
+            </div>
+            <div class="input-box">
+                <label>Phone Number</label>
+                <input type="number" placeholder="Enter phone number" required>
+            </div>
+            
+            <div class="input-box">
+                <label>Password</label>
+                <input type="password" placeholder="Enter password" required>
+            </div>
+            <div class="input-box">
+                <label>Confirm Password</label>
+                <input type="password" placeholder="Confirm password" required>
+            </div>
+            
+            <div class="gender-box">
+                <h3>Gender</h3>
+                <div class="gender-option">
+                    <div class="gender">
+                        <input type="radio" id="check-male" name="gender" checked>
+                        <label for="check-male">Male</label>
+                    </div>
+                    <div class="gender">
+                        <input type="radio" id="check-female" name="gender">
+                        <label for="check-female">Female</label>
+                    </div>
+                    <div class="gender">
+                        <input type="radio" id="check-other" name="gender">
+                        <label for="check-other">Prefer not to say</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="input-box address">
+                <label>Address</label>
+                <div class="location-container">
+                    <span class="loading" id="loadingIcon" style="display: none;"></span>
+                    <input type="text" id="streetAddress" placeholder="Enter street address" required />
+                    <button type="button" id="autoLocationButton" title="Auto-Select Location">&#x1F4CD;</button>
+                </div>
+            </div>
+            
+            <div class="input-box">
+                <label>Are you an Alumni or a Student?</label>
+                <select id="roleSelect" onchange="toggleFields()">
+                    <option hidden>Select</option>
+                    <option value="alumni">Alumni</option>
+                    <option value="student">Student</option>
+                </select>
+            </div>
+            
+            <div id="alumniFields" style="display: none;">
+                <div class="input-box">
+                    <label>Passing Year</label>
+                    <input type="number" placeholder="Enter passing year">
+                </div>
+                <div class="input-box">
+                    <label>Department</label>
+                    <select>
+                        <option hidden>Select Department</option>
+                        <option>Computer Science</option>
+                        <option>Mechanical</option>
+                        <option>Electrical</option>
+                        <option>Civil</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div id="studentFields" style="display: none;">
+                <div class="input-box">
+                    <label>Current Academic Year</label>
+                    <select>
+                        <option hidden>Select Year</option>
+                        <option>1st Year</option>
+                        <option>2nd Year</option>
+                        <option>3rd Year</option>
+                        <option>4th Year</option>
+                    </select>
+                </div>
+                <div class="input-box">
+                    <label>Department</label>
+                    <select>
+                        <option hidden>Select Department</option>
+                        <option>Computer Science</option>
+                        <option>Mechanical</option>
+                        <option>Electrical</option>
+                        <option>Civil</option>
+                    </select>
+                </div>
+            </div>
+            
+            <button type="submit">Submit</button>
+        </form>
+    </section>
+    
+    <script>
+        const autoLocationButton = document.getElementById('autoLocationButton');
+        const locationField = document.getElementById('streetAddress');
+        const loadingIcon = document.getElementById('loadingIcon');
+
+        // Your OpenCage API key
+        const apiKey = 'b7db11d9e6604078800926207deb9a45';
+
+        function fetchAddress(latitude, longitude) {
+            const url = `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=${apiKey}`;
+
+            locationField.value = "Fetching location...";
+            loadingIcon.style.display = "inline";
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.results && data.results.length > 0) {
+                        const address = data.results[0].formatted;
+                        locationField.value = address;
+                    } else {
+                        locationField.value = 'Unable to fetch address.';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching address:', error);
+                    locationField.value = 'Error fetching address.';
+                })
+                .finally(() => {
+                    loadingIcon.style.display = "none";
+                });
+        }
+
+        autoLocationButton.addEventListener('click', () => {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const { latitude, longitude } = position.coords;
+                        fetchAddress(latitude, longitude);
+                    },
+                    (error) => {
+                        alert('Unable to fetch location. Please allow location access.');
+                        console.error('Geolocation error:', error);
+                    }
+                );
+            } else {
+                alert('Geolocation is not supported by your browser.');
+            }
+        });
+
+        function toggleFields() {
+            let role = document.getElementById("roleSelect").value;
+            document.getElementById("alumniFields").style.display = role === "alumni" ? "block" : "none";
+            document.getElementById("studentFields").style.display = role === "student" ? "block" : "none";
+        }
+    </script>
+</body>
+</html>
