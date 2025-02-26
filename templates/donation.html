@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alumni Donation Portal</title>
+    <link rel="stylesheet" href="/src/css/donation.css">
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+<body>
+    <div class="donation-container">
+        <div class="header-section">
+            <h1>Support our Alumni Association Portal</h1>
+            <p>Your generosity fuels the future. Thank you for making a difference! 🌟</p>
+        </div>
+
+        <form id="donation-form" class="donation-form">
+            <div class="form-section personal-info">
+                <h2>Personal Information</h2>
+                <div class="form-group">
+                    <input type="text" id="name" placeholder="Full Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" id="email" placeholder="Email Address" required>
+                </div>
+                <div class="form-group">
+                    <input type="number" id="graduation-year" placeholder="Graduation Year" required>
+                </div>
+            </div>
+
+            <div class="form-section donation-details">
+                <h2>Donation Details</h2>
+                <div class="form-group">
+                    <input type="number" id="amount" placeholder="Donation Amount ($)" required>
+                </div>
+                <div class="form-group">
+                    <select id="donation-purpose">
+                        <option value="">Select Donation Purpose</option>
+                        <option value="general">General Fund</option>
+                        <option value="scholarship">Scholarships</option>
+                        <option value="research">Research</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <textarea id="message" placeholder="Leave a message (optional)"></textarea>
+                </div>
+            </div>
+
+            <div class="form-section terms">
+                <input type="checkbox" id="terms" required>
+                <label for="terms">I agree to the <a href="#">Terms & Conditions</a></label>
+            </div>
+
+            <button type="button" class="donate-button" onclick="payWithRazorpay()">Donate Now</button>
+        </form>
+    </div>
+
+    <script>
+        function payWithRazorpay() {
+            let name = document.getElementById('name').value;
+            let email = document.getElementById('email').value;
+            let amount = document.getElementById('amount').value * 100; // Convert to smallest currency unit
+            
+            if (!name || !email || !amount) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+
+            var options = {
+                "key": "YOUR_RAZORPAY_KEY", // Replace with your Razorpay key
+                "amount": amount,
+                "currency": "INR",
+                "name": "Alumni Association",
+                "description": "Donation Payment",
+                "handler": function (response) {
+                    alert('Payment Successful! Payment ID: ' + response.razorpay_payment_id);
+                },
+                "prefill": {
+                    "name": name,
+                    "email": email
+                },
+                "theme": {
+                    "color": "#3399cc"
+                }
+            };
+            var rzp1 = new Razorpay(options);
+            rzp1.open();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Board</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(to right, #f9f9f9, #f1f1f1);
+            margin: 0;
+            padding: 0;
+            color: black;
+        }
+        .navbar {
+            position: fixed;
+            width: 100%;
+            height: 16%;
+            top: 0;
+            left: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease-in-out;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .nav-links a, .nav-links button {
+            text-decoration: none;
+            color: white;
+            font-weight: 500;
+            font-size: 17px;
+            padding: 12px 18px;
+            border-radius: 6px;
+            transition: all 0.3s;
+            position: relative;
+        }
+        .nav-links a:hover, .nav-links button:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: scale(1.05);
+        }
+        .nav-links button {
+            background: linear-gradient(135deg, #ff8000, #ff5500);
+            color: white;
+            font-weight: bold;
+            font-size: 17px;
+            padding: 12px 20px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 4px 10px rgba(255, 85, 0, 0.4);
+        }
+        .nav-links button:hover {
+            background: linear-gradient(135deg, #ff5500, #ff8000);
+            transform: scale(1.1);
+            box-shadow: 0 6px 15px rgba(255, 85, 0, 0.6);
+        }
+        .job-board-container {
+            padding: 100px 40px 40px;
+        }
+        .search-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .search-bar input, .search-bar select {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 200px;
+            transition: border-color 0.3s;
+        }
+        .search-bar input:focus, .search-bar select:focus {
+            border-color: #ff5500;
+            outline: none;
+        }
+        .featured-jobs, .latest-jobs {
+            margin-bottom: 40px;
+        }
+        .job-card {
+            border: 1px solid #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: left;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background: white;
+            margin-bottom: 20px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .job-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+        }
+        .job-card img {
+            display: block;
+            margin: 0 auto 10px;
+            border-radius: 50%;
+        }
+        .post-job-section {
+            border: 1px solid #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background: white;
+        }
+        footer {
+            width: 100%;
+            height: 200px;
+            background-color: #2d3748;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            position: relative;
+        }
+        footer h3 {
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        footer .social-icons a {
+            margin: 0 10px;
+            font-size: 1.5rem;
+            transition: color 0.3s;
+        }
+        footer .social-icons a:hover {
+            color: #a0aec0;
+        }
+        footer .quick-links a {
+            margin: 0 10px;
+            color: white;
+            transition: color 0.3s;
+        }
+        footer .quick-links a:hover {
+            color: #a0aec0;
+        }
+        footer p {
+            font-size: 0.875rem;
+            margin-top: 10px;
+        }
+        .top-company-section {
+            padding: 50px 0;
+            background-color: #f9f9f9;
+        }
+        .top-company-heading {
+            text-align: center;
+            color: #343a40;
+            margin-bottom: 30px;
+        }
+        .top-company-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .company-item {
+            background-color: white;
+            border: 1px solid #e9e9e9;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px;
+            width: calc(25% - 20px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .company-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+        }
+        .company-logo img {
+        
+            width: 35%;
+            height: 15%;
+        }
+        .company-name {
+            text-align: center;
+            color: #343a40;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        .company-rating i {
+            align-content: center;
+            color: yellow;
+        }
+        .company-address, .company-opening {
+            text-align: center;
+            font-size: 14px;
+            color: #686868;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="nav-links">
+            <a href="#">Home</a>
+            <a href="#">About</a>
+            <a href="#">Jobs</a>
+        </div>
+        <button class="btn-primary">Post a Job</button>
+    </div>
+    <div class="job-board-container">
+        <h1 class="text-4xl font-bold text-center mb-8 text-gray-800">Job Board</h1>
+        <div class="container mx-auto p-4">
+            <!-- Search Section -->
+            <div class="bg-white p-6 rounded-lg shadow-md flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
+                <div class="flex items-center w-full md:w-auto">
+                    <input class="w-full md:w-64 p-3 border rounded-l-lg focus:outline-none" placeholder="Search for jobs" type="text"/>
+                    <button class="bg-blue-600 text-white px-6 py-3 rounded-r-lg">
+                        Search
+                    </button>
+                </div>
+                <div class="flex space-x-4 w-full md:w-auto">
+                    <div class="relative">
+                        <select class="w-full md:w-40 p-3 border rounded-lg focus:outline-none">
+                            <option>Location</option>
+                            <option value="location1">Location 1</option>
+                            <option value="location2">Location 2</option>
+                        </select>
+                    </div>
+                    <div class="relative">
+                        <select class="w-full md:w-40 p-3 border rounded-lg focus:outline-none">
+                            <option>Job Level</option>
+                            <option value="entry">Entry Level</option>
+                            <option value="mid">Mid Level</option>
+                            <option value="senior">Senior Level</option>
+                        </select>
+                    </div>
+                    <div class="relative">
+                        <select class="w-full md:w-40 p-3 border rounded-lg focus:outline-none">
+                            <option>Department</option>
+                            <option value="department1">Department 1</option>
+                            <option value="department2">Department 2</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Featured Jobs Section -->
+        <div class="mt-12">
+            <h2 class="text-2xl font-bold">Featured Jobs</h2>
+            <div class="mt-6 space-y-4">
+                <!-- Job 1 -->
+                <div class="bg-white p-4 rounded-lg shadow-md flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <img alt="Company logo" class="w-12 h-12" height="50" src="/src/images/cisco.png" width="50"/>
+                        <div>
+                            <h3 class="text-lg font-semibold">Backend Software Engineer</h3>
+                            <a class="text-blue-600" href="featured_job1.html">
+                                Cisco
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="flex space-x-8 text-gray-500">
+                        <div class="flex items-center space-x-1">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Remote</span>
+                        </div>
+                        <div class="flex items-center space-x-1">
+                            <i class="fas fa-signal"></i>
+                            <span>Senior</span>
+                        </div>
+                        <div class="flex items-center space-x-1">
+                            <i class="fas fa-briefcase"></i>
+                            <span>Development</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Job 2 -->
+                <div class="bg-white p-4 rounded-lg shadow-md flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <img alt="Company logo" class="w-12 h-12" height="50" src="/src/images/company-1.png" width="50"/>
+                        <div>
+                            <h3 class="text-lg font-semibold">Executive Sales Manager</h3>
+                            <a class="text-blue-600" href="#">
+                                Webflow
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="flex space-x-8 text-gray-500">
+                        <div class="flex items-center space-x-1">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Remote</span>
+                        </div>
+                        <div class="flex items-center space-x-1">
+                            <i class="fas fa-signal"></i>
+                            <span>Executive</span>
+                        </div>
+                        <div class="flex items-center space-x-1">
+                            <i class="fas fa-briefcase"></i>
+                            <span>Development</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Latest Jobs Section -->
+        <div class="mt-12">
+            <h2 class="text-2xl font-bold mb-6">Latest Jobs</h2>
+            <div class="flex flex-col lg:flex-row">
+                <!-- Left Column -->
+                <div class="w-full lg:w-2/3">
+                    <div class="space-y-4">
+                        <!-- Job Item -->
+                        <div class="bg-white p-4 rounded-lg shadow flex items-center justify-between">
+                            <div class="flex items-center">
+                                <img alt="Webflow logo" class="w-12 h-12 rounded-full mr-4" height="50" src="/src/images/company-2.png" width="50"/>
+                                <div>
+                                    <h2 class="text-lg font-semibold">Digital Marketing Specialist</h2>
+                                    <a class="text-blue-500" href="#">
+                                        Webflow
+                                        <i class="fas fa-external-link-alt"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="flex space-x-8">
+                                <div class="text-center">
+                                    <p class="text-gray-500">Location</p>
+                                    <p class="font-semibold">Remote</p>
+                                </div>
+                                <div class="text-center">
+                                    <p class="text-gray-500">Level</p>
+                                    <p class="font-semibold">Junior</p>
+                                </div>
+                                <div class="text-center">
+                                    <p class="text-gray-500">Department</p>
+                                    <p class="font-semibold">Marketing</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Job Item -->
+                        <div class="bg-white p-4 rounded-lg shadow flex items-center justify-between">
+                            <div class="flex items-center">
+                                <img alt="Google logo" class="w-12 h-12 rounded-full mr-4" height="50" src="/src/images/company-3.png" width="50"/>
+                                <div>
+                                    <h2 class="text-lg font-semibold">Mobile Product Manager</h2>
+                                    <a class="text-blue-500" href="#">
+                                        Google
+                                        <i class="fas fa-external-link-alt"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="flex space-x-8">
+                                <div class="text-center">
+                                    <p class="text-gray-500">Location</p>
+                                    <p class="font-semibold">New York, NY</p>
+                                </div>
+                                <div class="text-center">
+                                    <p class="text-gray-500">Level</p>
+                                    <p class="font-semibold">Senior</p>
+                                </div>
+                                <div class="text-center">
+                                    <p class="text-gray-500">Department</p>
+                                    <p class="font-semibold">Design</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Job Item -->
+                        <div class="bg-white p-4 rounded-lg shadow flex items-center justify-between">
+                            <div class="flex items-center">
+                                <img alt="Youtube logo" class="w-12 h-12 rounded-full mr-4" height="50" src="/src/images/company-4.png" width="50"/>
+                                <div>
+                                    <h2 class="text-lg font-semibold">Head of Product Design</h2>
+                                    <a class="text-blue-500" href="#">
+                                        Youtube
+                                        <i class="fas fa-external-link-alt"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="flex space-x-8">
+                                <div class="text-center">
+                                    <p class="text-gray-500">Location</p>
+                                    <p class="font-semibold">Miami, FL</p>
+                                </div>
+                                <div class="text-center">
+                                    <p class="text-gray-500">Level</p>
+                                    <p class="font-semibold">Executive</p>
+                                </div>
+                                <div class="text-center">
+                                    <p class="text-gray-500">Department</p>
+                                    <p class="font-semibold">Design</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Job Item -->
+                        <div class="bg-white p-4 rounded-lg shadow flex items-center justify-between">
+                            <div class="flex items-center">
+                                <img alt="Youtube logo" class="w-12 h-12 rounded-full mr-4" height="50" src="/src/images/company-5.png" width="50"/>
+                                <div>
+                                    <h2 class="text-lg font-semibold">Customer Support Agent</h2>
+                                    <a class="text-blue-500" href="#">
+                                        Youtube
+                                        <i class="fas fa-external-link-alt"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="flex space-x-8">
+                                <div class="text-center">
+                                    <p class="text-gray-500">Location</p>
+                                    <p class="font-semibold">Remote</p>
+                                </div>
+                                <div class="text-center">
+                                    <p class="text-gray-500">Level</p>
+                                    <p class="font-semibold">Junior</p>
+                                </div>
+                                <div class="text-center">
+                                    <p class="text-gray-500">Department</p>
+                                    <p class="font-semibold">Business</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Job Item -->
+                        <div class="bg-white p-4 rounded-lg shadow flex items-center justify-between">
+                            <div class="flex items-center">
+                                <img alt="Facebook logo" class="w-12 h-12 rounded-full mr-4" height="50" src="/src/images/company-6.png" width="50"/>
+                                <div>
+                                    <h2 class="text-lg font-semibold">React Native Developer</h2>
+                                    <a class="text-blue-500" href="#">
+                                        Facebook
+                                        <i class="fas fa-external-link-alt"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="flex space-x-8">
+                                <div class="text-center">
+                                    <p class="text-gray-500">Location</p>
+                                    <p class="font-semibold">Austin, TX</p>
+                                </div>
+                                <div class="text-center">
+                                    <p class="text-gray-500">Level</p>
+                                    <p class="font-semibold">Senior</p>
+                                </div>
+                                <div class="text-center">
+                                    <p class="text-gray-500">Department</p>
+                                    <p class="font-semibold">Development</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Job Item -->
+                        <div class="bg-white p-4 rounded-lg shadow flex items-center justify-between">
+                            <div class="flex items-center">
+                                <img alt="Webflow logo" class="w-12 h-12 rounded-full mr-4" height="50" src="/src/images/company-7.png" width="50"/>
+                                <div>
+                                    <h2 class="text-lg font-semibold">Video Marketing Producer</h2>
+                                    <a class="text-blue-500" href="#">
+                                        Webflow
+                                        <i class="fas fa-external-link-alt"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="flex space-x-8">
+                                <div class="text-center">
+                                    <p class="text-gray-500">Location</p>
+                                    <p class="font-semibold">Remote</p>
+                                </div>
+                                <div class="text-center">
+                                    <p class="text-gray-500">Level</p>
+                                    <p class="font-semibold">Senior</p>
+                                </div>
+                                <div class="text-center">
+                                    <p class="text-gray-500">Department</p>
+                                    <p class="font-semibold">Marketing</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Right Column -->
+                <div class="post-job-section w-1/3 ml-4">
+                    <h2 class="text-3xl font-bold mb-4 text-gray-800">Post a Job</h2>
+                    <form>
+                        <div class="mb-4">
+                            <label class="block text-gray-700">Job Title</label>
+                            <input type="text" class="w-full px-4 py-2 border rounded-lg focus:border-blue-500" placeholder="Job Title">
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-700">Company Name</label>
+                            <input type="text" class="w-full px-4 py-2 border rounded-lg focus:border-blue-500" placeholder="Company Name">
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-700">Job Level</label>
+                            <select class="w-full px-4 py-2 border rounded-lg focus:border-blue-500">
+                                <option value="entry">Entry Level</option>
+                                <option value="mid">Mid Level</option>
+                                <option value="senior">Senior Level</option>
+                            </select>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-700">Department</label>
+                            <input type="text" class="w-full px-4 py-2 border rounded-lg focus:border-blue-500" placeholder="Department">
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-700">Location</label>
+                            <input type="text" class="w-full px-4 py-2 border rounded-lg focus:border-blue-500" placeholder="Location">
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-700">Job Type</label>
+                            <select class="w-full px-4 py-2 border rounded-lg focus:border-blue-500">
+                                <option value="remote">Remote</option>
+                                <option value="local">Local</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">Post Job</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Top Company Hiring Section -->
+        <div class="top-company-section">
+            <h2 class="top-company-heading">Top Company Hiring</h2>
+            <center>
+            <p class="top-company-sub-heading">List of Top Company Hiring With Us</p>  </center>
+            <div class="top-company-list">
+                <!-- Company Item 1 -->
+                <div class="company-item">
+                    <div class="company-logo">
+                        <img src="/src/images/company-1.png" alt="Google Company">
+                    </div>
+                    <h4 class="company-name">Google Company</h4>
+                    <p class="company-rating"><center>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i></center>
+                    </p>
+                    <center><p class="company-review">(874 Reviews)</p></center>
+                    <p class="company-address">New York, USA</p>
+                    <p class="company-opening">25 Job Openings</p>
+                </div>
+                <!-- Company Item 2 -->
+                <div class="company-item">
+                    <div class="company-logo">
+                        <img src="/src/images/company-2.png" alt="Microsoft Company">
+                    </div>
+                    <h4 class="company-name">Microsoft Company</h4>
+                    <p class="company-rating"><center>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i></center>
+                    </p>
+                    <center><p class="company-review">(874 Reviews)</p></center>
+                    <p class="company-address">New York, USA</p>
+                    <p class="company-opening">25 Job Openings</p>
+                </div>
+                <!-- Company Item 3 -->
+                <div class="company-item">
+                    <div class="company-logo">
+                        <img src="/src/images/company-4.png" alt="IBM Company">
+                    </div>
+                    <h4 class="company-name">IBM Company</h4>
+                    <p class="company-rating"><center>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i></center>
+                    </p>
+                    <center><p class="company-review">(874 Reviews)</p></center>
+                    <p class="company-address">New York, USA</p>
+                    <p class="company-opening">25 Job Openings</p>
+                </div>
+                <!-- Company Item 4 -->
+                <div class="company-item">
+                    <div class="company-logo">
+                        <img src="/src/images/company-3.png" alt="Apple Company">
+                    </div>
+                    <h4 class="company-name">Apple Company</h4>
+                    <p class="company-rating"><center>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i></center>
+                    </p>
+                    <center><p class="company-review">(874 Reviews)</p></center>
+                    <p class="company-address">New York, USA</p>
+                    <p class="company-opening">25 Job Openings</p>
+                </div>
+                <!-- Company Item 5 -->
+                <div class="company-item">
+                    <div class="company-logo">
+                        <img src="/src/images/company-5.png" alt="Infosys Company">
+                    </div>
+                    <h4 class="company-name">Infosys Company</h4>
+                    <p class="company-rating"><center>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i></center>
+                    </p>
+                    <center><p class="company-review">(874 Reviews)</p></center>
+                    <p class="company-address">New York, USA</p>
+                    <p class="company-opening">25 Job Openings</p>
+                </div>
+                <!-- Company Item 6 -->
+                <div class="company-item">
+                    <div class="company-logo">
+                        <img src="/src/images/company-6.png" alt="Wipro Company">
+                    </div>
+                    <h4 class="company-name">Wipro Company</h4>
+                    <p class="company-rating"><center>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i></center>
+                    </p>
+                    <center><p class="company-review">(874 Reviews)</p></center>
+                    <p class="company-address">New York, USA</p>
+                    <p class="company-opening">25 Job Openings</p>
+                </div>
+                <!-- Company Item 7 -->
+                <div class="company-item">
+                    <div class="company-logo">
+                        <img src="/src/images/company-7.png" alt="HCL Company">
+                    </div>
+                    <h4 class="company-name">HCL Company</h4>
+                    <p class="company-rating"><center>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i></center>
+                    </p>
+                    <center><p class="company-review">(874 Reviews)</p></center>
+                    <p class="company-address">New York, USA</p>
+                    <p class="company-opening">25 Job Openings</p>
+                </div>
+                <!-- Company Item 8 -->
+                <div class="company-item">
+                    <div class="company-logo">
+                        <img src="/src/images/icon-instagram.png" alt="LinkedIn Company">
+                    </div>
+                    <h4 class="company-name">LinkedIn Company</h4>
+                    <p class="company-rating"><center>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i></center>
+                    </p>
+                    <center><p class="company-review">(874 Reviews)</p></center>
+                    <p class="company-address">New York, USA</p>
+                    <p class="company-opening">25 Job Openings</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="bg-gray-800 text-white py-6 mt-8">
+        <div class="max-w-7xl mx-auto text-center">
+            <div class="mb-4">
+                <h3 class="text-lg font-bold">Stay Connected</h3>
+                <div class="flex justify-center space-x-4 mt-2">
+                    <a href="#" class="text-white hover:text-gray-400">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="text-white hover:text-gray-400">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="text-white hover:text-gray-400">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="text-white hover:text-gray-400">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="mb-4">
+                <h3 class="text-lg font-bold">Quick Links</h3>
+                <div class="flex justify-center space-x-4 mt-2">
+                    <a href="#" class="text-white hover:text-gray-400">Home</a>
+                    <a href="#" class="text-white hover:text-gray-400">About</a>
+                    <a href="#" class="text-white hover:text-gray-400">Contact Us</a>
+                    <a href="#" class="text-white hover:text-gray-400">Privacy Policy</a>
+                </div>
+            </div>
+            <div class="mt-4">
+                <p class="text-sm">&copy; 2025 Alumni Connexa. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
