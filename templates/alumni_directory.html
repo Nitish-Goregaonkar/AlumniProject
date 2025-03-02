@@ -1,17 +1,19 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alumni Directory</title>
+    <title> Alumni Directory</title>
+
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 font-sans">
 
     <!-- Navigation Bar -->
-    <div class="w-full h-16 bg-white shadow flex items-center px-6">
-        <h1 class="text-2xl font-bold center text-blue-700">Alumni Directory</h1>
-        <!-- <a href="#" class="text-blue-900 hover:text-blue-800">Home</a>   -->
+    <div class="w-full h-20 bg-white shadow flex items-center justify-between px-6">
+        <button id="home-button" class="bg-blue-500 text-white px-4 py-2 rounded">Home</button>
+        <h1 class="text-4xl font-bold text-blue-700 mx-auto">Alumni Directory</h1>
     </div>
 
     <!-- Main Content -->
@@ -53,6 +55,7 @@
                         <label for="college-filter" class="block text-sm font-medium text-gray-700">College</label>
                         <input type="text" id="college-filter" placeholder="Enter college..." class="p-2 w-full border rounded">
                     </div>
+                    <button id="apply-filters" class="mt-2 w-full bg-blue-500 text-white px-4 py-2 rounded">Apply Filters</button>
                 </div>
             </div>
         </div>
@@ -68,7 +71,7 @@
                 <div class="profile p-4 bg-white shadow rounded" data-name="Vishal Gore" data-year="2018" data-location="New York" data-college="MIT" data-hometown="Boston" data-role="Software Engineer" data-status="active" data-photoURL="https://via.placeholder.com/150" data-skills="JavaScript, React, Node.js" data-email="john.doe@example.com" data-contact="+1234567890">
                     <div class="flex">
                         <div class="mb-4">
-                            <img src="/src/images/alumni logo.png" alt="Vishal Gore" class="w-24 h-20 rounded-lg object-cover border-2 border-white shadow-lg"> <!-- Default image -->
+                            <img src="/src/images/download.png" alt="Vishal Gore" class="w-24 h-20 rounded-lg object-cover border-2 border-white shadow-lg"> <!-- Default image -->
                         </div>
                         <div class="ml-4">
                             <h3 class="mt-2 text-lg font-semibold">Vishal Gore</h3>
@@ -87,7 +90,8 @@
                 <div class="profile p-4 bg-white shadow rounded" data-name="Nitish Goregaonkar" data-year="2019" data-location="San Francisco" data-college="Stanford" data-hometown="Los Angeles" data-role="Data Scientist" data-status="onLeave" data-photoURL="https://via.placeholder.com/150" data-skills="Python, Machine Learning, Data Analysis" data-email="jane.smith@example.com" data-contact="+0987654321">
                     <div class="flex">
                         <div class="mb-4">
-                            <img src="/src/images/alumni logo.png" alt="Vishal Gore" class="w-24 h-20 rounded-lg object-cover border-2 border-white shadow-lg"> <!-- Default image -->                        </div>
+                            <img src="download.png" alt="Nitish Goregaonkar" class="w-24 h-20 rounded-lg object-cover border-2 border-white shadow-lg"> <!-- Default image -->
+                        </div>
                         <div class="ml-4">
                             <h3 class="mt-2 text-lg font-semibold">Nitish Goregaonkar</h3>
                             <p class="text-gray-600">Data Scientist</p>
@@ -105,7 +109,8 @@
                 <div class="profile p-4 bg-white shadow rounded" data-name="Tejas Naik" data-year="2020" data-location="Chicago" data-college="Harvard" data-hometown="Seattle" data-role="Product Manager" data-status="inactive" data-photoURL="https://via.placeholder.com/150" data-skills="Product Management, Agile, UX Design" data-email="alice.johnson@example.com" data-contact="+1122334455">
                     <div class="flex">
                         <div class="mb-4">
-                            <img src="/src/images/alumni logo.png" alt="Vishal Gore" class="w-24 h-20 rounded-lg object-cover border-2 border-white shadow-lg"> <!-- Default image -->                        </div>
+                            <img src="download.png" alt="Tejas Naik" class="w-24 h-20 rounded-lg object-cover border-2 border-white shadow-lg"> <!-- Default image -->
+                        </div>
                         <div class="ml-4">
                             <h3 class="mt-2 text-lg font-semibold">Tejas Naik</h3>
                             <p class="text-gray-600">Product Manager</p>
@@ -123,7 +128,8 @@
                 <div class="profile p-4 bg-white shadow rounded" data-name="Saksham Choudhari" data-year="2020" data-location="Chicago" data-college="Harvard" data-hometown="Seattle" data-role="Software Developer" data-status="inactive" data-photoURL="https://via.placeholder.com/150" data-skills="Java, Spring, Hibernate" data-email="saksham@example.com" data-contact="+1122334455">
                     <div class="flex">
                         <div class="mb-4">
-                            <img src="/src/images/alumni logo.png" alt="Vishal Gore" class="w-24 h-20 rounded-lg object-cover border-2 border-white shadow-lg"> <!-- Default image -->                        </div>
+                            <img src="download.png" alt="Saksham Choudhari" class="w-24 h-20 rounded-lg object-cover border-2 border-white shadow-lg"> <!-- Default image -->
+                        </div>
                         <div class="ml-4">
                             <h3 class="mt-2 text-lg font-semibold">Saksham Choudhari</h3>
                             <p class="text-gray-600">Software Developer</p>
@@ -141,7 +147,8 @@
                 <div class="profile p-4 bg-white shadow rounded" data-name="Anjali Patil" data-year="2021" data-location="Austin" data-college="UCLA" data-hometown="Dallas" data-role="UX Designer" data-status="active" data-photoURL="https://via.placeholder.com/150" data-skills="UX, UI, Figma" data-email="anjali@example.com" data-contact="+1234567891">
                     <div class="flex">
                         <div class="mb-4">
-                            <img src="/src/images/alumni logo.png" alt="Vishal Gore" class="w-24 h-20 rounded-lg object-cover border-2 border-white shadow-lg"> <!-- Default image -->                        </div>
+                            <img src="download.png" alt="Anjali Patil" class="w-24 h-20 rounded-lg object-cover border-2 border-white shadow-lg"> <!-- Default image -->
+                        </div>
                         <div class="ml-4">
                             <h3 class="mt-2 text-lg font-semibold">Anjali Patil</h3>
                             <p class="text-gray-600">UX Designer</p>
@@ -159,7 +166,8 @@
                 <div class="profile p-4 bg-white shadow rounded" data-name="Rahul Joshi" data-year="2021" data-location="Seattle" data-college="MIT" data-hometown="Portland" data-role="Data Analyst" data-status="active" data-photoURL="https://via.placeholder.com/150" data-skills="SQL, Excel, R" data-email="rahul@example.com" data-contact="+1234567892">
                     <div class="flex">
                         <div class="mb-4">
-                            <img src="/src/images/alumni logo.png" alt="Vishal Gore" class="w-24 h-20 rounded-lg object-cover border-2 border-white shadow-lg"> <!-- Default image -->                        </div>
+                            <img src="download.png" alt="Rahul Joshi" class="w-24 h-20 rounded-lg object-cover border-2 border-white shadow-lg"> <!-- Default image -->
+                        </div>
                         <div class="ml-4">
                             <h3 class="mt-2 text-lg font-semibold">Rahul Joshi</h3>
                             <p class="text-gray-600">Data Analyst</p>
@@ -177,7 +185,8 @@
                 <div class="profile p-4 bg-white shadow rounded" data-name="Sneha Reddy" data-year="2022" data-location="New York" data-college="Columbia" data-hometown="Boston" data-role="Marketing Specialist" data-status="active" data-photoURL="https://via.placeholder.com/150" data-skills="SEO, Content Marketing" data-email="sneha@example.com" data-contact="+1234567893">
                     <div class="flex">
                         <div class="mb-4">
-                            <img src="/src/images/alumni logo.png" alt="Vishal Gore" class="w-24 h-20 rounded-lg object-cover border-2 border-white shadow-lg"> <!-- Default image -->                        </div>
+                            <img src="download.png" alt="Sneha Reddy" class="w-24 h-20 rounded-lg object-cover border-2 border-white shadow-lg"> <!-- Default image -->
+                        </div>
                         <div class="ml-4">
                             <h3 class="mt-2 text-lg font-semibold">Sneha Reddy</h3>
                             <p class="text-gray-600">Marketing Specialist</p>
@@ -195,7 +204,8 @@
                 <div class="profile p-4 bg-white shadow rounded" data-name="Karan Singh" data-year="2022" data-location="Los Angeles" data-college="UCLA" data-hometown="San Diego" data-role="Software Tester" data-status="inactive" data-photoURL="https://via.placeholder.com/150" data-skills="Testing, Automation" data-email="karan@example.com" data-contact="+1234567894">
                     <div class="flex">
                         <div class="mb-4">
-                            <img src="/src/images/alumni logo.png" alt="Vishal Gore" class="w-24 h-20 rounded-lg object-cover border-2 border-white shadow-lg"> <!-- Default image -->                        </div>
+                            <img src="download.png" alt="Karan Singh" class="w-24 h-20 rounded-lg object-cover border-2 border-white shadow-lg"> <!-- Default image -->
+                        </div>
                         <div class="ml-4">
                             <h3 class="mt-2 text-lg font-semibold">Karan Singh</h3>
                             <p class="text-gray-600">Software Tester</p>
@@ -213,7 +223,8 @@
                 <div class="profile p-4 bg-white shadow rounded" data-name="Priya Sharma" data-year="2023" data-location="Miami" data-college="Harvard" data-hometown="Orlando" data-role="Graphic Designer" data-status="active" data-photoURL="https://via.placeholder.com/150" data-skills="Photoshop, Illustrator" data-email="priya@example.com" data-contact="+1234567895">
                     <div class="flex">
                         <div class="mb-4">
-                            <img src="/src/images/alumni logo.png" alt="Vishal Gore" class="w-24 h-20 rounded-lg object-cover border-2 border-white shadow-lg"> <!-- Default image -->                        </div>
+                            <img src="download.png" alt="Priya Sharma" class="w-24 h-20 rounded-lg object-cover border-2 border-white shadow-lg"> <!-- Default image -->
+                        </div>
                         <div class="ml-4">
                             <h3 class="mt-2 text-lg font-semibold">Priya Sharma</h3>
                             <p class="text-gray-600">Graphic Designer</p>
@@ -231,7 +242,8 @@
                 <div class="profile p-4 bg-white shadow rounded" data-name="Ravi Kumar" data-year="2023" data-location="San Francisco" data-college="Stanford" data-hometown="Sacramento" data-role="Web Developer" data-status="active" data-photoURL="https://via.placeholder.com/150" data-skills="HTML, CSS, JavaScript" data-email="ravi@example.com" data-contact="+1234567896">
                     <div class="flex">
                         <div class="mb-4">
-                            <img src="/src/images/alumni logo.png" alt="Vishal Gore" class="w-24 h-20 rounded-lg object-cover border-2 border-white shadow-lg"> <!-- Default image -->                        </div>
+                            <img src="download.png" alt="Ravi Kumar" class="w-24 h-20 rounded-lg object-cover border-2 border-white shadow-lg"> <!-- Default image -->
+                        </div>
                         <div class="ml-4">
                             <h3 class="mt-2 text-lg font-semibold">Ravi Kumar</h3>
                             <p class="text-gray-600">Web Developer</p>
@@ -250,7 +262,8 @@
                 <div class="profile p-4 bg-white shadow rounded" data-name="Aarav Mehta" data-year="2018" data-location="Los Angeles" data-college="UCLA" data-hometown="San Diego" data-role="Network Engineer" data-status="active" data-photoURL="https://via.placeholder.com/150" data-skills="Networking, Security" data-email="aarav@example.com" data-contact="+1234567802">
                     <div class="flex">
                         <div class="mb-4">
-                            <img src="/src/images/alumni logo.png" alt="Vishal Gore" class="w-24 h-20 rounded-lg object-cover border-2 border-white shadow-lg"> <!-- Default image -->                        </div>
+                            <img src="download.png" alt="Aarav Mehta" class="w-24 h-20 rounded-lg object-cover border-2 border-white shadow-lg"> <!-- Default image -->
+                        </div>
                         <div class="ml-4">
                             <h3 class="mt-2 text-lg font-semibold">Aarav Mehta</h3>
                             <p class="text-gray-600">Network Engineer</p>
@@ -269,7 +282,8 @@
                 <div class="profile p-4 bg-white shadow rounded" data-name="Aditi Mehta" data-year="2023" data-location="Boston" data-college="Harvard" data-hometown="Newark" data-role="Software Engineer" data-status="active" data-photoURL="https://via.placeholder.com/150" data-skills="Java, Spring Boot" data-email="aditi@example.com" data-contact="+1234567897">
                     <div class="flex">
                         <div class="mb-4">
-                            <img src="/src/images/alumni logo.png" alt="Vishal Gore" class="w-24 h-20 rounded-lg object-cover border-2 border-white shadow-lg"> <!-- Default image -->                        </div>
+                            <img src="download.png" alt="Aditi Mehta" class="w-24 h-20 rounded-lg object-cover border-2 border-white shadow-lg"> <!-- Default image -->
+                        </div>
                         <div class="ml-4">
                             <h3 class="mt-2 text-lg font-semibold">Aditi Mehta</h3>
                             <p class="text-gray-600">Software Engineer</p>
@@ -287,7 +301,8 @@
                 <div class="profile p-4 bg-white shadow rounded" data-name="Rohan Verma" data-year="2022" data-location="Seattle" data-college="Stanford" data-hometown="Portland" data-role="Data Scientist" data-status="active" data-photoURL="https://via.placeholder.com/150" data-skills="Python, R" data-email="rohan@example.com" data-contact="+1234567898">
                     <div class="flex">
                         <div class="mb-4">
-                            <img src="/src/images/alumni logo.png" alt="Vishal Gore" class="w-24 h-20 rounded-lg object-cover border-2 border-white shadow-lg"> <!-- Default image -->                        </div>
+                            <img src="download.png" alt="Rohan Verma" class="w-24 h-20 rounded-lg object-cover border-2 border-white shadow-lg"> <!-- Default image -->
+                        </div>
                         <div class="ml-4">
                             <h3 class="mt-2 text-lg font-semibold">Rohan Verma</h3>
                             <p class="text-gray-600">Data Scientist</p>
@@ -305,7 +320,8 @@
                 <div class="profile p-4 bg-white shadow rounded" data-name="Neha Gupta" data-year="2021" data-location="Chicago" data-college="UCLA" data-hometown="Los Angeles" data-role="UX Designer" data-status="inactive" data-photoURL="https://via.placeholder.com/150" data-skills="UX, UI" data-email="neha@example.com" data-contact="+1234567899">
                     <div class="flex">
                         <div class="mb-4">
-                            <img src="/src/images/alumni logo.png" alt="Vishal Gore" class="w-24 h-20 rounded-lg object-cover border-2 border-white shadow-lg"> <!-- Default image -->                        </div>
+                            <img src="download.png" alt="Neha Gupta" class="w-24 h-20 rounded-lg object-cover border-2 border-white shadow-lg"> <!-- Default image -->
+                        </div>
                         <div class="ml-4">
                             <h3 class="mt-2 text-lg font-semibold">Neha Gupta</h3>
                             <p class="text-gray-600">UX Designer</p>
@@ -323,7 +339,8 @@
                 <div class="profile p-4 bg-white shadow rounded" data-name="Kunal Joshi" data-year="2020" data-location="Miami" data-college="Harvard" data-hometown="Orlando" data-role="Software Tester" data-status="active" data-photoURL="https://via.placeholder.com/150" data-skills="Testing, Automation" data-email="kunal@example.com" data-contact="+1234567800">
                     <div class="flex">
                         <div class="mb-4">
-                            <img src="/src/images/alumni logo.png" alt="Vishal Gore" class="w-24 h-20 rounded-lg object-cover border-2 border-white shadow-lg"> <!-- Default image -->                        </div>
+                            <img src="download.png" alt="Kunal Joshi" class="w-24 h-20 rounded-lg object-cover border-2 border-white shadow-lg"> <!-- Default image -->
+                        </div>
                         <div class="ml-4">
                             <h3 class="mt-2 text-lg font-semibold">Kunal Joshi</h3>
                             <p class="text-gray-600">Software Tester</p>
@@ -341,7 +358,8 @@
                 <div class="profile p-4 bg-white shadow rounded" data-name="Siddharth Rao" data-year="2019" data-location="San Francisco" data-college="Stanford" data-hometown="Sacramento" data-role="Web Developer" data-status="active" data-photoURL="https://via.placeholder.com/150" data-skills="HTML, CSS, JavaScript" data-email="siddharth@example.com" data-contact="+1234567801">
                     <div class="flex">
                         <div class="mb-4">
-                            <img src="/src/images/alumni logo.png" alt="Vishal Gore" class="w-24 h-20 rounded-lg object-cover border-2 border-white shadow-lg"> <!-- Default image -->                        </div>
+                            <img src="download.png" alt="Siddharth Rao" class="w-24 h-20 rounded-lg object-cover border-2 border-white shadow-lg"> <!-- Default image -->
+                        </div>
                         <div class="ml-4">
                             <h3 class="mt-2 text-lg font-semibold">Siddharth Rao</h3>
                             <p class="text-gray-600">Web Developer</p>
@@ -467,6 +485,8 @@
             const profileModal = document.getElementById("profile-modal");
             const closeModal = document.getElementById("close-modal");
             const uploadVideoBtn = document.getElementById("upload-video-btn");
+            const applyFiltersBtn = document.getElementById("apply-filters");
+            const homeButton = document.getElementById("home-button");
 
             // Toggle Filters Dropdown
             filtersToggle.addEventListener("click", () => {
@@ -493,6 +513,30 @@
                 profiles.forEach(profile => {
                     const year = profile.getAttribute("data-year");
                     if (selectedYear === "" || year === selectedYear) {
+                        profile.classList.remove("hidden");
+                    } else {
+                        profile.classList.add("hidden");
+                    }
+                });
+            });
+
+            // Apply Filters Functionality
+            applyFiltersBtn.addEventListener("click", function () {
+                const yearFilter = document.getElementById("year-filter").value.toLowerCase();
+                const locationFilter = document.getElementById("location-filter").value.toLowerCase();
+                const hometownFilter = document.getElementById("hometown-filter").value.toLowerCase();
+                const collegeFilter = document.getElementById("college-filter").value.toLowerCase();
+
+                profiles.forEach(profile => {
+                    const year = profile.getAttribute("data-year").toLowerCase();
+                    const location = profile.getAttribute("data-location").toLowerCase();
+                    const hometown = profile.getAttribute("data-hometown").toLowerCase();
+                    const college = profile.getAttribute("data-college").toLowerCase();
+
+                    if ((yearFilter === "" || year.includes(yearFilter)) &&
+                        (locationFilter === "" || location.includes(locationFilter)) &&
+                        (hometownFilter === "" || hometown.includes(hometownFilter)) &&
+                        (collegeFilter === "" || college.includes(collegeFilter))) {
                         profile.classList.remove("hidden");
                     } else {
                         profile.classList.add("hidden");
@@ -750,6 +794,22 @@
                     }
                 });
             }
+
+            // Home Button Functionality
+            homeButton.addEventListener("click", function () {
+                // Reset filters and search
+                batchSelect.value = "";
+                searchInput.value = "";
+                document.getElementById("year-filter").value = "";
+                document.getElementById("location-filter").value = "";
+                document.getElementById("hometown-filter").value = "";
+                document.getElementById("college-filter").value = "";
+
+                // Show all profiles
+                profiles.forEach(profile => {
+                    profile.classList.remove("hidden");
+                });
+            });
         });
     </script>
 </body>
