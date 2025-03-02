@@ -94,8 +94,8 @@
         <i class="fas fa-check text-green-500"></i>
       </div>
       <div>
-        <h4 class="font-semibold text-green-800">Welcome to AlumniConnexa</h4>
-        <p class="text-sm text-gray-600">Secure login portal is ready</p>
+        <h4 class="font-semibold text-green-800">Welcome to Banking Portal</h4>
+        <p class="text-sm text-gray-600">Secure admin login portal is ready</p>
       </div>
       <button onclick="document.getElementById('welcomeToast').classList.add('hidden')" class="text-gray-500 hover:text-gray-700">
         <i class="fas fa-times"></i>
@@ -112,7 +112,7 @@
             <i class="fas fa-building-columns text-3xl text-white"></i>
           </div>
           <h2 class="text-3xl font-bold mb-3">Welcome Back</h2>
-          <p class="text-lg opacity-80 mb-6">Access AlumniConnexa securely.</p>
+          <p class="text-lg opacity-80 mb-6">Access your administrative dashboard to manage banking operations securely.</p>
           <div class="space-y-4 mb-8">
             <div class="flex items-center space-x-3">
               <div class="w-10 h-10 bg-white bg-opacity-10 rounded-full flex items-center justify-center">
@@ -144,7 +144,7 @@
           </div>
         </div>
         <div class="pt-6 border-t border-white border-opacity-20">
-          <p class="text-sm opacity-70">© 2025 AlumniConnexa. All rights reserved.</p>
+          <p class="text-sm opacity-70">© 2025 Banking Portal. All rights reserved.</p>
         </div>
       </div>
       
@@ -152,7 +152,7 @@
       <div class="glass-card p-8 md:p-12 md:w-1/2 animate-slide-up">
         <div class="max-w-md mx-auto">
           <div class="text-center mb-8">
-            <h3 class="text-2xl font-bold text-gray-800">Alumni Login</h3>
+            <h3 class="text-2xl font-bold text-gray-800">Admin Portal Login</h3>
             <p class="text-gray-600 mt-2">Please enter your credentials</p>
           </div>
           
@@ -185,7 +185,6 @@
                 />
               </div>
             </div>
-            
             <div>
               <div class="flex items-center justify-between mb-1">
                 <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
@@ -204,14 +203,22 @@
                   required
                   placeholder="Enter your password" 
                   class="w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200" 
-                />
-                <button 
-                  type="button" 
-                  id="togglePassword" 
-                  class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
-                >
-                  <i class="fas fa-eye"></i>
+
+            
+
+           
+                <button type="button" id="togglePassword" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700">
+                
                 </button>
+                <!-- Add below the existing login button -->
+<button 
+type="button" 
+id="googleSignIn" 
+class="w-full py-3 px-4 bg-white border border-gray-300 text-gray-700 font-medium rounded-lg hover:shadow-lg transition-all duration-200 flex justify-center items-center space-x-2 mt-4"
+>
+<img src="https://www.svgrepo.com/show/355037/google.svg" class="w-5 h-5" alt="Google logo">
+<span>Continue with Google</span>
+</button>
               </div>
             </div>
             
@@ -263,10 +270,54 @@
   <!-- Firebase v9+ Modular SDK -->
   <script type="module">
    
+  // Google OAuth Configuration
+  const googleConfig = {
+    clientId: '',
+    redirectUri: window.location.origin + '/auth/google/callback',
+    scope: 'openid profile email'
+  };
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
+  // Initialize Google Sign-In
+  document.getElementById('googleSignIn').addEventListener('click', () => {
+    const authUrl = new URL('https://accounts.google.com/o/oauth2/v2/auth');
+    authUrl.searchParams.append('client_id', googleConfig.clientId);
+    authUrl.searchParams.append('redirect_uri', googleConfig.redirectUri);
+    authUrl.searchParams.append('response_type', 'code');
+    authUrl.searchParams.append('scope', googleConfig.scope);
+    authUrl.searchParams.append('access_type', 'offline');
+    authUrl.searchParams.append('state', 'google_login');
+    
+    window.location.href = authUrl.toString();
+  });
+
+  // Handle callback (this would be on your callback page)
+  if(window.location.pathname === '/auth/google/callback') {
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get('code');
+    
+    if(code) {
+      // Exchange code for tokens (server-side operation)
+      fetch('/api/auth/google', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ code })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if(data.success) {
+          window.location.href = '/dashboard';
+        } else {
+          showError(data.error || 'Google authentication failed');
+        }
+      })
+      .catch(error => {
+        showError('Failed to authenticate with Google');
+      });
+    }
+  }
+
     
     // Function to show error messages
     function showError(message) {
@@ -441,7 +492,7 @@
           
           // Successful login - redirect to dashboard
           console.log("Authentication successful, redirecting...");
-          window.location.href = "dashboard.html";
+          window.location.href = "homepage.html";
           
         } catch (error) {
           console.error("Login error:", error);
