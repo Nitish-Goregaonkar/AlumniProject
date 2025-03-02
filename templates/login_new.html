@@ -94,8 +94,8 @@
         <i class="fas fa-check text-green-500"></i>
       </div>
       <div>
-        <h4 class="font-semibold text-green-800">Welcome to Banking Portal</h4>
-        <p class="text-sm text-gray-600">Secure admin login portal is ready</p>
+        <h4 class="font-semibold text-green-800">Welcome to AlumniConnexa</h4>
+        <p class="text-sm text-gray-600">Secure login portal is ready</p>
       </div>
       <button onclick="document.getElementById('welcomeToast').classList.add('hidden')" class="text-gray-500 hover:text-gray-700">
         <i class="fas fa-times"></i>
@@ -112,7 +112,7 @@
             <i class="fas fa-building-columns text-3xl text-white"></i>
           </div>
           <h2 class="text-3xl font-bold mb-3">Welcome Back</h2>
-          <p class="text-lg opacity-80 mb-6">Access your administrative dashboard to manage banking operations securely.</p>
+          <p class="text-lg opacity-80 mb-6">Access AlumniConnexa securely.</p>
           <div class="space-y-4 mb-8">
             <div class="flex items-center space-x-3">
               <div class="w-10 h-10 bg-white bg-opacity-10 rounded-full flex items-center justify-center">
@@ -144,7 +144,7 @@
           </div>
         </div>
         <div class="pt-6 border-t border-white border-opacity-20">
-          <p class="text-sm opacity-70">© 2025 Banking Portal. All rights reserved.</p>
+          <p class="text-sm opacity-70">© 2025 AlumniConnexa. All rights reserved.</p>
         </div>
       </div>
       
@@ -152,7 +152,7 @@
       <div class="glass-card p-8 md:p-12 md:w-1/2 animate-slide-up">
         <div class="max-w-md mx-auto">
           <div class="text-center mb-8">
-            <h3 class="text-2xl font-bold text-gray-800">Admin Portal Login</h3>
+            <h3 class="text-2xl font-bold text-gray-800">Alumni Login</h3>
             <p class="text-gray-600 mt-2">Please enter your credentials</p>
           </div>
           
@@ -262,23 +262,7 @@
 
   <!-- Firebase v9+ Modular SDK -->
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-    import {
-      getAuth,
-      signInWithEmailAndPassword,
-      setPersistence,
-      browserSessionPersistence,
-      browserLocalPersistence
-    } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
-    import {
-      getFirestore,
-      doc,
-      getDoc,
-    } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
-
-    const firebaseConfig = {
-    
-    };
+   
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
