@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Secure registration portal for AlumniConnexa" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Register | AlumniConnexa</title>
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              DEFAULT: '#053b50',
+              light: '#176B87',
+              dark: '#032A39'
+            },
+            accent: {
+              DEFAULT: '#64CCC5',
+              light: '#9EECEA',
+              dark: '#41A8A2'
+            }
+          },
+          animation: {
+            'fade-in': 'fadeIn 0.5s ease-in-out',
+            'slide-up': 'slideUp 0.6s ease-out',
+          },
+          keyframes: {
+            fadeIn: {
+              '0%': { opacity: '0' },
+              '100%': { opacity: '1' }
+            },
+            slideUp: {
+              '0%': { transform: 'translateY(20px)', opacity: '0' },
+              '100%': { transform: 'translateY(0)', opacity: '1' }
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-image: url("assets/image.png");
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+    
+    .glass-card {
+      backdrop-filter: blur(16px) saturate(180%);
+      -webkit-backdrop-filter: blur(16px) saturate(180%);
+      background-color: rgba(255, 255, 255, 0.9);
+    }
+    
+    .input-icon {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 1;
+    }
+  </style>
+</head>
+
+<body class="min-h-screen flex items-center justify-center p-4">
+  <div class="container mx-auto max-w-6xl">
+    <div class="flex flex-col md:flex-row rounded-xl overflow-hidden shadow-2xl">
+      <!-- Left Panel: Graphic Section -->
+      <div class="bg-gradient-to-br from-primary to-primary-light text-white p-8 md:w-1.8/3 flex flex-col justify-center items-center animate-fade-in">
+        <div class="text-center">
+          <div class="w-20 h-20 bg-white bg-opacity-20 rounded-full flex items-center justify-center mb-6 mx-auto">
+            <i class="fas fa-user-graduate text-4xl text-white"></i>
+          </div>
+          <h2 class="text-2xl font-bold mb-4">Join Our Alumni Network</h2>
+          <p class="text-sm opacity-80 mb-6">Connect with your peers and unlock exclusive benefits</p>
+          <div class="space-y-3">
+            <div class="flex items-center space-x-2">
+              <i class="fas fa-check-circle text-accent"></i>
+              <span class="text-sm">Career Opportunities</span>
+            </div>
+            <div class="flex items-center space-x-2">
+              <i class="fas fa-check-circle text-accent"></i>
+              <span class="text-sm">Exclusive Events</span>
+            </div>
+            <div class="flex items-center space-x-2">
+              <i class="fas fa-check-circle text-accent"></i>
+              <span class="text-sm">Professional Networking</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Panel: Registration Form -->
+      <div class="glass-card p-8 md:p-12 md:w-2/3 animate-slide-up">
+        <div class="max-w-md mx-auto">
+          <div class="text-center mb-8">
+            <h3 class="text-2xl font-bold text-gray-800">Create Account</h3>
+            <p class="text-gray-600 mt-2">Join our alumni community</p>
+          </div>
+
+          <form class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                <div class="relative">
+                  <div class="input-icon text-gray-500">
+                    <i class="fas fa-user"></i>
+                  </div>
+                  <input type="text" placeholder="Enter full name" required 
+                    class="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                <div class="relative">
+                  <div class="input-icon text-gray-500">
+                    <i class="fas fa-envelope"></i>
+                  </div>
+                  <input type="email" placeholder="Enter email" required 
+                    class="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                </div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                <div class="relative">
+                  <div class="input-icon text-gray-500">
+                    <i class="fas fa-lock"></i>
+                  </div>
+                  <input type="password" placeholder="Create password" required 
+                    class="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
+                <div class="relative">
+                  <div class="input-icon text-gray-500">
+                    <i class="fas fa-lock"></i>
+                  </div>
+                  <input type="password" placeholder="Confirm password" required 
+                    class="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Address</label>
+              <div class="relative flex gap-2">
+                <div class="input-icon text-gray-500">
+                  <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <input type="text" id="streetAddress" placeholder="Enter address" required 
+                  class="w-full pl-10 pr-16 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                <button type="button" id="autoLocationButton" 
+                  class="absolute right-2 top-1/2 -translate-y-1/2 bg-primary text-white p-2 rounded-lg hover:bg-primary-light transition-colors">
+                  <i class="fas fa-location-arrow"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Role</label>
+                <select id="roleSelect" onchange="toggleFields()" 
+                  class="w-full pl-3 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                  <option hidden>Select Role</option>
+                  <option value="alumni">Alumni</option>
+                  <option value="student">Student</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Gender</label>
+                <div class="flex space-x-4 pt-2">
+                  <label class="flex items-center">
+                    <input type="radio" name="gender" class="text-primary focus:ring-primary">
+                    <span class="ml-2">Male</span>
+                  </label>
+                  <label class="flex items-center">
+                    <input type="radio" name="gender" class="text-primary focus:ring-primary">
+                    <span class="ml-2">Female</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Conditional Fields -->
+            <div id="alumniFields" class="hidden space-y-4">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Passing Year</label>
+                  <input type="number" placeholder="Graduation year" 
+                    class="w-full pl-3 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Department</label>
+                  <select class="w-full pl-3 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                    <option hidden>Select Department</option>
+                    <option>Computer Science</option>
+                    <option>Mechanical</option>
+                    <option>Electrical</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div id="studentFields" class="hidden space-y-4">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Academic Year</label>
+                  <select class="w-full pl-3 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                    <option hidden>Select Year</option>
+                    <option>1st Year</option>
+                    <option>2nd Year</option>
+                    <option>3rd Year</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Department</label>
+                  <select class="w-full pl-3 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                    <option hidden>Select Department</option>
+                    <option>Computer Science</option>
+                    <option>Mechanical</option>
+                    <option>Electrical</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <button type="submit" 
+              class="w-full py-3 px-4 bg-gradient-to-r from-primary to-primary-light text-white font-medium rounded-lg hover:shadow-lg transition-all duration-200">
+              <i class="fas fa-user-plus mr-2"></i>Create Account
+            </button>
+          </form>
+
+          <div class="mt-6 text-center">
+            <p class="text-sm text-gray-600">
+              Already have an account? 
+              <a href="#" class="text-primary hover:text-primary-light font-medium">Sign in here</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Location Handling
+    const autoLocationButton = document.getElementById('autoLocationButton');
+    const locationField = document.getElementById('streetAddress');
+    const apiKey = 'b7db11d9e6604078800926207deb9a45';
+
+    function fetchAddress(latitude, longitude) {
+      locationField.value = "Fetching location...";
+      fetch(`https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=${apiKey}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.results?.length > 0) {
+            locationField.value = data.results[0].formatted;
+          } else {
+            locationField.value = 'Unable to fetch address';
+          }
+        })
+        .catch(() => locationField.value = 'Error fetching address');
+    }
+
+    autoLocationButton.addEventListener('click', () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          position => fetchAddress(position.coords.latitude, position.coords.longitude),
+          error => alert('Please enable location access')
+        );
+      } else {
+        alert('Geolocation not supported');
+      }
+    });
+
+    // Role Toggle
+    function toggleFields() {
+      const role = document.getElementById('roleSelect').value;
+      document.getElementById('alumniFields').classList.toggle('hidden', role !== 'alumni');
+      document.getElementById('studentFields').classList.toggle('hidden', role !== 'student');
+    }
+  </script>
+</body>
+</html>

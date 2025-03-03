@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alumni Chat</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.socket.io/4.3.2/socket.io.min.js"></script>
+</head>
+<body class="bg-gray-100">
+
+    <div class="container mx-auto p-4 max-w-2xl bg-white shadow-md rounded-lg">
+        <!-- Chat Header -->
+        <div class="flex items-center p-3 border-b">
+            <img src="https://via.placeholder.com/40" id="userLogo" class="w-10 h-10 rounded-full mr-3" alt="User Logo">
+            <h2 id="chatUserName" class="text-lg font-semibold">User Name</h2>
+        </div>
+
+        <!-- Chat Box -->
+        <div class="p-4 h-[500px] overflow-y-auto" id="chat-box">
+            <div id="messages" class="space-y-2"></div>
+        </div>
+
+        <!-- Message Input -->
+        <div class="flex p-3 border-t">
+            <input id="messageInput" class="flex-grow p-2 border rounded-md focus:outline-none" type="text" placeholder="Type a message...">
+            <button id="sendBtn" class="ml-2 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Send</button>
+        </div>
+    </div>
+
+    <script>
+        // Connect to the WebSocket server
+        const socket = io('http://127.0.0.1:5000');
+
+        // Simulated User Data (Replace with dynamic values)
+        const userId = 1;  // Current logged-in user
+        const receiverId = 2;  // Chatting with user ID 2
+        const receiverName = "John Doe";  // Chatting with this person
+        const receiverLogo = "https://via.placeholder.com/40";  // Profile image of the receiver
+
+        // Set Receiver Name & Profile Picture
+        document.getElementById('chatUserName').textContent = receiverName;
+        document.getElementById('userLogo').src = receiverLogo;
+
+        // Join chat room
+        socket.emit('join', { user_id: userId });
+
+        // Send message function
+        document.getElementById('sendBtn').addEventListener('click', function() {
+            const message = document.getElementById('messageInput').value.trim();
+            if (message !== "") {
+                socket.emit('message', { sender_id: userId, receiver_id: receiverId, message: message });
+                addMessageToChat(userId, message, "Sending...");
+                document.getElementById('messageInput').value = ''; // Clear input
+            }
+        });
+
+        // Display received message
+        socket.on('message', function(data) {
+            if (data.sender_id === receiverId) {
+                addMessageToChat(data.sender_id, data.message, "Received");
+            }
+        });
+
+        // Function to display messages
+        function addMessageToChat(sender, message, status = "") {
+            const messagesDiv = document.getElementById('messages');
+            const msgDiv = document.createElement('div');
+
+            // Style messages based on sender
+            if (sender === userId) {
+                msgDiv.className = "flex justify-end";
+                msgDiv.innerHTML = `
+                    <div class="bg-blue-500 text-white p-2 rounded-lg max-w-xs">
+                        ${message} <br><span class="text-xs text-gray-200">${status}</span>
+                    </div>
+                `;
+            } else {
+                msgDiv.className = "flex justify-start";
+                msgDiv.innerHTML = `
+                    <div class="bg-gray-300 text-black p-2 rounded-lg max-w-xs">
+                        ${message} <br><span class="text-xs text-gray-600">${status}</span>
+                    </div>
+                `;
+            }
+
+            messagesDiv.appendChild(msgDiv);
+
+            // Auto-scroll to latest message
+            document.getElementById('chat-box').scrollTop = document.getElementById('chat-box').scrollHeight;
+        }
+
+        // Fetch previous messages
+        async function loadMessages() {
+            const response = await fetch(`http://127.0.0.1:5000/get_messages/${userId}/${receiverId}`);
+            const messages = await response.json();
+            messages.forEach(msg => {
+                addMessageToChat(msg[0], msg[2], "Received");
+            });
+
+            // Auto-scroll to latest message
+            document.getElementById('chat-box').scrollTop = document.getElementById('chat-box').scrollHeight;
+        }
+
+        // Load chat history on page load
+        loadMessages();
+    </script>
+
+</body>
+</html>
