@@ -4,67 +4,225 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alumni Donation Portal</title>
-    <link rel="stylesheet" href="/src/css/donation.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            DEFAULT: '#053b50',
+                            light: '#176B87',
+                            dark: '#032A39'
+                        },
+                        accent: {
+                            DEFAULT: '#64CCC5',
+                            light: '#9EECEA',
+                            dark: '#41A8A2'
+                        }
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-up': 'slideUp 0.6s ease-out',
+                        'pulse-slow': 'pulse 3s infinite'
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' }
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-image: url("assets/image.png");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        .glass-card {
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+    </style>
 </head>
-<body>
-    <div class="donation-container">
-        <div class="header-section">
-            <h1>Support our Alumni Association Portal</h1>
-            <p>Your generosity fuels the future. Thank you for making a difference! 🌟</p>
+<body class="min-h-screen flex items-center justify-center p-4">
+    <div class="container mx-auto max-w-6xl">
+        <div class="flex flex-col md:flex-row rounded-xl overflow-hidden shadow-2xl">
+            <!-- Left Panel: Donation Message -->
+            <div class="bg-gradient-to-br from-primary to-primary-light text-white p-8 md:p-12 md:w-1/2 flex flex-col justify-between animate-fade-in">
+                <div>
+                    <div class="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center mb-8">
+                        <i class="fas fa-hand-holding-heart text-3xl text-white"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold mb-3">Support our Alumni Association Portal</h2>
+                    <p class="text-lg opacity-80 mb-6">Your generosity fuels the future. Thank you for making a difference! 🌟</p>
+                    <div class="space-y-4 mb-8">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 bg-white bg-opacity-10 rounded-full flex items-center justify-center">
+                                <i class="fas fa-heart text-accent"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium">Impactful Donations</h4>
+                                <p class="text-sm opacity-70">Every contribution counts</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 bg-white bg-opacity-10 rounded-full flex items-center justify-center">
+                                <i class="fas fa-graduation-cap text-accent"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium">Support Education</h4>
+                                <p class="text-sm opacity-70">Fund scholarships and research</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 bg-white bg-opacity-10 rounded-full flex items-center justify-center">
+                                <i class="fas fa-chart-line text-accent"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium">Transparent Reporting</h4>
+                                <p class="text-sm opacity-70">Track the impact of your donation</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="pt-6 border-t border-white border-opacity-20">
+                    <p class="text-sm opacity-70">© 2025 Alumni Association. All rights reserved.</p>
+                </div>
+            </div>
+
+            <!-- Right Panel: Donation Form -->
+            <div class="glass-card p-8 md:p-12 md:w-1/2 animate-slide-up">
+                <div class="max-w-md mx-auto">
+                    <div class="text-center mb-8">
+                        <h3 class="text-2xl font-bold text-gray-800">Make a Donation</h3>
+                        <p class="text-gray-600 mt-2">Your contribution makes a difference</p>
+                    </div>
+                    <form id="donation-form" class="space-y-6">
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                            <div class="relative">
+                                <div class="input-icon text-gray-500">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <input type="text" id="name" placeholder="Enter your full name" required class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200" />
+                            </div>
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                            <div class="relative">
+                                <div class="input-icon text-gray-500">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                                <input type="email" id="email" placeholder="Enter your email address" required class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200" />
+                            </div>
+                        </div>
+                        <div>
+                            <label for="graduation-year" class="block text-sm font-medium text-gray-700 mb-1">Graduation Year</label>
+                            <div class="relative">
+                                <div class="input-icon text-gray-500">
+                                    <i class="fas fa-graduation-cap"></i>
+                                </div>
+                                <input type="number" id="graduation-year" placeholder="Enter your graduation year" required class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200" />
+                            </div>
+                        </div>
+                        <div>
+                            <label for="amount" class="block text-sm font-medium text-gray-700 mb-1">Donation Amount ($)</label>
+                            <div class="relative">
+                                <div class="input-icon text-gray-500">
+                                    <i class="fas fa-dollar-sign"></i>
+                                </div>
+                                <input type="number" id="amount" placeholder="Enter donation amount" required class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200" />
+                            </div>
+                        </div>
+                        <div>
+                            <label for="donation-purpose" class="block text-sm font-medium text-gray-700 mb-1">Donation Purpose</label>
+                            <select id="donation-purpose" required class="w-full py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200">
+                                <option value="">Select Donation Purpose</option>
+                                <option value="general">General Fund</option>
+                                <option value="scholarship">Scholarships</option>
+                                <option value="research">Research</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Leave a Message (optional)</label>
+                            <textarea id="message" placeholder="Your message here" class="w-full py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200"></textarea>
+                        </div>
+                        <div class="flex items-center">
+                            <input id="terms" type="checkbox" class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded cursor-pointer" required />
+                            <label for="terms" class="ml-2 block text-sm text-gray-700 cursor-pointer">
+                                I agree to the <a href="#" class="text-primary hover:text-primary-light">Terms & Conditions</a>
+                            </label>
+                        </div>
+                        <button type="button" class="w-full py-3 px-4 bg-gradient-to-r from-primary to-primary-light text-white font-medium rounded-lg hover:shadow-lg transition-all duration-200 flex justify-center items-center" onclick="payWithRazorpay()">
+                            <i class="fas fa-heart mr-2"></i> Donate Now
+                        </button>
+                    </form>
+                </div>
+            </div>
         </div>
-
-        <form id="donation-form" class="donation-form">
-            <div class="form-section personal-info">
-                <h2>Personal Information</h2>
-                <div class="form-group">
-                    <input type="text" id="name" placeholder="Full Name" required>
-                </div>
-                <div class="form-group">
-                    <input type="email" id="email" placeholder="Email Address" required>
-                </div>
-                <div class="form-group">
-                    <input type="number" id="graduation-year" placeholder="Graduation Year" required>
-                </div>
-            </div>
-
-            <div class="form-section donation-details">
-                <h2>Donation Details</h2>
-                <div class="form-group">
-                    <input type="number" id="amount" placeholder="Donation Amount ($)" required>
-                </div>
-                <div class="form-group">
-                    <select id="donation-purpose">
-                        <option value="">Select Donation Purpose</option>
-                        <option value="general">General Fund</option>
-                        <option value="scholarship">Scholarships</option>
-                        <option value="research">Research</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <textarea id="message" placeholder="Leave a message (optional)"></textarea>
-                </div>
-            </div>
-
-            <div class="form-section terms">
-                <input type="checkbox" id="terms" required>
-                <label for="terms">I agree to the <a href="#">Terms & Conditions</a></label>
-            </div>
-
-            <button type="button" class="donate-button" onclick="payWithRazorpay()">Donate Now</button>
-        </form>
     </div>
 
     <script>
+        function validateForm() {
+            let name = document.getElementById('name').value;
+            let email = document.getElementById('email').value;
+            let graduationYear = document.getElementById('graduation-year').value;
+            let amount = document.getElementById('amount').value;
+
+            // Email validation regex
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(email)) {
+                alert('Please enter a valid email address.');
+                return false;
+            }
+
+            // Graduation year validation
+            if (graduationYear.length !== 4 || isNaN(graduationYear)) {
+                alert('Please enter a valid 4-digit graduation year.');
+                return false;
+            }
+
+            // Check if amount is provided
+            if (!amount) {
+                alert('Please enter a donation amount.');
+                return false;
+            }
+
+            return true;
+        }
+
         function payWithRazorpay() {
+            if (!validateForm()) {
+                return;
+            }
+
             let name = document.getElementById('name').value;
             let email = document.getElementById('email').value;
             let amount = document.getElementById('amount').value * 100; // Convert to smallest currency unit
-            
-            if (!name || !email || !amount) {
-                alert('Please fill in all required fields.');
-                return;
-            }
 
             var options = {
                 "key": "YOUR_RAZORPAY_KEY", // Replace with your Razorpay key
