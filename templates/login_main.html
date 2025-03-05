@@ -1,466 +1,380 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Secure login portal for AlumniConnexa" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Login | AlumniConnexa</title>
-  <!-- Tailwind CSS via CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            primary: {
-              DEFAULT: '#053b50',
-              light: '#176B87',
-              dark: '#032A39'
-            },
-            accent: {
-              DEFAULT: '#64CCC5',
-              light: '#9EECEA',
-              dark: '#41A8A2'
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Form</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            DEFAULT: '#053b50',
+                            light: '#176B87',
+                            dark: '#032A39'
+                        },
+                        accent: {
+                            DEFAULT: '#64CCC5',
+                            light: '#9EECEA',
+                            dark: '#41A8A2'
+                        }
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-up': 'slideUp 0.6s ease-out',
+                        'pulse-slow': 'pulse 3s infinite'
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' }
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' }
+                        }
+                    }
+                }
             }
-          },
-          animation: {
-            'fade-in': 'fadeIn 0.5s ease-in-out',
-            'slide-up': 'slideUp 0.6s ease-out',
-            'pulse-slow': 'pulse 3s infinite'
-          },
-          keyframes: {
-            fadeIn: {
-              '0%': { opacity: '0' },
-              '100%': { opacity: '1' }
-            },
-            slideUp: {
-              '0%': { transform: 'translateY(20px)', opacity: '0' },
-              '100%': { transform: 'translateY(0)', opacity: '1' }
-            }
-          }
         }
-      }
-    }
-  </script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-    
-    body {
-      font-family: 'Poppins', sans-serif;
-      background-image: url("assets/image.png");
-      background-size: cover;
-      background-position: center;
-      background-attachment: fixed;
-    }
-    
-    .glass-card {
-      backdrop-filter: blur(16px) saturate(180%);
-      -webkit-backdrop-filter: blur(16px) saturate(180%);
-      background-color: rgba(255, 255, 255, 0.9);
-    }
-    
-    .welcome-toast {
-      animation: slideIn 0.5s ease-out, fadeOut 0.5s ease-in 5.5s forwards;
-      transform-origin: top center;
-    }
-    
-    @keyframes slideIn {
-      0% { transform: translateY(-100%); opacity: 0; }
-      100% { transform: translateY(0); opacity: 1; }
-    }
-    
-    @keyframes fadeOut {
-      0% { opacity: 1; }
-      100% { opacity: 0; visibility: hidden; }
-    }
-    
-    .input-icon {
-      position: absolute;
-      left: 1rem;
-      top: 50%;
-      transform: translateY(-50%);
-      z-index: 1;
-    }
-    .google-btn:hover {
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transform: translateY(-1px);
-}
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
-.google-btn:active {
-  transform: translateY(0);
-}
-  </style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-image: url("assets/image.png");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        .glass-card {
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+    </style>
 </head>
-
 <body class="min-h-screen flex items-center justify-center p-4">
-  <!-- Welcome Toast Notification -->
-  <div id="welcomeToast" class="fixed top-4 right-4 z-50 welcome-toast hidden">
-    <div class="glass-card border border-green-200 shadow-lg rounded-lg p-4 max-w-md flex items-center space-x-3">
-      <div class="bg-green-100 p-2 rounded-full">
-        <i class="fas fa-check text-green-500"></i>
-      </div>
-      <div>
-        <h4 class="font-semibold text-green-800">Welcome to AlumniConnexa</h4>
-        <p class="text-sm text-gray-600">Secure login portal is ready</p>
-      </div>
-      <button onclick="document.getElementById('welcomeToast').classList.add('hidden')" class="text-gray-500 hover:text-gray-700">
-        <i class="fas fa-times"></i>
-      </button>
-    </div>
-  </div>
-
-  <div class="container mx-auto max-w-6xl">
-    <div class="flex flex-col md:flex-row rounded-xl overflow-hidden shadow-2xl">
-      <!-- Left Panel: Welcome Message -->
-      <div class="bg-gradient-to-br from-primary to-primary-light text-white p-8 md:p-12 md:w-1/2 flex flex-col justify-between animate-fade-in">
-        <div>
-          <div class="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center mb-8">
-            <i class="fas fa-building-columns text-3xl text-white"></i>
-          </div>
-          <h2 class="text-3xl font-bold mb-3">Welcome Back</h2>
-          <p class="text-lg opacity-80 mb-6">Access AlumniConnexa securely.</p>
-          <div class="space-y-4 mb-8">
-            <div class="flex items-center space-x-3">
-              <div class="w-10 h-10 bg-white bg-opacity-10 rounded-full flex items-center justify-center">
-                <i class="fas fa-shield-alt text-accent"></i>
-              </div>
-              <div>
-                <h4 class="font-medium">Enhanced Security</h4>
-                <p class="text-sm opacity-70">Protected by multi-layer encryption</p>
-              </div>
-            </div>
-            <div class="flex items-center space-x-3">
-              <div class="w-10 h-10 bg-white bg-opacity-10 rounded-full flex items-center justify-center">
-                <i class="fas fa-tachometer-alt text-accent"></i>
-              </div>
-              <div>
-                <h4 class="font-medium">Powerful Dashboard</h4>
-                <p class="text-sm opacity-70">Complete administrative controls</p>
-              </div>
-            </div>
-            <div class="flex items-center space-x-3">
-              <div class="w-10 h-10 bg-white bg-opacity-10 rounded-full flex items-center justify-center">
-                <i class="fas fa-chart-line text-accent"></i>
-              </div>
-              <div>
-                <h4 class="font-medium">Real-time Analytics</h4>
-                <p class="text-sm opacity-70">Monitor performance instantly</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="pt-6 border-t border-white border-opacity-20">
-          <p class="text-sm opacity-70">© 2025 AlumniConnexa. All rights reserved.</p>
-        </div>
-      </div>
-      
-      <!-- Right Panel: Login Form -->
-      <div class="glass-card p-8 md:p-12 md:w-1/2 animate-slide-up">
-        <div class="max-w-md mx-auto">
-          <div class="text-center mb-8">
-            <h3 class="text-2xl font-bold text-gray-800">Alumni Login</h3>
-            <p class="text-gray-600 mt-2">Please enter your credentials</p>
-          </div>
-          
-          <!-- Alert message -->
-          <!-- <div id="errorAlert" class="hidden mb-6 bg-red-100 border-l-4 border-red-500 p-4 rounded-md">
-            <div class="flex items-center">
-              <div class="flex-shrink-0">
-                <i class="fas fa-exclamation-circle text-red-500"></i>
-              </div>
-              <div class="ml-3">
-                <p id="errorMessage" class="text-sm text-red-700"></p>
-              </div>
-            </div>
-          </div>
-           -->
-          <form id="loginForm" class="space-y-6">
-            <div>
-              <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email address</label>
-              <div class="relative">
-                <div class="input-icon text-gray-500">
-                  <i class="fas fa-envelope"></i>
+    <div class="container mx-auto max-w-6xl">
+        <div class="flex flex-col md:flex-row rounded-xl overflow-hidden shadow-2xl">
+            <!-- Left Panel: Welcome Message -->
+            <div class="bg-gradient-to-br from-primary to-primary-light text-white p-8 md:p-12 md:w-1/2 flex flex-col justify-between animate-fade-in">
+                <div>
+                    <div class="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center mb-8">
+                        <i class="fas fa-building-columns text-3xl text-white"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold mb-3">Welcome Back</h2>
+                    <p class="text-lg opacity-80 mb-6">Access AlumniConnexa securely.</p>
+                    <div class="space-y-4 mb-8">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 bg-white bg-opacity-10 rounded-full flex items-center justify-center">
+                                <i class="fas fa-shield-alt text-accent"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium">Enhanced Security</h4>
+                                <p class="text-sm opacity-70">Protected by multi-layer encryption</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 bg-white bg-opacity-10 rounded-full flex items-center justify-center">
+                                <i class="fas fa-tachometer-alt text-accent"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium">Powerful Dashboard</h4>
+                                <p class="text-sm opacity-70">Complete administrative controls</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 bg-white bg-opacity-10 rounded-full flex items-center justify-center">
+                                <i class="fas fa-chart-line text-accent"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium">Real-time Analytics</h4>
+                                <p class="text-sm opacity-70">Monitor performance instantly</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <input 
-                  type="email" 
-                  id="email" 
-                  autocomplete="username"
-                  required
-                  placeholder="Enter your email" 
-                  class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200" 
-                />
-              </div>
-            </div>
-            
-            <div>
-              <div class="flex items-center justify-between mb-1">
-                <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-                <a href="#" id="forgotPassword" class="text-xs text-primary hover:text-primary-light transition-colors duration-200">
-                  Forgot password?
-                </a>
-              </div>
-              <div class="relative">
-                <div class="input-icon text-gray-500">
-                  <i class="fas fa-lock"></i>
+                <div class="pt-6 border-t border-white border-opacity-20">
+                    <p class="text-sm opacity-70">© 2025 AlumniConnexa. All rights reserved.</p>
                 </div>
-                <input 
-                  type="password" 
-                  id="password" 
-                  autocomplete="current-password"
-                  required
-                  placeholder="Enter your password" 
-                  class="w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200" 
-                />
-                <button 
-                  type="button" 
-                  id="togglePassword" 
-                  class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
-                >
-                  <i class="fas fa-eye"></i>
-                </button>
-              </div>
             </div>
-            
-            <div class="flex items-center justify-between">
-              <div class="flex items-center">
-                <input 
-                  id="rememberMe" 
-                  type="checkbox" 
-                  class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded cursor-pointer" 
-                />
-                <label for="rememberMe" class="ml-2 block text-sm text-gray-700 cursor-pointer">
-                  Remember me
-                </label>
-              </div>
-              <a href="#" id="needHelp" class="text-xs text-primary hover:text-primary-light transition-colors duration-200">
-                Need help?
-              </a>
+
+            <!-- Right Panel: Login Form -->
+            <div class="glass-card p-8 md:p-12 md:w-1/2 animate-slide-up">
+                <div class="max-w-md mx-auto">
+                    <div class="text-center mb-8">
+                        <h3 class="text-2xl font-bold text-gray-800">Alumni Login</h3>
+                        <p class="text-gray-600 mt-2">Please enter your credentials</p>
+                    </div>
+                    <form id="loginForm" class="space-y-6">
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email address</label>
+                            <div class="relative">
+                                <div class="input-icon text-gray-500">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                                <input
+                                    type="email"
+                                    id="email"
+                                    autocomplete="username"
+                                    required
+                                    placeholder="Enter your email"
+                                    class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200"
+                                />
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex items-center justify-between mb-1">
+                                <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                                <a href="#" id="forgotPassword" class="text-xs text-primary hover:text-primary-light transition-colors duration-200">
+                                    Forgot password?
+                                </a>
+                            </div>
+                            <div class="relative">
+                                <div class="input-icon text-gray-500">
+                                    <i class="fas fa-lock"></i>
+                                </div>
+                                <input
+                                    type="password"
+                                    id="password"
+                                    autocomplete="current-password"
+                                    required
+                                    placeholder="Enter your password"
+                                    class="w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200"
+                                />
+                                <button
+                                    type="button"
+                                    id="togglePassword"
+                                    class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                                >
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <input
+                                    id="rememberMe"
+                                    type="checkbox"
+                                    class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded cursor-pointer"
+                                />
+                                <label for="rememberMe" class="ml-2 block text-sm text-gray-700 cursor-pointer">
+                                    Remember me
+                                </label>
+                            </div>
+                            <a href="#" id="needHelp" class="text-xs text-primary hover:text-primary-light transition-colors duration-200">
+                                Need help?
+                            </a>
+                        </div>
+                        <button
+                            type="submit"
+                            class="w-full py-3 px-4 bg-gradient-to-r from-primary to-primary-light text-white font-medium rounded-lg hover:shadow-lg transition-all duration-200 flex justify-center items-center"
+                        >
+                            <span id="buttonText"><i class="fas fa-sign-in-alt mr-2"></i>Login</span>
+                            <span id="loading-spinner" class="hidden">
+                                <svg class="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                                <span>Logging in...</span>
+                            </span>
+                        </button>
+                        <button type="button"
+                            id="googleSignIn"
+                            class="w-full py-3 px-4 bg-white border border-gray-300 text-gray-700 font-medium rounded-lg hover:shadow-lg transition-all duration-200 flex justify-center items-center space-x-2"
+                            onclick="handleGoogleSignIn()"
+                        >
+                            <img src="https://www.svgrepo.com/show/355037/google.svg" class="w-5 h-5" alt="Google logo">
+                            <span>Sign in with Google</span>
+                        </button>
+                    </form>
+                    <div class="mt-8 text-center">
+                        <div class="flex items-center justify-center">
+                            <i class="fas fa-shield-alt text-primary-light mr-2"></i>
+                            <span class="text-xs text-gray-600">Secure login with 256-bit encryption</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-            
-            <button 
-              type="submit" 
-              class="w-full py-3 px-4 bg-gradient-to-r from-primary to-primary-light text-white font-medium rounded-lg hover:shadow-lg transition-all duration-200 flex justify-center items-center"
-            >
-              <span id="buttonText"><i class="fas fa-sign-in-alt mr-2"></i>Login</span>
-              <span id="loading-spinner" class="hidden">
-                <svg class="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-                <span>Logging in...</span>
-              </span>
-            </button>
-            <button type="button" 
-  id="googleSignIn"
-  class="w-full py-3 px-4 bg-white border border-gray-300 text-gray-700 font-medium rounded-lg hover:shadow-lg transition-all duration-200 flex justify-center items-center space-x-2"
-  onclick="handleGoogleSignIn()"
->
-  <img src="https://www.svgrepo.com/show/355037/google.svg" class="w-5 h-5" alt="Google logo">
-  <span>Sign in with Google</span>
-</button>
-          </form>
-          
-          <div class="mt-8 text-center">
-            <div class="flex items-center justify-center">
-              <i class="fas fa-shield-alt text-primary-light mr-2"></i>
-              <span class="text-xs text-gray-600">Secure login with 256-bit encryption</span>
-            </div>
-          </div>
         </div>
-      </div>
     </div>
-  </div>
 
-  <!-- Audio element for welcome sound -->
-  <audio id="welcomeSound" preload="auto" src="https://assets.mixkit.co/sfx/preview/mixkit-software-interface-start-2574.mp3"></audio>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script>
+        function handleCredentialResponse(response) {
+            console.log("Google Token: ", response.credential);
 
-  
-    
-  <script>
-    // Function to show error messages
-    // function showError(message) {
-    //   const errorAlert = document.getElementById("errorAlert");
-    //   const errorMessage = document.getElementById("errorMessage");
-    //   errorMessage.textContent = message;
-    //   errorAlert.classList.remove("hidden");
-      
-    //   // Clear after 5 seconds
-    //   setTimeout(() => {
-    //     errorAlert.classList.add("hidden");
-    //   }, 5000);
-    // }
-    
-    // Function to toggle password visibility
-    function setupPasswordToggle() {
-      const togglePassword = document.getElementById("togglePassword");
-      const passwordInput = document.getElementById("password");
-      
-      togglePassword.addEventListener("click", function() {
-        const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
-        passwordInput.setAttribute("type", type);
-        
-        // Toggle icon
-        const icon = this.querySelector("i");
-        icon.classList.toggle("fa-eye");
-        icon.classList.toggle("fa-eye-slash");
-      });
-    }
-    
-    // Function to handle login button state
-    function setButtonLoading(isLoading) {
-      const buttonText = document.getElementById("buttonText");
-      const loadingSpinner = document.getElementById("loading-spinner");
-      const submitButton = document.querySelector('button[type="submit"]');
-      
-      if (isLoading) {
-        buttonText.classList.add("hidden");
-        loadingSpinner.classList.remove("hidden");
-        submitButton.disabled = true;
-      } else {
-        buttonText.classList.remove("hidden");
-        loadingSpinner.classList.add("hidden");
-        submitButton.disabled = false;
-      }
-    }
-    
-    // Implement "Remember me" functionality
-    function setupRememberMe() {
-      const rememberMeCheckbox = document.getElementById("rememberMe");
-      
-      // Check if there's a saved preference
-      const savedRememberMe = localStorage.getItem("rememberMe") === "true";
-      rememberMeCheckbox.checked = savedRememberMe;
-      
-      // If there's a saved email and the checkbox was checked, fill the email field
-      if (savedRememberMe && localStorage.getItem("userEmail")) {
-        document.getElementById("email").value = localStorage.getItem("userEmail");
-      }
-    }
-    
-    // Add "Forgot password" functionality
-    function setupForgotPassword() {
-      const forgotPasswordLink = document.getElementById("forgotPassword");
-      
-      forgotPasswordLink.addEventListener("click", function(e) {
-        e.preventDefault();
-        // You should implement your password reset flow here
-        alert("Please contact your administrator to reset your password.");
-      });
-    }
-    
-    // Add "Need help" functionality
-    function setupHelpLink() {
-      const needHelpLink = document.getElementById("needHelp");
-      
-      needHelpLink.addEventListener("click", function(e) {
-        e.preventDefault();
-        alert("For assistance, please contact IT support ");
-      });
-    }
-    
-    // Show welcome message with sound
-    function showWelcomeMessage() {
-      const welcomeToast = document.getElementById("welcomeToast");
-      const welcomeSound = document.getElementById("welcomeSound");
-      
-      // Show toast
-      welcomeToast.classList.remove("hidden");
-      
-      // Play welcome sound
-      try {
-        welcomeSound.play().catch(error => {
-          console.log("Audio play prevented by browser policy. User interaction needed first.");
-        });
-      } catch (error) {
-        console.error("Error playing audio:", error);
-      }
-      
-      // Hide toast after 6 seconds
-      setTimeout(() => {
-        welcomeToast.classList.add("hidden");
-      }, 6000);
-    }
+            // Decode the JWT token to get user details
+            const jwt = response.credential;
+            const userData = JSON.parse(atob(jwt.split('.')[1]));
 
-    document.addEventListener("DOMContentLoaded", function () {
-      const loginForm = document.getElementById("loginForm");
-      const rememberMeCheckbox = document.getElementById("rememberMe");
-      
-      // Setup UI helpers
-      setupPasswordToggle();
-      setupRememberMe();
-      setupForgotPassword();
-      setupHelpLink();
-      
-      // Show welcome message
-      showWelcomeMessage();
-      
-      // Setup interaction to play sound
-      document.addEventListener("click", function() {
-        const welcomeSound = document.getElementById("welcomeSound");
-        welcomeSound.play().catch(e => {
-          // Already played or other error, ignore
-        });
-      }, { once: true });
+            // Display user info
+            alert("Welcome, " + userData.name);
+            console.log("User Info: ", userData);
 
-      loginForm.addEventListener("submit", async function (e) {
-        e.preventDefault();
-        
-        try {
-          const email = document.getElementById("email").value.trim();
-          const password = document.getElementById("password").value;
-          
-          // Validate inputs
-          if (!email || !password) {
-            throw new Error("Please enter both email and password.");
-          }
-          
-          // Show loading state
-          setButtonLoading(true);
-          
-          // Save remember me preference
-          localStorage.setItem("rememberMe", rememberMeCheckbox.checked);
-          if (rememberMeCheckbox.checked) {
-            localStorage.setItem("userEmail", email);
-            // Set persistence to local (survives browser restart)
-            await setPersistence(auth, browserLocalPersistence);
-          } else {
-            localStorage.removeItem("userEmail");
-            // Set persistence to session (cleared when browser is closed)
-            await setPersistence(auth, browserSessionPersistence);
-          }
-          
-          // Attempt to sign in
-          const userCredential = await signInWithEmailAndPassword(auth, email, password);
-          const user = userCredential.user;
-          
-          
-          // Successful login - redirect to dashboard
-          console.log("Authentication successful, redirecting...");
-          window.location.href = "homepage.html";
-          
-        } catch (error) {
-          console.error("Login error:", error);
-          
-          // Show user-friendly error messages
-          let errorMessage = "Login failed. Please try again.";
-          
-          if (error.code === "auth/wrong-password" || error.code === "auth/user-not-found") {
-            errorMessage = "Invalid email or password. Please try again.";
-          } else if (error.code === "auth/too-many-requests") {
-            errorMessage = "Too many failed login attempts. Please try again later.";
-          } else if (error.code === "auth/network-request-failed") {
-            errorMessage = "Network error. Please check your internet connection.";
-          } else if (error.message) {
-            errorMessage = error.message;
-          }
-          
-          showError(errorMessage);
-          setButtonLoading(false);
+            // Store user info in localStorage
+            localStorage.setItem("user", JSON.stringify(userData));
+
+            // Update UI to show user details
+            document.body.innerHTML = `
+                <h2>Welcome, ${userData.name}!</h2>
+                <img src="${userData.picture}" alt="Profile Picture">
+            `;
         }
-      });
-    });
-  </script>
+
+        window.onload = function () {
+            google.accounts.id.initialize({
+                client_id: "113078392706-5p1kkul4u7m887uslprndqcagbfj678e.apps.googleusercontent.com", // Replace with your actual Client ID
+                callback: handleCredentialResponse
+            });
+
+            google.accounts.id.renderButton(
+                document.getElementById("googleSignIn"),
+                { theme: "outline", size: "large" }
+            );
+
+            document.getElementById("googleSignIn").addEventListener("click", function () {
+                google.accounts.id.prompt(); // Show the Google login popup
+            });
+        };
+
+        // Function to toggle password visibility
+        function setupPasswordToggle() {
+            const togglePassword = document.getElementById("togglePassword");
+            const passwordInput = document.getElementById("password");
+
+            togglePassword.addEventListener("click", function() {
+                const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+                passwordInput.setAttribute("type", type);
+
+                // Toggle icon
+                const icon = this.querySelector("i");
+                icon.classList.toggle("fa-eye");
+                icon.classList.toggle("fa-eye-slash");
+            });
+        }
+
+        // Function to handle login button state
+        function setButtonLoading(isLoading) {
+            const buttonText = document.getElementById("buttonText");
+            const loadingSpinner = document.getElementById("loading-spinner");
+            const submitButton = document.querySelector('button[type="submit"]');
+
+            if (isLoading) {
+                buttonText.classList.add("hidden");
+                loadingSpinner.classList.remove("hidden");
+                submitButton.disabled = true;
+            } else {
+                buttonText.classList.remove("hidden");
+                loadingSpinner.classList.add("hidden");
+                submitButton.disabled = false;
+            }
+        }
+
+        // Implement "Remember me" functionality
+        function setupRememberMe() {
+            const rememberMeCheckbox = document.getElementById("rememberMe");
+
+            // Check if there's a saved preference
+            const savedRememberMe = localStorage.getItem("rememberMe") === "true";
+            rememberMeCheckbox.checked = savedRememberMe;
+
+            // If there's a saved email and the checkbox was checked, fill the email field
+            if (savedRememberMe && localStorage.getItem("userEmail")) {
+                document.getElementById("email").value = localStorage.getItem("userEmail");
+            }
+        }
+
+        // Add "Forgot password" functionality
+        function setupForgotPassword() {
+            const forgotPasswordLink = document.getElementById("forgotPassword");
+
+            forgotPasswordLink.addEventListener("click", function(e) {
+                e.preventDefault();
+                // Implement your password reset flow here
+                alert("Please contact your administrator to reset your password.");
+            });
+        }
+
+        // Add "Need help" functionality
+        function setupHelpLink() {
+            const needHelpLink = document.getElementById("needHelp");
+
+            needHelpLink.addEventListener("click", function(e) {
+                e.preventDefault();
+                alert("For assistance, please contact IT support.");
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const loginForm = document.getElementById("loginForm");
+            const rememberMeCheckbox = document.getElementById("rememberMe");
+
+            // Setup UI helpers
+            setupPasswordToggle();
+            setupRememberMe();
+            setupForgotPassword();
+            setupHelpLink();
+
+            loginForm.addEventListener("submit", async function (e) {
+                e.preventDefault();
+
+                try {
+                    const email = document.getElementById("email").value.trim();
+                    const password = document.getElementById("password").value;
+
+                    // Validate inputs
+                    if (!email || !password) {
+                        throw new Error("Please enter both email and password.");
+                    }
+
+                    // Show loading state
+                    setButtonLoading(true);
+
+                    // Save remember me preference
+                    localStorage.setItem("rememberMe", rememberMeCheckbox.checked);
+                    if (rememberMeCheckbox.checked) {
+                        localStorage.setItem("userEmail", email);
+                    } else {
+                        localStorage.removeItem("userEmail");
+                    }
+
+                    // Simulate login process
+                    setTimeout(() => {
+                        // Successful login - redirect to dashboard
+                        console.log("Authentication successful, redirecting...");
+                        window.location.href = "homepage.html";
+                    }, 2000);
+
+                } catch (error) {
+                    console.error("Login error:", error);
+
+                    // Show user-friendly error messages
+                    let errorMessage = "Login failed. Please try again.";
+
+                    if (error.message) {
+                        errorMessage = error.message;
+                    }
+
+                    alert(errorMessage);
+                    setButtonLoading(false);
+                }
+            });
+        });
+    </script>
 </body>
 </html>
