@@ -15,58 +15,6 @@
             padding: 0;
             color: black;
         }
-        /* .navbar {
-            position: fixed;
-            width: 100%;
-            height: 16%;
-            top: 0;
-            left: 0;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(10px);
-            padding: 18px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 1000;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease-in-out;
-        }
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-        .nav-links a, .nav-links button {
-            text-decoration: none;
-            color: white;
-            font-weight: 500;
-            font-size: 17px;
-            padding: 12px 18px;
-            border-radius: 6px;
-            transition: all 0.3s;
-            position: relative;
-        }
-        .nav-links a:hover, .nav-links button:hover {
-            background: rgba(255, 255, 255, 0.15);
-            transform: scale(1.05);
-        }
-        .nav-links button {
-            background: linear-gradient(135deg, #ff8000, #ff5500);
-            color: white;
-            font-weight: bold;
-            font-size: 17px;
-            padding: 12px 20px;
-            border-radius: 8px;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s ease-in-out;
-            box-shadow: 0 4px 10px rgba(255, 85, 0, 0.4);
-        }
-        .nav-links button:hover {
-            background: linear-gradient(135deg, #ff5500, #ff8000);
-            transform: scale(1.1);
-            box-shadow: 0 6px 15px rgba(255, 85, 0, 0.6);
-        } */
         .job-board-container {
             padding: 100px 40px 40px;
         }
@@ -100,7 +48,6 @@
             margin-bottom: 20px;
             transition: transform 0.3s, box-shadow 0.3s;
         }
-        
         .job-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
@@ -180,7 +127,6 @@
             box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
         }
         .company-logo img {
-        
             width: 35%;
             height: 15%;
         }
@@ -203,46 +149,43 @@
     </style>
 </head>
 <body>
-    <!-- <div class="navbar">
-        <div class="nav-links">
-            <a href="#">Home</a>
-            <a href="#">About</a>
-            <a href="#">Jobs</a>
-        </div>
-        <button class="btn-primary">Post a Job</button>
-    </div> -->
     <div class="job-board-container">
         <h1 class="text-4xl font-bold text-center mb-8 text-gray-800">Job Board</h1>
         <div class="container mx-auto p-4">
             <!-- Search Section -->
             <div class="bg-white p-6 rounded-lg shadow-md flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
                 <div class="flex items-center w-full md:w-auto">
-                    <input class="w-full md:w-64 p-3 border rounded-l-lg focus:outline-none" placeholder="Search for jobs" type="text"/>
-                    <button class="bg-blue-600 text-white px-6 py-3 rounded-r-lg">
+                    <input id="searchInput" class="w-full md:w-64 p-3 border rounded-l-lg focus:outline-none" placeholder="Search for jobs" type="text"/>
+                    <button onclick="filterJobs()" class="bg-blue-600 text-white px-6 py-3 rounded-r-lg">
                         Search
                     </button>
                 </div>
                 <div class="flex space-x-4 w-full md:w-auto">
                     <div class="relative">
-                        <select class="w-full md:w-40 p-3 border rounded-lg focus:outline-none">
-                            <option>Location</option>
-                            <option value="location1">Location 1</option>
-                            <option value="location2">Location 2</option>
+                        <select id="locationSelect" class="w-full md:w-40 p-3 border rounded-lg focus:outline-none">
+                            <option value="">Location</option>
+                            <option value="remote">Remote</option>
+                            <option value="new york">New York, NY</option>
+                            <option value="miami">Miami, FL</option>
+                            <option value="austin">Austin, TX</option>
                         </select>
                     </div>
                     <div class="relative">
-                        <select class="w-full md:w-40 p-3 border rounded-lg focus:outline-none">
-                            <option>Job Level</option>
+                        <select id="levelSelect" class="w-full md:w-40 p-3 border rounded-lg focus:outline-none">
+                            <option value="">Job Level</option>
                             <option value="entry">Entry Level</option>
                             <option value="mid">Mid Level</option>
                             <option value="senior">Senior Level</option>
+                            <option value="executive">Executive</option>
                         </select>
                     </div>
                     <div class="relative">
-                        <select class="w-full md:w-40 p-3 border rounded-lg focus:outline-none">
-                            <option>Department</option>
-                            <option value="department1">Department 1</option>
-                            <option value="department2">Department 2</option>
+                        <select id="departmentSelect" class="w-full md:w-40 p-3 border rounded-lg focus:outline-none">
+                            <option value="">Department</option>
+                            <option value="development">Development</option>
+                            <option value="marketing">Marketing</option>
+                            <option value="design">Design</option>
+                            <option value="business">Business</option>
                         </select>
                     </div>
                 </div>
@@ -251,9 +194,9 @@
         <!-- Featured Jobs Section -->
         <div class="mt-12">
             <h2 class="text-2xl font-bold">Featured Jobs</h2>
-            <div class="mt-6 space-y-4">
+            <div id="featuredJobs" class="mt-6 space-y-4">
                 <!-- Job 1 -->
-                <div class="bg-white p-4 rounded-lg shadow-md flex items-center justify-between">
+                <div class="job-card bg-white p-4 rounded-lg shadow-md flex items-center justify-between">
                     <div class="flex items-center space-x-4">
                         <img alt="Company logo" class="w-12 h-12" height="55" src="/src/images/cisco1.png" width="55"/>
                         <div>
@@ -280,7 +223,7 @@
                     </div>
                 </div>
                 <!-- Job 2 -->
-                <div class="bg-white p-4 rounded-lg shadow-md flex items-center justify-between">
+                <div class="job-card bg-white p-4 rounded-lg shadow-md flex items-center justify-between">
                     <div class="flex items-center space-x-4">
                         <img alt="Company logo" class="w-12 h-12" height="50" src="/src/images/company-1.png" width="50"/>
                         <div>
@@ -307,7 +250,6 @@
                     </div>
                 </div>
             </div>
-            
         </div>
         <!-- Latest Jobs Section -->
         <div class="mt-12">
@@ -315,9 +257,9 @@
             <div class="flex flex-col lg:flex-row">
                 <!-- Left Column -->
                 <div class="w-full lg:w-2/3">
-                    <div class="space-y-4">
+                    <div id="latestJobs" class="space-y-4">
                         <!-- Job Item -->
-                        <div class="bg-white p-4 rounded-lg shadow flex items-center justify-between">
+                        <div class="job-card bg-white p-4 rounded-lg shadow flex items-center justify-between">
                             <div class="flex items-center">
                                 <img alt="Webflow logo" class="w-12 h-12 rounded-full mr-4" height="50" src="/src/images/company-2.png" width="50"/>
                                 <div>
@@ -344,7 +286,7 @@
                             </div>
                         </div>
                         <!-- Job Item -->
-                        <div class="bg-white p-4 rounded-lg shadow flex items-center justify-between">
+                        <div class="job-card bg-white p-4 rounded-lg shadow flex items-center justify-between">
                             <div class="flex items-center">
                                 <img alt="Google logo" class="w-12 h-12 rounded-full mr-4" height="50" src="/src/images/company-3.png" width="50"/>
                                 <div>
@@ -371,7 +313,7 @@
                             </div>
                         </div>
                         <!-- Job Item -->
-                        <div class="bg-white p-4 rounded-lg shadow flex items-center justify-between">
+                        <div class="job-card bg-white p-4 rounded-lg shadow flex items-center justify-between">
                             <div class="flex items-center">
                                 <img alt="Youtube logo" class="w-12 h-12 rounded-full mr-4" height="50" src="/src/images/company-4.png" width="50"/>
                                 <div>
@@ -398,7 +340,7 @@
                             </div>
                         </div>
                         <!-- Job Item -->
-                        <div class="bg-white p-4 rounded-lg shadow flex items-center justify-between">
+                        <div class="job-card bg-white p-4 rounded-lg shadow flex items-center justify-between">
                             <div class="flex items-center">
                                 <img alt="Youtube logo" class="w-12 h-12 rounded-full mr-4" height="50" src="/src/images/company-5.png" width="50"/>
                                 <div>
@@ -425,7 +367,7 @@
                             </div>
                         </div>
                         <!-- Job Item -->
-                        <div class="bg-white p-4 rounded-lg shadow flex items-center justify-between">
+                        <div class="job-card bg-white p-4 rounded-lg shadow flex items-center justify-between">
                             <div class="flex items-center">
                                 <img alt="Facebook logo" class="w-12 h-12 rounded-full mr-4" height="50" src="/src/images/company-6.png" width="50"/>
                                 <div>
@@ -452,7 +394,7 @@
                             </div>
                         </div>
                         <!-- Job Item -->
-                        <div class="bg-white p-4 rounded-lg shadow flex items-center justify-between">
+                        <div class="job-card bg-white p-4 rounded-lg shadow flex items-center justify-between">
                             <div class="flex items-center">
                                 <img alt="Webflow logo" class="w-12 h-12 rounded-full mr-4" height="50" src="/src/images/company-7.png" width="50"/>
                                 <div>
@@ -520,7 +462,6 @@
                 </div>
             </div>
         </div>
-        
         <!-- Internship Section -->
 <div class="mt-12">
    <center> <h2 class="text-2xl font-bold mb-6">Internships</h2></center>
@@ -528,11 +469,11 @@
         <!-- Left Column -->
         <div class="w-full lg:w-1/2 space-y-4">
             <!-- Internship Item 1 -->
-            <div class="bg-white p-4 rounded-lg shadow flex items-center justify-between">
+            <div class="job-card bg-white p-4 rounded-lg shadow flex items-center justify-between">
                 <div class="flex items-center">
                     <img alt="Company logo" class="w-12 h-12 rounded-full mr-4" height="50" src="/src/images/company-8.png" width="50"/>
                     <div>
-                        <h2 class="text-lg font-semibold">Software Engineering Intern</h2>
+                        <h2 class="text-lg font-semibold">Cybersec Intern</h2>
                         <a class="text-blue-500" href="#">
                             TechCorp
                             <i class="fas fa-external-link-alt"></i>
@@ -555,7 +496,7 @@
                 </div>
             </div>
             <!-- Internship Item 2 -->
-            <div class="bg-white p-4 rounded-lg shadow flex items-center justify-between">
+            <div class="job-card bg-white p-4 rounded-lg shadow flex items-center justify-between">
                 <div class="flex items-center">
                     <img alt="Company logo" class="w-12 h-12 rounded-full mr-4" height="50" src="/src/images/company-6.png" width="50"/>
                     <div>
@@ -582,11 +523,10 @@
                 </div>
             </div>
         </div>
-        
-        <!-- Right Column -->
+         <!-- Right Column -->
         <div class="w-full lg:w-1/2 space-y-4">
             <!-- Internship Item 3 -->
-            <div class="bg-white p-4 rounded-lg shadow flex items-center justify-between">
+            <div class="job-card bg-white p-4 rounded-lg shadow flex items-center justify-between">
                 <div class="flex items-center">
                     <img alt="Company logo" class="w-12 h-12 rounded-full mr-4" height="50" src="/src/images/company-7.png" width="50"/>
                     <div>
@@ -613,7 +553,7 @@
                 </div>
             </div>
             <!-- Internship Item 4 -->
-            <div class="bg-white p-4 rounded-lg shadow flex items-center justify-between">
+            <div class="job-card bg-white p-4 rounded-lg shadow flex items-center justify-between">
                 <div class="flex items-center">
                     <img alt="Company logo" class="w-12 h-12 rounded-full mr-4" height="50" src="/src/images/company-5.png" width="50"/>
                     <div>
@@ -642,7 +582,6 @@
         </div>
     </div>
 </div>
-
         <!-- Top Company Hiring Section -->
         <div class="top-company-section">
             <h2 class="top-company-heading">Top Company Hiring</h2>
@@ -821,5 +760,33 @@
             </div>
         </div>
     </footer>
+    <script>
+        function filterJobs() {
+            const searchInput = document.getElementById('searchInput').value.toLowerCase();
+            const locationSelect = document.getElementById('locationSelect').value.toLowerCase();
+            const levelSelect = document.getElementById('levelSelect').value.toLowerCase();
+            const departmentSelect = document.getElementById('departmentSelect').value.toLowerCase();
+
+            const jobCards = document.querySelectorAll('.job-card');
+
+            jobCards.forEach(card => {
+                const title = card.querySelector('h2, h3').textContent.toLowerCase();
+                const location = card.querySelectorAll('.text-gray-500')[0].nextElementSibling.textContent.toLowerCase();
+                const level = card.querySelectorAll('.text-gray-500')[1].nextElementSibling.textContent.toLowerCase();
+                const department = card.querySelectorAll('.text-gray-500')[2].nextElementSibling.textContent.toLowerCase();
+
+                const matchesSearch = title.includes(searchInput);
+                const matchesLocation = location.includes(locationSelect) || locationSelect === '';
+                const matchesLevel = level.includes(levelSelect) || levelSelect === '';
+                const matchesDepartment = department.includes(departmentSelect) || departmentSelect === '';
+
+                if (matchesSearch && matchesLocation && matchesLevel && matchesDepartment) {
+                    card.style.display = '';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    </script>
 </body>
 </html>
