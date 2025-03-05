@@ -45,7 +45,7 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-    
+
     body {
       font-family: 'Poppins', sans-serif;
       background-image: url("assets/image.png");
@@ -53,13 +53,13 @@
       background-position: center;
       background-attachment: fixed;
     }
-    
+
     .glass-card {
       backdrop-filter: blur(16px) saturate(180%);
       -webkit-backdrop-filter: blur(16px) saturate(180%);
       background-color: rgba(255, 255, 255, 0.9);
     }
-    
+
     .input-icon {
       position: absolute;
       left: 1rem;
@@ -106,7 +106,7 @@
             <p class="text-gray-600 mt-2">Join our alumni community</p>
           </div>
 
-          <form class="space-y-4">
+          <form id="registrationForm" class="space-y-4">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
@@ -114,7 +114,7 @@
                   <div class="input-icon text-gray-500">
                     <i class="fas fa-user"></i>
                   </div>
-                  <input type="text" placeholder="Enter full name" required 
+                  <input type="text" placeholder="Enter full name" required
                     class="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
                 </div>
               </div>
@@ -125,7 +125,7 @@
                   <div class="input-icon text-gray-500">
                     <i class="fas fa-envelope"></i>
                   </div>
-                  <input type="email" placeholder="Enter email" required 
+                  <input type="email" id="email" placeholder="Enter email" required
                     class="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
                 </div>
               </div>
@@ -138,7 +138,7 @@
                   <div class="input-icon text-gray-500">
                     <i class="fas fa-lock"></i>
                   </div>
-                  <input type="password" placeholder="Create password" required 
+                  <input type="password" id="password" placeholder="Create password" required
                     class="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
                 </div>
               </div>
@@ -149,7 +149,7 @@
                   <div class="input-icon text-gray-500">
                     <i class="fas fa-lock"></i>
                   </div>
-                  <input type="password" placeholder="Confirm password" required 
+                  <input type="password" id="confirmPassword" placeholder="Confirm password" required
                     class="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
                 </div>
               </div>
@@ -161,9 +161,9 @@
                 <div class="input-icon text-gray-500">
                   <i class="fas fa-map-marker-alt"></i>
                 </div>
-                <input type="text" id="streetAddress" placeholder="Enter address" required 
+                <input type="text" id="streetAddress" placeholder="Enter address" required
                   class="w-full pl-10 pr-16 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
-                <button type="button" id="autoLocationButton" 
+                <button type="button" id="autoLocationButton"
                   class="absolute right-2 top-1/2 -translate-y-1/2 bg-primary text-white p-2 rounded-lg hover:bg-primary-light transition-colors">
                   <i class="fas fa-location-arrow"></i>
                 </button>
@@ -173,7 +173,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Role</label>
-                <select id="roleSelect" onchange="toggleFields()" 
+                <select id="roleSelect" onchange="toggleFields()"
                   class="w-full pl-3 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
                   <option hidden>Select Role</option>
                   <option value="alumni">Alumni</option>
@@ -201,7 +201,7 @@
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label class="block text-sm font-medium text-gray-700 mb-1">Passing Year</label>
-                  <input type="number" placeholder="Graduation year" 
+                  <input type="number" placeholder="Graduation year"
                     class="w-full pl-3 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
                 </div>
                 <div>
@@ -239,7 +239,7 @@
               </div>
             </div>
 
-            <button type="submit" 
+            <button type="submit"
               class="w-full py-3 px-4 bg-gradient-to-r from-primary to-primary-light text-white font-medium rounded-lg hover:shadow-lg transition-all duration-200">
               <i class="fas fa-user-plus mr-2"></i>Create Account
             </button>
@@ -247,7 +247,7 @@
 
           <div class="mt-6 text-center">
             <p class="text-sm text-gray-600">
-              Already have an account? 
+              Already have an account?
               <a href="#" class="text-primary hover:text-primary-light font-medium">Sign in here</a>
             </p>
           </div>
@@ -293,6 +293,32 @@
       document.getElementById('alumniFields').classList.toggle('hidden', role !== 'alumni');
       document.getElementById('studentFields').classList.toggle('hidden', role !== 'student');
     }
+
+    // Form Validation
+    document.getElementById('registrationForm').addEventListener('submit', function(event) {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailPattern.test(email)) {
+        alert('Please enter a valid email address.');
+        event.preventDefault();
+        return;
+      }
+
+      if (password.length < 8) {
+        alert('Password must be at least 8 characters long.');
+        event.preventDefault();
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        alert('Passwords do not match.');
+        event.preventDefault();
+        return;
+      }
+    });
   </script>
 </body>
 </html>
