@@ -47,7 +47,7 @@
             text-decoration: none;
             color: white;
             font-weight: 500;
-            font-size: 13px;
+            font-size: 17px;
             padding: 12px 18px;
             border-radius: 6px;
             transition: all 0.3s;
@@ -61,7 +61,7 @@
             background: linear-gradient(135deg, #ff8000, #ff5500);
             color: white;
             font-weight: bold;
-            font-size: 13px;
+            font-size: 16px;
             padding: 12px 20px;
             border-radius: 8px;
             border: none;
@@ -840,18 +840,31 @@
                 window.location.href = 'login_main.html';
             });
 
-            const helpbotButton = document.querySelector('.helpbot');
-            const chatbotInterface = document.getElementById('chatbot-interface');
-            const closeChatbotButton = document.getElementById('close-chatbot');
+            // const helpbotButton = document.querySelector('.helpbot');
+            // const chatbotInterface = document.getElementById('chatbot-interface');
+            // const closeChatbotButton = document.getElementById('close-chatbot');
 
-            helpbotButton.addEventListener('click', function (event) {
-                event.preventDefault();
-                chatbotInterface.classList.toggle('hidden');
-            });
+            // helpbotButton.addEventListener('click', function (event) {
+            //     event.preventDefault();
+            //     chatbotInterface.classList.toggle('hidden');
+            // });
 
-            closeChatbotButton.addEventListener('click', function () {
-                chatbotInterface.classList.add('hidden');
-            });
+            // closeChatbotButton.addEventListener('click', function () {
+            //     chatbotInterface.classList.add('hidden');
+            // });
+            document.addEventListener('DOMContentLoaded', function () {
+    const helpbotButton = document.getElementById('helpbotButton');
+    const chatbotInterface = document.getElementById('chatbotInterface');
+
+    if (helpbotButton && chatbotInterface) {
+        helpbotButton.addEventListener('click', function (event) {
+            event.preventDefault();
+            chatbotInterface.classList.toggle('hidden');
+        });
+    } else {
+        console.error("Elements not found in the DOM.");
+    }
+});
 
             const slider = document.querySelector(".slider");
             const slides = document.querySelectorAll(".slider img");

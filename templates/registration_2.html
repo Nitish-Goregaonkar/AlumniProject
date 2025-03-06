@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Additional Information for AlumniConnexa" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Additional Information | AlumniConnexa</title>
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              DEFAULT: '#053b50',
+              light: '#176B87',
+              dark: '#032A39'
+            },
+            accent: {
+              DEFAULT: '#64CCC5',
+              light: '#9EECEA',
+              dark: '#41A8A2'
+            }
+          },
+          animation: {
+            'fade-in': 'fadeIn 0.5s ease-in-out',
+            'slide-up': 'slideUp 0.6s ease-out',
+          },
+          keyframes: {
+            fadeIn: {
+              '0%': { opacity: '0' },
+              '100%': { opacity: '1' }
+            },
+            slideUp: {
+              '0%': { transform: 'translateY(20px)', opacity: '0' },
+              '100%': { transform: 'translateY(0)', opacity: '1' }
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-image: url("assets/image.png");
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+
+    .glass-card {
+      backdrop-filter: blur(16px) saturate(180%);
+      -webkit-backdrop-filter: blur(16px) saturate(180%);
+      background-color: rgba(255, 255, 255, 0.9);
+    }
+  </style>
+</head>
+
+<body class="min-h-screen flex items-center justify-center p-4">
+  <div class="container mx-auto max-w-6xl">
+    <div class="flex flex-col md:flex-row rounded-xl overflow-hidden shadow-2xl">
+      <!-- Left Panel: Graphic Section -->
+      <div class="bg-gradient-to-br from-primary to-primary-light text-white p-8 md:w-1.8/3 flex flex-col justify-center items-center animate-fade-in">
+        <div class="text-center">
+          <div class="w-20 h-20 bg-white bg-opacity-20 rounded-full flex items-center justify-center mb-6 mx-auto">
+            <i class="fas fa-user-graduate text-4xl text-white"></i>
+          </div>
+          <h2 class="text-2xl font-bold mb-4">Complete Your Profile</h2>
+          <p class="text-sm opacity-80 mb-6">Provide additional details to enhance your profile</p>
+        </div>
+      </div>
+
+      <!-- Right Panel: Additional Information Form -->
+      <div class="glass-card p-8 md:p-12 md:w-2/3 animate-slide-up">
+        <div class="max-w-md mx-auto">
+          <div class="text-center mb-8">
+            <h3 class="text-2xl font-bold text-gray-800">Additional Information</h3>
+            <p class="text-gray-600 mt-2">Please provide more details</p>
+          </div>
+
+          <form id="additionalForm" class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Current Position</label>
+              <input type="text" placeholder="Enter current position" required
+                class="w-full pl-3 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Department</label>
+              <select class="w-full pl-3 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                <option hidden>Select Department</option>
+                <option>Computer Science</option>
+                <option>Mechanical</option>
+                <option>Electrical</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Employment Type</label>
+              <select class="w-full pl-3 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                <option hidden>Select Employment Type</option>
+                <option>Full-Time</option>
+                <option>Part-Time</option>
+                <option>Contract</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Preferred Shift</label>
+              <select class="w-full pl-3 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                <option hidden>Select Preferred Shift</option>
+                <option>Day</option>
+                <option>Night</option>
+                <option>Rotational</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
+              <input type="date" required
+                class="w-full pl-3 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Skills & Expertise</label>
+              <input type="text" placeholder="e.g., JavaScript, React, Node.js" required
+                class="w-full pl-3 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Additional Information</label>
+              <input type="text" placeholder="Batch (4 digits)" pattern="\d{4}" required
+                class="w-full pl-3 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+            </div>
+
+            <button type="submit"
+              class="w-full py-3 px-4 bg-gradient-to-r from-primary to-primary-light text-white font-medium rounded-lg hover:shadow-lg transition-all duration-200">
+              <i class="fas fa-save mr-2"></i>Save Information
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Form Submission Handling
+    document.getElementById('additionalForm').addEventListener('submit', function(event) {
+      event.preventDefault(); // Prevent the default form submission
+
+      // Perform any additional validation or processing here if needed
+
+      // Show alert to the user
+      alert('Your information has been stored successfully!');
+
+      // Redirect to the home page
+      window.location.href = 'homepage.html'; // Change 'home.html' to your actual home page URL
+    });
+  </script>
+</body>
+</html>
