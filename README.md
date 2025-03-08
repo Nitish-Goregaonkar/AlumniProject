@@ -20,8 +20,8 @@ update on event mentorship program ,donation option and career
 development resources which will include success story board where alumni 
 can highlight the career path they have taken.
  
---It will also showcase their 
-achievement provide which will provide inspiration and motivation to the 
-current student. 
+--It will also showcase their achievement provide which will provide inspiration and motivation to the current student. 
 
 --Plus it will be accessible on both web browser and mobile devices(if completed) making it easy for alumni an students to be used.
+
+-- AlumniConnexa : Official Alumni Association Portal
