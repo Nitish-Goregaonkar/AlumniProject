@@ -1,172 +1,879 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>About </title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AlumniConnexa</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
     <style>
-        /* .navbar {
-            position: fixed;
-            width: 100%;
-            height: 12%;
-            top: 0;
-            left: 0;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(10px);
-            padding: 18px 40px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease-in-out;
-        } */
-        .branding-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: white;
-            padding: 20px 30px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
-            border-bottom: 4px solid orange;
-            margin-top:0px;
+        body {
+            font-family: 'Montserrat', sans-serif;
+            scroll-behavior: smooth;
         }
-        .branding {
-            display: flex;
-            align-items: center;
-            gap: 15px;
+        .gradient-bg {
+            background: linear-gradient(120deg, #0f2557 0%, #1a3a8f 50%, #0a0e35 100%);
         }
-        .branding img {
-            width: 55px;
-            height: 60px;
-            border-radius: 0%;
+        .section-gradient {
+            background: linear-gradient(170deg, rgba(240, 244, 255, 0.7) 0%, rgba(255, 255, 255, 1) 100%);
         }
-        .branding-text {
-            text-align: left;
-            padding-right: 20px;
+        .hover-scale {
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+                        box-shadow 0.5s ease;
         }
-        .branding-text .main-title {
-            font-size: 28px;
-            font-weight: bold;
-            color: black;
+        .hover-scale:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
         }
-        .branding-text .sub-title {
-            font-size: 15px;
-            font-weight: 400;
-            color: #555;
+        .text-gradient {
+            background: linear-gradient(90deg, #1e40af 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-        footer {
-            width: calc(107% + 50px);
-            height: 200px;
-            background-color: #2d3748;
-            color: white;
-            padding: 20px 0;
-            margin-top: 32px;
-            margin-left: -60px;
-            text-align: center;
+        .stat-counter {
+            font-feature-settings: "tnum";
+            font-variant-numeric: tabular-nums;
+        }
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+        .rotating-bg {
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%232563eb' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+            animation: rotatingBg 120s linear infinite;
+        }
+        @keyframes rotatingBg {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 100% 100%; }
+        }
+        .marquee {
+            white-space: nowrap;
+            overflow: hidden;
             position: relative;
         }
-        footer h3 {
-            font-size: 1.25rem;
-            font-weight: bold;
-            margin-bottom: 10px;
+        .marquee span {
+            display: inline-block;
+            animation: marquee 30s linear infinite;
         }
-        footer .social-icons a {
-            margin: 0 10px;
-            font-size: 1.5rem;
-            transition: color 0.3s;
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
         }
-        footer .social-icons a:hover {
-            color: #a0aec0;
+        .nav-item {
+            position: relative;
         }
-        footer .quick-links a {
-            margin: 0 10px;
-            color: white;
-            transition: color 0.3s;
+        .nav-item::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: white;
+            transition: width 0.3s ease;
         }
-        footer .quick-links a:hover {
-            color: #a0aec0;
+        .nav-item:hover::after, .nav-item.active::after {
+            width: 100%;
         }
-        footer p {
-            font-size: 0.875rem;
-            margin-top: 10px;
+        .parallax-bg {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        .btn-primary {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 150%;
+            height: 150%;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            transition: transform 0.5s ease-out;
+            z-index: 0;
+        }
+        .btn-primary:hover::after {
+            transform: translate(-50%, -50%) scale(1);
+        }
+        .btn-primary span {
+            position: relative;
+            z-index: 1;
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #94a3b8;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
         }
     </style>
 </head>
-<body class="bg-white text-gray-800">
-    <!-- <div class="navbar">
-        <div class="nav-links">
-            <a href="#">Home</a>
-            <a href="#">About</a>
-            <a href="alumni_directory.html">Alumni Directory</a>
-            <a href="job_home.html">Job Board</a>
-            <a href="#">Events</a>
-            <a href="success_story.html">Success Stories</a>
-            <a href="#">Contact Us</a>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="gradient-bg text-white shadow-lg sticky top-0 z-50 backdrop-blur-md bg-opacity-95">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center">
+                    <div class="relative mr-3 overflow-hidden rounded-full border-2 border-white">
+                        <img src="/src/images/dbatu.jpg" alt="Modern College Logo" class="h-12 w-12 object-cover">
+                    </div>
+                    <div>
+                        <span class="font-bold text-2xl tracking-tight">Dr.Babasaheb Ambedkar Technological University (Diploma Wing)</span>
+                        <div class="text-xs text-blue-200">Excellence in Education</div>
+                    </div>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#" class="nav-item py-2 hover:text-blue-200 transition duration-300">Home</a>
+                    <a href="#" class="nav-item py-2 active font-semibold border-b-2 border-white">About</a>
+                    <a href="#" class="nav-item py-2 hover:text-blue-200 transition duration-300">Academics</a>
+                    <a href="#" class="nav-item py-2 hover:text-blue-200 transition duration-300">Admissions</a>
+                    <a href="#" class="nav-item py-2 hover:text-blue-200 transition duration-300">Campus Life</a>
+                    <a href="#" class="nav-item py-2 hover:text-blue-200 transition duration-300">Research</a>
+                    <a href="#" class="nav-item py-2 hover:text-blue-200 transition duration-300">Contact</a>
+                </div>
+                <button class="md:hidden text-white" id="mobile-menu-button">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
         </div>
-    </div> -->
-    <div class="branding-container">
-        <div class="branding">
-            <img src="/src/images/dbatu.jpg" alt="University Logo">
-            <div class="branding-text">
-                <div class="main-title">Alumni Connexa</div>
-                <div class="sub-title">Dr. Babasaheb Ambedkar Technological University (Diploma Wing)</div>
+        <!-- Mobile Menu -->
+        <div class="hidden bg-blue-900 md:hidden" id="mobile-menu">
+            <div class="container mx-auto px-4 py-3">
+                <div class="flex flex-col space-y-3">
+                    <a href="#" class="text-white hover:text-blue-200 py-2">Home</a>
+                    <a href="#" class="text-white font-bold border-l-4 border-white pl-2 py-2">About</a>
+                    <a href="#" class="text-white hover:text-blue-200 py-2">Academics</a>
+                    <a href="#" class="text-white hover:text-blue-200 py-2">Admissions</a>
+                    <a href="#" class="text-white hover:text-blue-200 py-2">Campus Life</a>
+                    <a href="#" class="text-white hover:text-blue-200 py-2">Research</a>
+                    <a href="#" class="text-white hover:text-blue-200 py-2">Contact</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="relative h-screen max-h-[600px] overflow-hidden">
+        <div class="absolute inset-0 z-10">
+            <img src="/src/images/university_maingate.jpg" alt="Campus View" class="w-full h-full object-cover">
+        </div>
+        <div class="absolute inset-0 z-20 bg-gradient-to-r from-black via-black/80 to-transparent flex items-center">
+            <div class="container mx-auto px-4">
+                <div class="max-w-3xl text-left" data-aos="fade-right" data-aos-duration="1000">
+                    <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-6 leading-tight">
+                        <span class="block">Shaping Tomorrow's</span> 
+                        <span class="block text-blue-400">Leaders</span>
+                    </h1>
+                    <p class="text-xl md:text-2xl text-gray-200 mb-8 max-w-2xl leading-relaxed">Experience excellence in education since 1985. Where innovation meets tradition to create future-ready graduates.</p>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#" class="btn-primary bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-lg transition duration-300 inline-block shadow-lg">
+                            <span class="flex items-center">
+                                Apply Now <i class="fas fa-arrow-right ml-2"></i>
+                            </span>
+                        </a>
+                        <a href="#vision" class="bg-transparent border-2 border-white text-white hover:bg-white hover:text-blue-800 font-bold py-4 px-8 rounded-lg transition duration-300 inline-block">
+                            <span class="flex items-center">
+                                Learn More <i class="fas fa-chevron-down ml-2"></i>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Floating Stats -->
+        <div class="absolute bottom-6 right-6 z-30 hidden lg:block">
+            <div class="flex gap-4">
+                <div class="bg-white/90 backdrop-blur-md p-4 rounded-xl shadow-lg card-hover" data-aos="fade-up" data-aos-delay="200">
+                    <div class="stat-counter text-3xl font-bold text-blue-800">5,000+</div>
+                    <div class="text-sm text-gray-600">Students</div>
+                </div>
+                <div class="bg-white/90 backdrop-blur-md p-4 rounded-xl shadow-lg card-hover" data-aos="fade-up" data-aos-delay="300">
+                    <div class="stat-counter text-3xl font-bold text-blue-800">15</div>
+                    <div class="text-sm text-gray-600">Departments</div>
+                </div>
+                <div class="bg-white/90 backdrop-blur-md p-4 rounded-xl shadow-lg card-hover" data-aos="fade-up" data-aos-delay="400">
+                    <div class="stat-counter text-3xl font-bold text-blue-800">98%</div>
+                    <div class="text-sm text-gray-600">Employment</div>
+                </div>
             </div>
         </div>
     </div>
-    <div class="container mx-auto p-4">
-        <div class="flex flex-col md:flex-row items-start md:items-center mb-8">
-            <img alt="Image of IIT Bombay building" class="w-full md:w-1/3 mb-4 md:mb-0 md:mr-4" height="200" src="/src/images/university_maingate.jpg" width="300"/>
-            <div class="md:w-2/3">
-                <h1 class="text-2xl font-bold mb-2">Introduction</h1>
-                <p class="text-lg">
-                    IIT Bombay was established in 1958. It attracts top-tier students. Its renowned faculty drives research and academics, forging collaborations with national and international peers. Alumni excel in various fields, contributing to industry, academia, research, and more. The institute offers innovative short-term courses, continuing education, and distance learning. Faculty members have received prestigious awards, including the Shanti Swaroop Bhatnagar and Padma honors. It provides a fully residential experience with hostels, dining, sports, and recreational facilities.
-                </p>
-            </div>
-        </div>
-        <div class="flex flex-col md:flex-row items-start md:items-center">
-            <div class="md:w-2/3 mb-4 md:mb-0 md:mr-4">
-                <h2 class="text-2xl font-bold mb-2">Functional Organization</h2>
-                <p class="text-lg">
-                    IIT Bombay is an autonomous institute and deemed university governed by a board of governors, chaired by the president of India. It operates under the guidance of the IIT Council, established by India's ministry of education (MoE) (earlier called human resource development). The director, appointed by MoE, leads the institute for a five-year term, overseeing academic matters and serving on various committees. The senate, composed of professors and nominated members, ensures academic standards. The administrative functions are managed by the registrar and senior officials. The institute advisory council, comprising industry and academic experts, provides input on policies and goals.
-                </p>
-            </div>
-            <img alt="Image of IIT Bombay building" class="w-full md:w-1/3" height="200" src="/src/images/campus2.jpg" width="300"/>
+
+    <!-- Marquee Announcement -->
+    <div class="bg-blue-900 text-white py-2 overflow-hidden">
+        <div class="marquee">
+            <span class="inline-block py-1">
+                <span class="mx-4"><i class="fas fa-bullhorn mr-2"></i> Applications for 2025-26 academic year now open</span>
+                <span class="mx-4"><i class="fas fa-calendar-alt mr-2"></i> Upcoming Campus Tour: March 15, 2025</span>
+                <span class="mx-4"><i class="fas fa-star mr-2"></i> Ranked #1 in Engineering Excellence for the 3rd consecutive year</span>
+                <span class="mx-4"><i class="fas fa-globe mr-2"></i> New International Exchange Programs with universities in Europe and Asia</span>
+                <span class="mx-4"><i class="fas fa-graduation-cap mr-2"></i> 98% placement rate for 2024 graduates</span>
+                <span class="mx-4"><i class="fas fa-bullhorn mr-2"></i> Applications for 2025-26 academic year now open</span>
+                <span class="mx-4"><i class="fas fa-calendar-alt mr-2"></i> Upcoming Campus Tour: March 15, 2025</span>
+                <span class="mx-4"><i class="fas fa-star mr-2"></i> Ranked #1 in Engineering Excellence for the 3rd consecutive year</span>
+            </span>
         </div>
     </div>
-    <footer class="bg-gray-800 text-white py-6 mt-8">
-        <div class="max-w-7xl mx-auto text-center">
-            <div class="mb-4">
-                <h3 class="text-lg font-bold">Stay Connected</h3>
-                <div class="flex justify-center space-x-4 mt-2">
-                    <a href="#" class="text-white hover:text-gray-400">
-                        <i class="fab fa-facebook-f"></i>
-                    </a>
-                    <a href="#" class="text-white hover:text-gray-400">
-                        <i class="fab fa-twitter"></i>
-                    </a>
-                    <a href="#" class="text-white hover:text-gray-400">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                    <a href="#" class="text-white hover:text-gray-400">
-                        <i class="fab fa-linkedin-in"></i>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-16">
+        <!-- College Information -->
+        <section class="mb-24" id="about">
+            <div class="flex flex-col items-center mb-12 text-center">
+                <div class="h-1 w-24 bg-blue-600 mb-6"></div>
+                <h2 class="text-4xl font-bold text-gray-800 mb-4 relative">
+                    <span class="relative z-10">Our Legacy</span>
+                    <span class="absolute -bottom-3 left-0 right-0 h-3 bg-blue-100 z-0 transform -rotate-1"></span>
+                </h2>
+                <p class="text-gray-600 max-w-3xl">Established in 1985, we've been at the forefront of educational innovation for four decades</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+                <div data-aos="fade-right" data-aos-duration="1000">
+                    <p class="text-gray-700 mb-6 leading-relaxed text-lg">
+                        Established in 1985, <span class="font-semibold">Modern College</span> has evolved from a modest institution with 3 departments to a premier educational destination with 15 specialized departments and over 5,000 students from across the globe.
+                    </p>
+                    <p class="text-gray-700 mb-8 leading-relaxed text-lg">
+                        Our approach combines academic rigor with practical learning, preparing students not just for careers but for leadership roles in an ever-changing global landscape. With state-of-the-art facilities and a team of distinguished faculty members, we provide an environment where innovation thrives and intellectual boundaries are constantly pushed.
+                    </p>
+                    <div class="grid grid-cols-2 gap-6 mb-8">
+                        <div class="bg-blue-50 p-6 rounded-2xl flex items-center shadow-md card-hover">
+                            <i class="fas fa-user-graduate text-blue-600 text-3xl mr-4"></i>
+                            <div>
+                                <div class="text-3xl font-bold text-blue-800 stat-counter" id="alumni-counter">20,000+</div>
+                                <div class="text-sm text-gray-600 font-medium">Alumni Network</div>
+                            </div>
+                        </div>
+                        <div class="bg-blue-50 p-6 rounded-2xl flex items-center shadow-md card-hover">
+                            <i class="fas fa-globe text-blue-600 text-3xl mr-4"></i>
+                            <div>
+                                <div class="text-3xl font-bold text-blue-800 stat-counter" id="partners-counter">45+</div>
+                                <div class="text-sm text-gray-600 font-medium">Global Partners</div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#" class="inline-flex items-center group">
+                        <span class="relative inline-block mr-2">
+                            <span class="absolute inset-0 border-b-2 border-blue-600 bottom-0 transform scale-x-0 transition-transform duration-300 origin-left group-hover:scale-x-100"></span>
+                            <span class="relative text-blue-600 font-semibold">Learn more about our history</span>
+                        </span>
+                        <i class="fas fa-arrow-right text-blue-600 group-hover:translate-x-2 transition-transform duration-300"></i>
                     </a>
                 </div>
-            </div>
-            <div class="mb-4">
-                <h3 class="text-lg font-bold">Quick Links</h3>
-                <div class="flex justify-center space-x-4 mt-2">
-                    <a href="#" class="text-white hover:text-gray-400">Home</a>
-                    <a href="#" class="text-white hover:text-gray-400">About</a>
-                    <a href="#" class="text-white hover:text-gray-400">Contact Us</a>
-                    <a href="#" class="text-white hover:text-gray-400">Privacy Policy</a>
+                <div class="relative" data-aos="fade-left" data-aos-duration="1000">
+                    <div class="absolute -top-6 -left-6 w-64 h-64 bg-blue-100 rounded-full opacity-50 floating"></div>
+                    <div class="absolute -bottom-6 -right-6 w-48 h-48 bg-blue-100 rounded-full opacity-70 floating" style="animation-delay: 2s;"></div>
+                    <img src="/src/images/university_maingate.jpg" alt="Modern College Campus" class="rounded-2xl shadow-2xl w-full h-auto object-cover relative z-10 hover-scale">
                 </div>
             </div>
-            <div class="mt-4">
-                <p class="text-sm">&copy; 2025 Alumni Connexa. All rights reserved.</p>
+        </section>
+
+        <!-- Vision and Mission -->
+        <section class="mb-24 relative overflow-hidden section-gradient py-16 px-6 rounded-3xl" id="vision">
+            <div class="absolute -right-32 -bottom-32 w-96 h-96 bg-blue-100 rounded-full opacity-30 floating"></div>
+            <div class="absolute -left-32 -top-32 w-96 h-96 bg-blue-100 rounded-full opacity-30 floating" style="animation-delay: 3s;"></div>
+            <div class="relative z-10">
+                <div class="flex flex-col items-center mb-12 text-center">
+                    <div class="h-1 w-24 bg-blue-600 mb-6"></div>
+                    <h2 class="text-4xl font-bold text-gray-800 mb-4 relative">
+                        <span class="relative z-10">Vision & Mission</span>
+                        <span class="absolute -bottom-3 left-0 right-0 h-3 bg-blue-100 z-0 transform -rotate-1"></span>
+                    </h2>
+                    <p class="text-gray-600 max-w-3xl">Our guiding principles that shape every decision and initiative</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                    <div class="bg-white p-10 rounded-2xl shadow-xl hover-scale" data-aos="fade-up" data-aos-duration="1000">
+                        <div class="inline-block p-6 bg-blue-50 rounded-full mb-8 relative">
+                            <div class="absolute inset-0 bg-blue-100 rounded-full animate-pulse opacity-60"></div>
+                            <i class="fas fa-eye text-4xl text-blue-600 relative z-10"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-blue-800 mb-6">Our Vision</h3>
+                        <p class="text-gray-700 leading-relaxed text-lg">
+                            To be a globally recognized institution of excellence that nurtures critical thinkers, innovative problem-solvers, and ethical leaders who drive positive change in society and contribute to sustainable development.
+                        </p>
+                    </div>
+                    <div class="bg-white p-10 rounded-2xl shadow-xl hover-scale" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
+                        <div class="inline-block p-6 bg-blue-50 rounded-full mb-8 relative">
+                            <div class="absolute inset-0 bg-blue-100 rounded-full animate-pulse opacity-60"></div>
+                            <i class="fas fa-bullseye text-4xl text-blue-600 relative z-10"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-blue-800 mb-6">Our Mission</h3>
+                        <ul class="space-y-4 text-gray-700">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-3 text-lg"></i>
+                                <span class="text-lg">Provide transformative education through innovative teaching and experiential learning</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-3 text-lg"></i>
+                                <span class="text-lg">Foster research culture and intellectual curiosity among students and faculty</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-3 text-lg"></i>
+                                <span class="text-lg">Promote diversity, inclusion, and global perspectives</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-3 text-lg"></i>
+                                <span class="text-lg">Collaborate with industry to provide real-world learning opportunities</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-        </div>
-    </footer>
-</body>
-</html>
+        </section>
+
+        <!-- Academic Excellence -->
+        <section class="mb-24" id="excellence">
+            <div class="flex flex-col items-center mb-12 text-center">
+                <div class="h-1 w-24 bg-blue-600 mb-6"></div>
+                <h2 class="text-4xl font-bold text-gray-800 mb-4 relative">
+                    <span class="relative z-10">Academic Excellence</span>
+                    <span class="absolute -bottom-3 left-0 right-0 h-3 bg-blue-100 z-0 transform -rotate-1"></span>
+                </h2>
+                <p class="text-gray-600 max-w-3xl">Setting new standards in education with our innovative approach</p>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="col-span-1" data-aos="fade-right" data-aos-duration="1000">
+                    <div class="bg-gradient-to-r from-blue-800 to-blue-900 rounded-2xl p-10 text-white h-full flex flex-col justify-between relative overflow-hidden shadow-xl">
+                        <div class="absolute inset-0 rotating-bg opacity-10"></div>
+                        <div class="relative z-10">
+                            <h3 class="text-3xl font-bold mb-6">Why Choose Us?</h3>
+                            <p class="mb-8 text-blue-100 leading-relaxed">
+                                At Modern College, we're committed to providing an education that's both rigorous and relevant, preparing you for the challenges of today and the opportunities of tomorrow.
+                            </p>
+                        </div>
+                        <div class="space-y-4 relative z-10">
+                            <div class="flex items-center">
+                                <div class="bg-blue-700/50 p-2 rounded-full mr-4">
+                                    <i class="fas fa-star text-yellow-400"></i>
+                                </div>
+                                <span class="font-medium">NAAC A++ Accreditation</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="bg-blue-700/50 p-2 rounded-full mr-4">
+                                    <i class="fas fa-trophy text-yellow-400"></i>
+                                </div>
+                                <span class="font-medium">Top 50 College Nationwide</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="bg-blue-700/50 p-2 rounded-full mr-4">
+                                    <i class="fas fa-handshake text-yellow-400"></i>
+                                </div>
+                                <span class="font-medium">200+ Industry Partnerships</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-span-1 lg:col-span-2">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="bg-white p-8 rounded-2xl shadow-lg card-hover" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="100">
+                            <div class="rounded-full w-16 h-16 flex items-center justify-center bg-yellow-100 mb-6 relative">
+                                <div class="absolute inset-0 bg-yellow-200 rounded-full animate-pulse opacity-60"></div>
+                                <i class="fas fa-medal text-yellow-600 text-2xl relative z-10"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 mb-4">Cutting-Edge Curriculum</h3>
+                            <p class="text-gray-600 leading-relaxed">
+                                Regularly updated courses designed with industry input to ensure relevance and future-readiness.
+                            </p>
+                        </div>
+                        <div class="bg-white p-8 rounded-2xl shadow-lg card-hover" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
+                            <div class="rounded-full w-16 h-16 flex items-center justify-center bg-blue-100 mb-6 relative">
+                                <div class="absolute inset-0 bg-blue-200 rounded-full animate-pulse opacity-60"></div>
+                                <i class="fas fa-chalkboard-teacher text-blue-600 text-2xl relative z-10"></i>
+                              </div>
+                              <h3 class="text-xl font-bold text-gray-800 mb-4">World-Class Faculty</h3>
+                              <p class="text-gray-600 leading-relaxed">
+                                  Learn from distinguished professors and industry experts with global recognition in their fields.
+                              </p>
+                          </div>
+                          <div class="bg-white p-8 rounded-2xl shadow-lg card-hover" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
+                              <div class="rounded-full w-16 h-16 flex items-center justify-center bg-green-100 mb-6 relative">
+                                  <div class="absolute inset-0 bg-green-200 rounded-full animate-pulse opacity-60"></div>
+                                  <i class="fas fa-microscope text-green-600 text-2xl relative z-10"></i>
+                              </div>
+                              <h3 class="text-xl font-bold text-gray-800 mb-4">Research Opportunities</h3>
+                              <p class="text-gray-600 leading-relaxed">
+                                  Engage in groundbreaking research projects with support from our advanced research facilities.
+                              </p>
+                          </div>
+                          <div class="bg-white p-8 rounded-2xl shadow-lg card-hover" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="400">
+                              <div class="rounded-full w-16 h-16 flex items-center justify-center bg-purple-100 mb-6 relative">
+                                  <div class="absolute inset-0 bg-purple-200 rounded-full animate-pulse opacity-60"></div>
+                                  <i class="fas fa-globe-americas text-purple-600 text-2xl relative z-10"></i>
+                              </div>
+                              <h3 class="text-xl font-bold text-gray-800 mb-4">Global Exposure</h3>
+                              <p class="text-gray-600 leading-relaxed">
+                                  Study abroad programs, international internships, and global classroom experiences with partner institutions.
+                              </p>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </section>
+  
+          <!-- Leadership Team -->
+          <section class="mb-24" id="leadership">
+              <div class="flex flex-col items-center mb-12 text-center">
+                  <div class="h-1 w-24 bg-blue-600 mb-6"></div>
+                  <h2 class="text-4xl font-bold text-gray-800 mb-4 relative">
+                      <span class="relative z-10">Our Leadership</span>
+                      <span class="absolute -bottom-3 left-0 right-0 h-3 bg-blue-100 z-0 transform -rotate-1"></span>
+                  </h2>
+                  <p class="text-gray-600 max-w-3xl">Meet the visionaries guiding our institution towards excellence</p>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  <div class="bg-white rounded-2xl shadow-xl overflow-hidden card-hover" data-aos="fade-up" data-aos-duration="1000">
+                      <div class="h-64 overflow-hidden">
+                          <img src="/api/placeholder/400/400" alt="Dr. Sarah Johnson" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+                      </div>
+                      <div class="p-6">
+                          <h3 class="text-xl font-bold text-gray-800 mb-1">Dr. Sarah Johnson</h3>
+                          <p class="text-blue-600 font-medium mb-4">President</p>
+                          <p class="text-gray-600 mb-4">
+                              Former Dean at Stanford University with over 25 years of experience in higher education leadership.
+                          </p>
+                          <div class="flex space-x-3">
+                              <a href="#" class="text-blue-600 hover:text-blue-800 transition-colors">
+                                  <i class="fab fa-linkedin text-lg"></i>
+                              </a>
+                              <a href="#" class="text-blue-600 hover:text-blue-800 transition-colors">
+                                  <i class="fab fa-twitter text-lg"></i>
+                              </a>
+                              <a href="#" class="text-blue-600 hover:text-blue-800 transition-colors">
+                                  <i class="fas fa-envelope text-lg"></i>
+                              </a>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="bg-white rounded-2xl shadow-xl overflow-hidden card-hover" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="100">
+                      <div class="h-64 overflow-hidden">
+                          <img src="/api/placeholder/400/400" alt="Prof. Michael Chen" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+                      </div>
+                      <div class="p-6">
+                          <h3 class="text-xl font-bold text-gray-800 mb-1">Prof. Michael Chen</h3>
+                          <p class="text-blue-600 font-medium mb-4">Vice President</p>
+                          <p class="text-gray-600 mb-4">
+                              Award-winning educator and researcher with a focus on sustainable technology and innovation.
+                          </p>
+                          <div class="flex space-x-3">
+                              <a href="#" class="text-blue-600 hover:text-blue-800 transition-colors">
+                                  <i class="fab fa-linkedin text-lg"></i>
+                              </a>
+                              <a href="#" class="text-blue-600 hover:text-blue-800 transition-colors">
+                                  <i class="fab fa-twitter text-lg"></i>
+                              </a>
+                              <a href="#" class="text-blue-600 hover:text-blue-800 transition-colors">
+                                  <i class="fas fa-envelope text-lg"></i>
+                              </a>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="bg-white rounded-2xl shadow-xl overflow-hidden card-hover" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
+                      <div class="h-64 overflow-hidden">
+                          <img src="/api/placeholder/400/400" alt="Dr. Priya Sharma" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+                      </div>
+                      <div class="p-6">
+                          <h3 class="text-xl font-bold text-gray-800 mb-1">Dr. Priya Sharma</h3>
+                          <p class="text-blue-600 font-medium mb-4">Dean of Academics</p>
+                          <p class="text-gray-600 mb-4">
+                              Renowned academic with publications in leading journals and a passion for educational innovation.
+                          </p>
+                          <div class="flex space-x-3">
+                              <a href="#" class="text-blue-600 hover:text-blue-800 transition-colors">
+                                  <i class="fab fa-linkedin text-lg"></i>
+                              </a>
+                              <a href="#" class="text-blue-600 hover:text-blue-800 transition-colors">
+                                  <i class="fab fa-twitter text-lg"></i>
+                              </a>
+                              <a href="#" class="text-blue-600 hover:text-blue-800 transition-colors">
+                                  <i class="fas fa-envelope text-lg"></i>
+                              </a>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="text-center mt-10">
+                  <a href="#" class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300 shadow-lg">
+                      <span>Meet Our Complete Team</span>
+                      <i class="fas fa-arrow-right ml-2"></i>
+                  </a>
+              </div>
+          </section>
+  
+          <!-- Campus Facilities -->
+          <section class="mb-24" id="facilities">
+              <div class="flex flex-col items-center mb-12 text-center">
+                  <div class="h-1 w-24 bg-blue-600 mb-6"></div>
+                  <h2 class="text-4xl font-bold text-gray-800 mb-4 relative">
+                      <span class="relative z-10">Campus Facilities</span>
+                      <span class="absolute -bottom-3 left-0 right-0 h-3 bg-blue-100 z-0 transform -rotate-1"></span>
+                  </h2>
+                  <p class="text-gray-600 max-w-3xl">State-of-the-art infrastructure designed for an optimal learning experience</p>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                  <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover" data-aos="fade-up" data-aos-duration="1000">
+                      <div class="h-48 overflow-hidden">
+                          <img src="/api/placeholder/500/300" alt="Library" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+                      </div>
+                      <div class="p-6">
+                          <div class="flex items-center mb-4">
+                              <div class="p-3 bg-blue-100 rounded-full mr-4">
+                                  <i class="fas fa-book text-blue-600"></i>
+                              </div>
+                              <h3 class="text-lg font-bold text-gray-800">Modern Library</h3>
+                          </div>
+                          <p class="text-gray-600">
+                              Over 100,000 books, e-resources, and comfortable study spaces.
+                          </p>
+                      </div>
+                  </div>
+                  <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="100">
+                      <div class="h-48 overflow-hidden">
+                          <img src="/api/placeholder/500/300" alt="Laboratories" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+                      </div>
+                      <div class="p-6">
+                          <div class="flex items-center mb-4">
+                              <div class="p-3 bg-green-100 rounded-full mr-4">
+                                  <i class="fas fa-flask text-green-600"></i>
+                              </div>
+                              <h3 class="text-lg font-bold text-gray-800">Research Labs</h3>
+                          </div>
+                          <p class="text-gray-600">
+                              Cutting-edge equipment for hands-on learning and research.
+                          </p>
+                      </div>
+                  </div>
+                  <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
+                      <div class="h-48 overflow-hidden">
+                          <img src="/api/placeholder/500/300" alt="Sports Complex" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+                      </div>
+                      <div class="p-6">
+                          <div class="flex items-center mb-4">
+                              <div class="p-3 bg-red-100 rounded-full mr-4">
+                                  <i class="fas fa-running text-red-600"></i>
+                              </div>
+                              <h3 class="text-lg font-bold text-gray-800">Sports Complex</h3>
+                          </div>
+                          <p class="text-gray-600">
+                              Olympic-sized pool, indoor courts, and outdoor playing fields.
+                          </p>
+                      </div>
+                  </div>
+                  <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
+                      <div class="h-48 overflow-hidden">
+                          <img src="/api/placeholder/500/300" alt="Student Center" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+                      </div>
+                      <div class="p-6">
+                          <div class="flex items-center mb-4">
+                              <div class="p-3 bg-purple-100 rounded-full mr-4">
+                                  <i class="fas fa-users text-purple-600"></i>
+                              </div>
+                              <h3 class="text-lg font-bold text-gray-800">Student Center</h3>
+                          </div>
+                          <p class="text-gray-600">
+                              Collaborative spaces, cafes, and student activity zones.
+                          </p>
+                      </div>
+                  </div>
+              </div>
+              <div class="text-center mt-10">
+                  <a href="#" class="inline-flex items-center bg-white border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white font-bold py-3 px-6 rounded-lg transition duration-300 shadow-md">
+                      <span>Take a Virtual Tour</span>
+                      <i class="fas fa-vr-cardboard ml-2"></i>
+                  </a>
+              </div>
+          </section>
+  
+          <!-- Testimonials -->
+          <section class="mb-24" id="testimonials">
+              <div class="flex flex-col items-center mb-12 text-center">
+                  <div class="h-1 w-24 bg-blue-600 mb-6"></div>
+                  <h2 class="text-4xl font-bold text-gray-800 mb-4 relative">
+                      <span class="relative z-10">Student Voices</span>
+                      <span class="absolute -bottom-3 left-0 right-0 h-3 bg-blue-100 z-0 transform -rotate-1"></span>
+                  </h2>
+                  <p class="text-gray-600 max-w-3xl">Hear what our students and alumni have to say about their experience</p>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  <div class="bg-white p-8 rounded-2xl shadow-lg relative card-hover" data-aos="fade-up" data-aos-duration="1000">
+                      <div class="absolute -top-5 left-8 text-6xl text-blue-200">"</div>
+                      <div class="relative z-10">
+                          <p class="text-gray-700 mb-6 leading-relaxed relative pt-6">
+                              My time at Modern College transformed my career trajectory. The hands-on projects and industry connections helped me secure a position at a leading tech company even before graduation.
+                          </p>
+                          <div class="flex items-center">
+                              <img src="/api/placeholder/80/80" alt="Student" class="w-12 h-12 rounded-full object-cover mr-4">
+                              <div>
+                                  <h4 class="font-bold text-gray-800">James Wilson</h4>
+                                  <p class="text-sm text-gray-600">Computer Science, Class of 2023</p>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="bg-white p-8 rounded-2xl shadow-lg relative card-hover" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="100">
+                      <div class="absolute -top-5 left-8 text-6xl text-blue-200">"</div>
+                      <div class="relative z-10">
+                          <p class="text-gray-700 mb-6 leading-relaxed relative pt-6">
+                              The diverse student body and international exchange programs gave me a global perspective that's invaluable in today's interconnected world. I made friends from across the globe.
+                          </p>
+                          <div class="flex items-center">
+                              <img src="/api/placeholder/80/80" alt="Student" class="w-12 h-12 rounded-full object-cover mr-4">
+                              <div>
+                                  <h4 class="font-bold text-gray-800">Sophia Chen</h4>
+                                  <p class="text-sm text-gray-600">International Business, Class of 2022</p>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="bg-white p-8 rounded-2xl shadow-lg relative card-hover" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
+                      <div class="absolute -top-5 left-8 text-6xl text-blue-200">"</div>
+                      <div class="relative z-10">
+                          <p class="text-gray-700 mb-6 leading-relaxed relative pt-6">
+                              The professors here don't just teach—they mentor. Their guidance helped me publish my first research paper as an undergraduate, opening doors to top graduate programs.
+                          </p>
+                          <div class="flex items-center">
+                              <img src="/api/placeholder/80/80" alt="Student" class="w-12 h-12 rounded-full object-cover mr-4">
+                              <div>
+                                  <h4 class="font-bold text-gray-800">Aditya Patel</h4>
+                                  <p class="text-sm text-gray-600">Biotechnology, Class of 2024</p>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </section>
+      </div>
+  
+      <!-- CTA Section -->
+      <section class="parallax-bg gradient-bg text-white py-16 mb-24">
+          <div class="container mx-auto px-4 relative z-10">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                  <div data-aos="fade-right" data-aos-duration="1000">
+                      <h2 class="text-4xl font-bold mb-6 leading-tight">Ready to Begin Your Journey with Us?</h2>
+                      <p class="text-xl text-blue-200 mb-8 leading-relaxed">
+                          Take the first step toward a transformative educational experience that will prepare you for a successful future.
+                      </p>
+                      <div class="flex flex-wrap gap-4">
+                          <a href="#" class="bg-white text-blue-800 hover:bg-blue-100 font-bold py-4 px-8 rounded-lg transition duration-300 inline-block shadow-lg">
+                              Apply Now
+                          </a>
+                          <a href="#" class="bg-transparent border-2 border-white text-white hover:bg-white hover:text-blue-800 font-bold py-4 px-8 rounded-lg transition duration-300 inline-block">
+                              Schedule a Visit
+                          </a>
+                      </div>
+                  </div>
+                  <div class="grid grid-cols-2 gap-6" data-aos="fade-left" data-aos-duration="1000">
+                      <div class="bg-blue-800/50 backdrop-blur-md p-6 rounded-xl shadow-inner">
+                          <div class="text-3xl font-bold text-white mb-2 stat-counter">15+</div>
+                          <div class="text-blue-200 font-medium">Undergraduate Programs</div>
+                      </div>
+                      <div class="bg-blue-800/50 backdrop-blur-md p-6 rounded-xl shadow-inner">
+                          <div class="text-3xl font-bold text-white mb-2 stat-counter">25+</div>
+                          <div class="text-blue-200 font-medium">Graduate Programs</div>
+                      </div>
+                      <div class="bg-blue-800/50 backdrop-blur-md p-6 rounded-xl shadow-inner">
+                          <div class="text-3xl font-bold text-white mb-2 stat-counter">$2.5M+</div>
+                          <div class="text-blue-200 font-medium">Scholarships Awarded</div>
+                      </div>
+                      <div class="bg-blue-800/50 backdrop-blur-md p-6 rounded-xl shadow-inner">
+                          <div class="text-3xl font-bold text-white mb-2 stat-counter">98%</div>
+                          <div class="text-blue-200 font-medium">Graduate Employment</div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </section>
+  
+      <!-- Footer -->
+      <footer class="bg-gray-900 text-white py-12">
+          <div class="container mx-auto px-4">
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+                  <div>
+                      <div class="flex items-center mb-6">
+                          <div class="relative mr-3 overflow-hidden rounded-full border-2 border-white">
+                              <img src="/api/placeholder/80/80" alt="Modern College Logo" class="h-12 w-12 object-cover">
+                          </div>
+                          <div>
+                              <span class="font-bold text-2xl tracking-tight">Modern College</span>
+                              <div class="text-xs text-blue-400">Excellence in Education</div>
+                          </div>
+                      </div>
+                      <p class="text-gray-400 mb-6">
+                          Empowering students to become leaders, innovators, and change-makers since 1985.
+                      </p>
+                      <div class="flex space-x-4 mb-6">
+                          <a href="#" class="bg-blue-800 hover:bg-blue-700 h-10 w-10 rounded-full flex items-center justify-center transition-colors">
+                              <i class="fab fa-facebook-f"></i>
+                          </a>
+                          <a href="#" class="bg-blue-500 hover:bg-blue-400 h-10 w-10 rounded-full flex items-center justify-center transition-colors">
+                              <i class="fab fa-twitter"></i>
+                          </a>
+                          <a href="#" class="bg-red-600 hover:bg-red-500 h-10 w-10 rounded-full flex items-center justify-center transition-colors">
+                              <i class="fab fa-youtube"></i>
+                          </a>
+                          <a href="#" class="bg-pink-600 hover:bg-pink-500 h-10 w-10 rounded-full flex items-center justify-center transition-colors">
+                              <i class="fab fa-instagram"></i>
+                          </a>
+                      </div>
+                  </div>
+                  <div>
+                      <h3 class="text-lg font-bold mb-6 border-b border-gray-700 pb-2">Quick Links</h3>
+                      <ul class="space-y-3">
+                          <li><a href="#" class="text-gray-400 hover:text-white transition-colors">About Us</a></li>
+                          <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Academics</a></li>
+                          <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Admissions</a></li>
+                          <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Campus Life</a></li>
+                          <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Research</a></li>
+                          <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Alumni</a></li>
+                      </ul>
+                  </div>
+                  <div>
+                      <h3 class="text-lg font-bold mb-6 border-b border-gray-700 pb-2">Contact Us</h3>
+                      <ul class="space-y-3">
+                          <li class="flex items-start">
+                              <i class="fas fa-map-marker-alt text-blue-400 mt-1 mr-3"></i>
+                              <span class="text-gray-400">123 University Avenue, Modern City, MC 12345</span>
+                          </li>
+                          <li class="flex items-start">
+                              <i class="fas fa-phone text-blue-400 mt-1 mr-3"></i>
+                              <span class="text-gray-400">+1 (555) 123-4567</span>
+                          </li>
+                          <li class="flex items-start">
+                              <i class="fas fa-envelope text-blue-400 mt-1 mr-3"></i>
+                              <span class="text-gray-400">admissions@moderncollege.edu</span>
+                          </li>
+                      </ul>
+                  </div>
+                  <div>
+                      <h3 class="text-lg font-bold mb-6 border-b border-gray-700 pb-2">Newsletter</h3>
+                      <p class="text-gray-400 mb-4">Stay updated with the latest news and events</p>
+                      <form>
+                          <div class="flex mb-4">
+                              <input type="email" placeholder="Your email" class="bg-gray-800 text-white px-4 py-2 rounded-l-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+                              <button type="submit" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-r-lg transition-colors">
+                                  <i class="fas fa-paper-plane"></i>
+                              </button>
+                          </div>
+                      </form>
+                      <p class="text-xs text-gray-500">By subscribing, you agree to our Privacy Policy</p>
+                  </div>
+              </div>
+              <div class="border-t border-gray-800 pt-8 mt-8 text-center">
+                  <p class="text-gray-500 text-sm">&copy; 2025 Modern College. All rights reserved.</p>
+              </div>
+          </div>
+      </footer>
+  
+      <!-- Back to Top Button -->
+      <button id="back-to-top" class="fixed bottom-8 right-8 bg-blue-600 text-white p-4 rounded-full shadow-lg opacity-0 invisible transition-all duration-300">
+          <i class="fas fa-arrow-up"></i>
+      </button>
+  
+      <!-- JavaScript -->
+      <script>
+          // Mobile Menu Toggle
+          document.getElementById('mobile-menu-button').addEventListener('click', function() {
+              const mobileMenu = document.getElementById('mobile-menu');
+              mobileMenu.classList.toggle('hidden');
+          });
+  
+          // Animation initialization
+          document.addEventListener('DOMContentLoaded', function() {
+              AOS.init({
+                  once: true,
+                  duration: 800,
+                  offset: 100,
+                  easing: 'ease-in-out'
+              });
+  
+              // Back to Top Button
+              const backToTopButton = document.getElementById('back-to-top');
+              
+              window.addEventListener('scroll', function() {
+                  if (window.pageYOffset > 300) {
+                      backToTopButton.classList.remove('opacity-0', 'invisible');
+                      backToTopButton.classList.add('opacity-100', 'visible');
+                  } else {
+                      backToTopButton.classList.remove('opacity-100', 'visible');
+                      backToTopButton.classList.add('opacity-0', 'invisible');
+                  }
+              });
+  
+              backToTopButton.addEventListener('click', function() {
+                  window.scrollTo({
+                      top: 0,
+                      behavior: 'smooth'
+                  });
+              });
+  
+              // GSAP animations
+              gsap.registerPlugin(ScrollTrigger);
+  
+              gsap.from('.marquee', {
+                  x: -100,
+                  opacity: 0,
+                  duration: 1,
+                  scrollTrigger: {
+                      trigger: '.marquee',
+                      start: 'top bottom',
+                  }
+              });
+  
+              // Count up animation for statistics
+              const stats = document.querySelectorAll('.stat-counter');
+  
+              stats.forEach(stat => {
+                  const value = stat.innerText;
+                  
+                  // Skip animation for non-numeric values
+                  if (value.includes('+') || value.includes('M') || value.includes('%')) {
+                      return;
+                  }
+                  
+                  let startValue = 0;
+                  const endValue = parseInt(value.replace(/,/g, ''));
+                  const duration = 2000;
+                  
+                  let counter = setInterval(function() {
+                      startValue += Math.floor(endValue / (duration / 50));
+                      
+                      if (startValue >= endValue) {
+                          clearInterval(counter);
+                          stat.innerText = value;
+                      } else {
+                          stat.innerText = startValue.toLocaleString();
+                      }
+                  }, 50);
+              });
+          });
+      </script>
+  </body>
+  </html>
