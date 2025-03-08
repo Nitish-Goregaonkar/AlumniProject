@@ -25,3 +25,7 @@ can highlight the career path they have taken.
 --Plus it will be accessible on both web browser and mobile devices(if completed) making it easy for alumni an students to be used.
 
 -- AlumniConnexa : Official Alumni Association Portal
+
+--TechStack : HTML, CSS, Tailwind CSS, Javascript, 
+
+--API's:- Google OAuth, Gemini, Razorpay.
