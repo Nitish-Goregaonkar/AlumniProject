@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Alumni Events Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.10.2/cdn.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .blur-bg {
+            backdrop-filter: blur(8px);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div x-data="{ 
+        activeSection: 'home',
+        isLoggedIn: false,
+        userType: '',
+        showLoginModal: false,
+        showEventModal: false,
+        showApprovalModal: false,
+        selectedEvent: null,
+        events: [
+            {
+                id: 1,
+                title: 'Annual Alumni Meet 2025',
+                date: '2025-06-15',
+                time: '18:00',
+                venue: 'College Auditorium',
+                description: 'The annual gathering of all college alumni to celebrate achievements and reconnect with old friends.',
+                fundRequired: '50000',
+                organizer: 'Alumni Association',
+                status: 'approved',
+                image: 'https://via.placeholder.com/400',
+                attendees: 123
+            },
+            {
+                id: 2,
+                title: 'Career Counseling Session',
+                date: '2025-03-20',
+                time: '14:00',
+                venue: 'Seminar Hall',
+                description: 'Expert alumni will provide career guidance to current students and recent graduates.',
+                fundRequired: '15000',
+                organizer: 'Career Development Cell',
+                status: 'approved',
+                image: 'https://via.placeholder.com/400',
+                attendees: 85
+            },
+            {
+                id: 3,
+                title: 'Tech Workshop Series',
+                date: '2025-04-25',
+                time: '10:00',
+                venue: 'Engineering Block',
+                description: 'A series of workshops on latest technologies conducted by successful alumni working in the tech industry.',
+                fundRequired: '30000',
+                organizer: 'Tech Club',
+                status: 'pending',
+                image: 'https://via.placeholder.com/400',
+                attendees: 0
+            },
+            {
+                id: 4,
+                title: 'Cultural Night',
+                date: '2025-05-10',
+                time: '19:00',
+                venue: 'Open Air Theatre',
+                description: 'A night of music, dance and drama performances by alumni and current students.',
+                fundRequired: '35000',
+                organizer: 'Cultural Committee',
+                status: 'pending',
+                image: 'https://via.placeholder.com/400',
+                attendees: 0
+            }
+        ],
+        username: '',
+        password: '',
+        loginError: '',
+        newEvent: {
+            title: '',
+            date: '',
+            time: '',
+            venue: '',
+            description: '',
+            fundRequired: '',
+            organizer: ''
+        },
+        users: [
+            { username: 'organizer', password: 'pass123', type: 'organizer' },
+            { username: 'college', password: 'pass123', type: 'college' }
+        ],
+        
+        get approvedEvents() {
+            return this.events.filter(event => event.status === 'approved');
+        },
+        
+        get pendingEvents() {
+            return this.events.filter(event => event.status === 'pending');
+        },
+        
+        login() {
+            const user = this.users.find(u => u.username === this.username && u.password === this.password);
+            if (user) {
+                this.isLoggedIn = true;
+                this.userType = user.type;
+                this.showLoginModal = false;
+                this.loginError = '';
+                this.username = '';
+                this.password = '';
+                
+                // Initialize organizer name for event submissions
+                if (this.userType === 'organizer') {
+                    this.newEvent.organizer = user.username;
+                }
+            } else {
+                this.loginError = 'Invalid username or password';
+            }
+        },
+        
+        logout() {
+            this.isLoggedIn = false;
+            this.userType = '';
+            this.activeSection = 'home';
+        },
+        
+        submitEvent() {
+            // Create a new event with pending status
+            const newEventObj = {
+                id: this.events.length + 1,
+                ...this.newEvent,
+                status: 'pending',
+                image: 'https://via.placeholder.com/400',
+                attendees: 0
+            };
+            
+            // Add to events array
+            this.events.push(newEventObj);
+            
+            // Reset form
+            this.newEvent = {
+                title: '',
+                date: '',
+                time: '',
+                venue: '',
+                description: '',
+                fundRequired: '',
+                organizer: this.userType === 'organizer' ? this.username : ''
+            };
+            
+            // Close modal and show confirmation
+            this.showEventModal = false;
+            this.showNotification('Event submitted successfully! Waiting for approval.');
+        },
+        
+        approveEvent(eventId) {
+            const event = this.events.find(e => e.id === eventId);
+            if (event) {
+                event.status = 'approved';
+                this.showNotification('Event approved successfully!');
+                this.showApprovalModal = false;
+            }
+        },
+        
+        rejectEvent(eventId) {
+            this.events = this.events.filter(e => e.id !== eventId);
+            this.showNotification('Event rejected!');
+            this.showApprovalModal = false;
+        },
+        
+        openEventDetails(event) {
+            this.selectedEvent = event;
+            this.showApprovalModal = true;
+        },
+        
+        formatDate(dateStr) {
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            return new Date(dateStr).toLocaleDateString(undefined, options);
+        },
+        
+        notification: '',
+        showNotification(message) {
+            this.notification = message;
+            setTimeout(() => {
+                this.notification = '';
+            }, 3000);
+        }
+    }" class="flex flex-col min-h-screen">
+        
+        <!-- Notification -->
+        <div x-show="notification" x-transition class="fixed top-4 right-4 z-50 bg-indigo-600 text-white px-6 py-3 rounded-lg shadow-lg">
+            <p x-text="notification"></p>
+        </div>
+        
+        <!-- Header/Navigation -->
+        <header class="gradient-bg text-white shadow-lg sticky top-0 z-40">
+            <div class="container mx-auto px-4 py-3">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-graduation-cap text-2xl"></i>
+                        <span class="font-bold text-xl">College Alumni Events</span>
+                    </div>
+                    <div class="hidden md:flex items-center space-x-8">
+                        <button @click="activeSection = 'home'" class="hover:text-indigo-200 transition" :class="activeSection === 'home' ? 'font-semibold border-b-2 border-white pb-1' : ''">Home</button>
+                        <button @click="activeSection = 'events'" class="hover:text-indigo-200 transition" :class="activeSection === 'events' ? 'font-semibold border-b-2 border-white pb-1' : ''">Events</button>
+                        <template x-if="isLoggedIn && userType === 'organizer'">
+                            <button @click="showEventModal = true" class="hover:text-indigo-200 transition">Submit Event</button>
+                        </template>
+                        <template x-if="isLoggedIn && userType === 'college'">
+                            <button @click="activeSection = 'approval'" class="hover:text-indigo-200 transition" :class="activeSection === 'approval' ? 'font-semibold border-b-2 border-white pb-1' : ''">
+                                Approve Events
+                                <span x-show="pendingEvents.length > 0" class="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-indigo-800 bg-white rounded-full" x-text="pendingEvents.length"></span>
+                            </button>
+                        </template>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <template x-if="!isLoggedIn">
+                            <button @click="showLoginModal = true" class="bg-white text-indigo-700 px-4 py-2 rounded-full hover:bg-indigo-100 transition flex items-center space-x-2">
+                                <i class="fas fa-sign-in-alt"></i>
+                                <span>Login</span>
+                            </button>
+                        </template>
+                        <template x-if="isLoggedIn">
+                            <div class="flex items-center">
+                                <div class="mr-3 text-sm">
+                                    <span class="block font-semibold" x-text="'Welcome, ' + userType"></span>
+                                </div>
+                                <button @click="logout()" class="bg-indigo-800 text-white px-4 py-2 rounded-full hover:bg-indigo-900 transition flex items-center space-x-2">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    <span>Logout</span>
+                                </button>
+                            </div>
+                        </template>
+                        <!-- Mobile Menu Button -->
+                        <button class="md:hidden" @click="mobileMenu = !mobileMenu">
+                            <i class="fas fa-bars text-xl"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Mobile Menu -->
+                <div x-data="{ mobileMenu: false }" x-show="mobileMenu" @click.away="mobileMenu = false" x-transition class="md:hidden mt-4 pb-2">
+                    <div class="flex flex-col space-y-4">
+                        <button @click="activeSection = 'home'; mobileMenu = false" class="hover:bg-indigo-700 py-2 px-4 rounded">Home</button>
+                        <button @click="activeSection = 'events'; mobileMenu = false" class="hover:bg-indigo-700 py-2 px-4 rounded">Events</button>
+                        <template x-if="isLoggedIn && userType === 'organizer'">
+                            <button @click="showEventModal = true; mobileMenu = false" class="hover:bg-indigo-700 py-2 px-4 rounded">Submit Event</button>
+                        </template>
+                        <template x-if="isLoggedIn && userType === 'college'">
+                            <button @click="activeSection = 'approval'; mobileMenu = false" class="hover:bg-indigo-700 py-2 px-4 rounded">
+                                Approve Events
+                                <span x-show="pendingEvents.length > 0" class="inline-flex items-center justify-center ml-2 px-2 py-1 text-xs font-bold leading-none text-indigo-800 bg-white rounded-full" x-text="pendingEvents.length"></span>
+                            </button>
+                        </template>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Main content -->
+        <main class="flex-grow">
+            <!-- Hero Section -->
+            <section x-show="activeSection === 'home'" class="relative">
+                <!-- Hero Background -->
+                <div class="absolute inset-0 z-0 bg-gradient-to-br from-indigo-900 to-purple-800">
+                    <div class="absolute inset-0 bg-black opacity-50"></div>
+                </div>
+                
+                <!-- Hero Content -->
+                <div class="relative z-10 container mx-auto px-4 py-20 md:py-32 text-white">
+                    <div class="max-w-2xl">
+                        <h1 class="text-4xl md:text-6xl font-bold mb-4">Connect, Reunite, Celebrate</h1>
+                        <p class="text-xl md:text-2xl mb-8 text-indigo-100">Join our alumni events and stay connected with your college community.</p>
+                        <div class="flex space-x-4">
+                            <button @click="activeSection = 'events'" class="px-6 py-3 bg-white text-indigo-800 rounded-full shadow hover:bg-indigo-100 transition flex items-center">
+                                <span>View Events</span>
+                                <i class="fas fa-arrow-right ml-2"></i>
+                            </button>
+                            <template x-if="!isLoggedIn">
+                                <button @click="showLoginModal = true" class="px-6 py-3 border-2 border-white text-white rounded-full hover:bg-white hover:text-indigo-800 transition">
+                                    <span>Sign In</span>
+                                </button>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Stats Section -->
+                <div class="relative z-10 bg-white py-12">
+                    <div class="container mx-auto px-4">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                            <div class="text-center">
+                                <div class="text-4xl font-bold text-indigo-700 mb-2">5000+</div>
+                                <div class="text-gray-600">Alumni Network</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-4xl font-bold text-indigo-700 mb-2">20+</div>
+                                <div class="text-gray-600">Annual Events</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-4xl font-bold text-indigo-700 mb-2">15+</div>
+                                <div class="text-gray-600">Years of Excellence</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Featured Events -->
+                <div class="py-16 bg-gray-50">
+                    <div class="container mx-auto px-4">
+                        <div class="mb-12 text-center">
+                            <h2 class="text-3xl font-bold text-gray-900 mb-2">Upcoming Featured Events</h2>
+                            <p class="text-gray-600 max-w-xl mx-auto">Join us for these exciting opportunities to connect with fellow alumni and expand your network.</p>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            <template x-for="event in approvedEvents.slice(0, 3)" :key="event.id">
+                                <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover">
+                                    <div class="h-48 bg-indigo-200 relative">
+                                        <img src="/api/placeholder/400/320" alt="Event image" class="w-full h-full object-cover">
+                                        <div class="absolute bottom-0 left-0 bg-indigo-700 text-white px-4 py-2 rounded-tr-lg">
+                                            <span x-text="formatDate(event.date)"></span>
+                                        </div>
+                                    </div>
+                                    <div class="p-6">
+                                        <h3 class="text-xl font-bold text-gray-900 mb-2" x-text="event.title"></h3>
+                                        <p class="text-gray-600 mb-4" x-text="event.description.substring(0, 100) + '...'"></p>
+                                        <div class="flex justify-between items-center">
+                                            <div class="flex items-center text-sm text-gray-500">
+                                                <i class="fas fa-map-marker-alt mr-2 text-indigo-600"></i>
+                                                <span x-text="event.venue"></span>
+                                            </div>
+                                            <button class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">Details</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                        
+                        <div class="mt-12 text-center">
+                            <button @click="activeSection = 'events'" class="px-6 py-3 bg-indigo-600 text-white rounded-full shadow hover:bg-indigo-700 transition">
+                                <span>View All Events</span>
+                                <i class="fas fa-chevron-right ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Events Section -->
+            <section x-show="activeSection === 'events'" class="py-16 bg-gray-50">
+                <div class="container mx-auto px-4">
+                    <div class="mb-12">
+                        <h2 class="text-3xl font-bold text-gray-900 mb-4">Upcoming Events</h2>
+                        <p class="text-gray-600 max-w-3xl">Browse all upcoming alumni events and register to participate. Connect with fellow alumni and expand your professional network.</p>
+                    </div>
+                    
+                    <div x-show="approvedEvents.length === 0" class="bg-white shadow rounded-lg p-8 text-center">
+                        <i class="far fa-calendar-times text-5xl text-gray-400 mb-4"></i>
+                        <p class="text-gray-500 text-lg">No approved events available at this time.</p>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <template x-for="event in approvedEvents" :key="event.id">
+                            <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover">
+                                <div class="h-48 bg-indigo-200 relative">
+                                    <img src="/api/placeholder/400/320" alt="Event image" class="w-full h-full object-cover">
+                                    <div class="absolute top-0 right-0 bg-white text-indigo-700 px-4 py-2 rounded-bl-lg">
+                                        <i class="fas fa-users mr-1"></i>
+                                        <span x-text="event.attendees + ' attending'"></span>
+                                    </div>
+                                </div>
+                                <div class="p-6">
+                                    <div class="flex justify-between items-start mb-4">
+                                        <h3 class="text-xl font-bold text-gray-900" x-text="event.title"></h3>
+                                        <div class="bg-indigo-100 text-indigo-800 text-xs font-semibold px-3 py-1 rounded-full">
+                                            <span x-text="formatDate(event.date)"></span>
+                                        </div>
+                                    </div>
+                                    <p class="text-gray-600 mb-6" x-text="event.description.substring(0, 120) + '...'"></p>
+                                    <div class="grid grid-cols-2 gap-4 mb-6">
+                                        <div class="flex items-center text-sm text-gray-500">
+                                            <i class="fas fa-clock mr-2 text-indigo-600"></i>
+                                            <span x-text="event.time"></span>
+                                        </div>
+                                        <div class="flex items-center text-sm text-gray-500">
+                                            <i class="fas fa-map-marker-alt mr-2 text-indigo-600"></i>
+                                            <span x-text="event.venue"></span>
+                                        </div>
+                                    </div>
+                                    <div class="flex justify-between items-center pt-4 border-t border-gray-200">
+                                        <div class="text-sm text-gray-500" x-text="'By ' + event.organizer"></div>
+                                        <button class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition">Register</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                    
+                    <template x-if="!isLoggedIn && approvedEvents.length > 0">
+                        <div class="mt-12 p-6 bg-indigo-50 rounded-xl shadow-sm">
+                            <div class="flex flex-col md:flex-row items-center justify-between">
+                                <div class="mb-4 md:mb-0">
+                                    <h3 class="text-xl font-bold text-indigo-900">Want to organize your own event?</h3>
+                                    <p class="text-indigo-700">Login as an organizer to submit your event proposal.</p>
+                                </div>
+                                <button @click="showLoginModal = true" class="px-6 py-3 bg-indigo-600 text-white rounded-full shadow hover:bg-indigo-700 transition">
+                                    <span>Login Now</span>
+                                    <i class="fas fa-arrow-right ml-2"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </section>
+            
+            <!-- Approval Section (College Admin) -->
+            <section x-show="activeSection === 'approval' && isLoggedIn && userType === 'college'" class="py-16 bg-gray-50">
+                <div class="container mx-auto px-4">
+                    <div class="mb-8">
+                        <h2 class="text-3xl font-bold text-gray-900 mb-4">Event Approval Dashboard</h2>
+                        <p class="text-gray-600 max-w-3xl">Review and approve event submissions from organizers.</p>
+                    </div>
+                    
+                    <div x-show="pendingEvents.length === 0" class="bg-white shadow rounded-lg p-8 text-center">
+                        <i class="far fa-check-circle text-5xl text-green-500 mb-4"></i>
+                        <p class="text-gray-500 text-lg">No pending events to approve at this time.</p>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <template x-for="event in pendingEvents" :key="event.id">
+                            <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                                <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4">
+                                    <div class="flex justify-between items-center">
+                                        <h3 class="text-xl font-bold text-gray-900" x-text="event.title"></h3>
+                                        <span class="px-3 py-1 bg-yellow-200 text-yellow-800 rounded-full text-sm">Pending Approval</span>
+                                    </div>
+                                </div>
+                                <div class="p-6">
+                                    <div class="grid grid-cols-2 gap-4 mb-4">
+                                        <div>
+                                            <p class="text-sm text-gray-500">Date:</p>
+                                            <p class="font-semibold" x-text="formatDate(event.date)"></p>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm text-gray-500">Time:</p>
+                                            <p class="font-semibold" x-text="event.time"></p>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm text-gray-500">Venue:</p>
+                                            <p class="font-semibold" x-text="event.venue"></p>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm text-gray-500">Funds Required:</p>
+                                            <p class="font-semibold" x-text="'₹' + event.fundRequired"></p>
+                                        </div>
+                                    </div>
+                                    <div class="mb-6">
+                                        <p class="text-sm text-gray-500 mb-1">Description:</p>
+                                        <p class="text-gray-700" x-text="event.description"></p>
+                                    </div>
+                                    <div class="flex justify-between items-center pt-4 border-t border-gray-200">
+                                        <div class="text-sm text-gray-500" x-text="'Submitted by: ' + event.organizer"></div>
+                                        <div class="flex space-x-3">
+                                            <button @click="rejectEvent(event.id)" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition">
+                                                <i class="fas fa-times mr-1"></i> Reject
+                                            </button>
+                                            <button @click="approveEvent(event.id)" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">
+                                                <i class="fas fa-check mr-1"></i> Approve
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Access Denied Section -->
+            <section x-show="activeSection === 'approval' && (!isLoggedIn || userType !== 'college')" class="py-16 bg-gray-50">
+                <div class="container mx-auto px-4">
+                    <div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-md text-center">
+                        <div class="text-red-500 mb-4">
+                            <i class="fas fa-exclamation-circle text-5xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold text-gray-900 mb-4">Access Denied</h2>
+                        <p class="text-gray-600 mb-6">You don't have permission to access this page. Please login with college administrator credentials.</p>
+                        <button @click="showLoginModal = true" class="px-6 py-3 bg-indigo-600 text-white rounded-full shadow hover:bg-indigo-700 transition">
+                            Login as Admin
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <!-- Footer -->
+        <footer class="gradient-bg text-white py-8">
+            <div class="container mx-auto px-4">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                    <div>
+                        <h3 class="text-lg font-bold mb-4">College Alumni Events</h3>
+                        <p class="text-indigo-200">Connecting graduates, building networks, and creating opportunities.</p>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold mb-4">Quick Links</h3>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="text-indigo-200 hover:text-white transition">About Us</a></li>
+                            <li><a href="#" class="text-indigo-200 hover:text-white transition">Contact</a></li>
+                            <li><a href="#" class="text-indigo-200 hover:text-white transition">FAQ</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold mb-4">Contact Us</h3>
+                        <ul class="space-y-2">
+                            <li class="flex items-center"><i class="fas fa-envelope mr-2"></i> alumni@college.edu</li>
+                            <li class="flex items-center"><i class="fas fa-phone mr-2"></i> +91 123 456 7890</li>
+                            <li class="flex items-center"><i class="fas fa-map-marker-alt mr-2"></i> Mumbai, India</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold mb-4">Connect With Us</h3>
+                        <div class="flex space-x-4">
+                            <a href="#" class="w-10 h-10 rounded-full bg-white text-indigo-700 flex items-center justify-center hover:bg-indigo-100 transition">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="#" class="w-10 h-10 rounded-full bg-white text-indigo-700 flex items-center justify-center hover:bg-indigo-100 transition">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="#" class="w-10 h-10 rounded-full bg-white text-indigo-700 flex items-center justify-center hover:bg-indigo-100 transition">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            justify-center hover:bg-indigo-100 transition">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-indigo-500 mt-8 pt-8 text-center">
+                <p class="text-indigo-200">&copy; 2023 College Alumni Events. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div x-show="showLoginModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50" @click.away="showLoginModal = false">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-md p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-900">Login</h2>
+                <button @click="showLoginModal = false" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form @submit.prevent="login">
+                <div class="mb-4">
+                    <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+                    <input type="text" id="username" x-model="username" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" required>
+                </div>
+                <div class="mb-6">
+                    <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                    <input type="password" id="password" x-model="password" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" required>
+                </div>
+                <div x-show="loginError" class="mb-4 text-sm text-red-600" x-text="loginError"></div>
+                <button type="submit" class="w-full px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    Login
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Event Submission Modal -->
+    <div x-show="showEventModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50" @click.away="showEventModal = false">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-900">Submit New Event</h2>
+                <button @click="showEventModal = false" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form @submit.prevent="submitEvent">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="eventTitle" class="block text-sm font-medium text-gray-700">Event Title</label>
+                        <input type="text" id="eventTitle" x-model="newEvent.title" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" required>
+                    </div>
+                    <div>
+                        <label for="eventDate" class="block text-sm font-medium text-gray-700">Event Date</label>
+                        <input type="date" id="eventDate" x-model="newEvent.date" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" required>
+                    </div>
+                    <div>
+                        <label for="eventTime" class="block text-sm font-medium text-gray-700">Event Time</label>
+                        <input type="time" id="eventTime" x-model="newEvent.time" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" required>
+                    </div>
+                    <div>
+                        <label for="eventVenue" class="block text-sm font-medium text-gray-700">Event Venue</label>
+                        <input type="text" id="eventVenue" x-model="newEvent.venue" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" required>
+                    </div>
+                    <div class="md:col-span-2">
+                        <label for="eventDescription" class="block text-sm font-medium text-gray-700">Event Description</label>
+                        <textarea id="eventDescription" x-model="newEvent.description" rows="4" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" required></textarea>
+                    </div>
+                    <div>
+                        <label for="eventFundRequired" class="block text-sm font-medium text-gray-700">Funds Required</label>
+                        <input type="number" id="eventFundRequired" x-model="newEvent.fundRequired" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" required>
+                    </div>
+                    <div>
+                        <label for="eventOrganizer" class="block text-sm font-medium text-gray-700">Organizer</label>
+                        <input type="text" id="eventOrganizer" x-model="newEvent.organizer" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" required>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <button type="submit" class="w-full px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        Submit Event
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Event Details Modal -->
+    <div x-show="showApprovalModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50" @click.away="showApprovalModal = false">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-900" x-text="selectedEvent.title"></h2>
+                <button @click="showApprovalModal = false" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <p class="text-sm text-gray-500">Date:</p>
+                    <p class="font-semibold" x-text="formatDate(selectedEvent.date)"></p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-500">Time:</p>
+                    <p class="font-semibold" x-text="selectedEvent.time"></p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-500">Venue:</p>
+                    <p class="font-semibold" x-text="selectedEvent.venue"></p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-500">Funds Required:</p>
+                    <p class="font-semibold" x-text="'₹' + selectedEvent.fundRequired"></p>
+                </div>
+                <div class="md:col-span-2">
+                    <p class="text-sm text-gray-500">Description:</p>
+                    <p class="text-gray-700" x-text="selectedEvent.description"></p>
+                </div>
+                <div class="md:col-span-2">
+                    <p class="text-sm text-gray-500">Organizer:</p>
+                    <p class="text-gray-700" x-text="selectedEvent.organizer"></p>
+                </div>
+            </div>
+            <div class="mt-6 flex justify-end space-x-3">
+                <button @click="rejectEvent(selectedEvent.id)" class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600">
+                    Reject
+                </button>
+                <button @click="approveEvent(selectedEvent.id)" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">
+                    Approve
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
