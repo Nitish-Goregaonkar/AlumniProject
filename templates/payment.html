@@ -1,0 +1,753 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Luxury Dining Experience</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/8.10.0/firebase-app.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/8.10.0/firebase-firestore.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/8.10.0/firebase-storage.min.js"></script>
+
+    <!-- Other head elements -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <style>
+      :root {
+        --color-primary: #ff6b6b;
+        --color-secondary: #f9d5e5;
+        --color-dark: #2b1a10;
+        --color-dark-lighter: #3c2518;
+        --color-accent: #ffd93d;
+        --color-light: #fffaf0;
+        --color-overlay: rgba(43, 26, 16, 0.9);
+      }
+      @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;700&family=Raleway:wght@300;400;600&display=swap");
+      .welcome-text {
+        background: linear-gradient(
+          135deg,
+          var(--color-primary),
+          var(--color-accent)
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: 0 0 20px rgba(217, 79, 4, 0.3);
+        font-size: 4rem;
+        font-weight: 700;
+        animation: fadeIn 1.5s ease-in-out;
+      }
+      .luxury-button {
+        background: linear-gradient(
+          135deg,
+          var(--color-primary),
+          var(--color-accent)
+        );
+        color: var(--color-dark);
+        font-weight: 600;
+        border: 1px solid rgba(217, 79, 4, 0.3);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer;
+        box-shadow: 0 5px 15px rgba(217, 79, 4, 0.3);
+        border-radius: 8px;
+        text-transform: uppercase;
+      }
+      .luxury-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 30px rgba(217, 79, 4, 0.5);
+        background: linear-gradient(
+          135deg,
+          var(--color-accent),
+          var(--color-primary)
+        );
+      }
+      .glass-effect {
+        background: rgba(43, 26, 16, 0.85);
+        backdrop-filter: blur(12px);
+        border: 2px solid rgba(217, 79, 4, 0.2);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        border-radius: 16px;
+        padding: 20px;
+      }
+      .bg-texture {
+        background-color: var(--color-dark);
+        background-image: radial-gradient(
+            circle,
+            rgba(217, 79, 4, 0.05) 10%,
+            transparent 10%
+          ),
+          radial-gradient(circle, rgba(217, 79, 4, 0.05) 10%, transparent 10%);
+        background-size: 20px 20px;
+        opacity: 0.9;
+      }
+      .animated-border {
+        position: relative;
+        overflow: hidden;
+      }
+      .animated-border::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--color-primary),
+          transparent
+        );
+        animation: borderFlow 3s linear infinite;
+      }
+      @keyframes borderFlow {
+        0% {
+          left: -100%;
+        }
+        100% {
+          left: 100%;
+        }
+      }
+      input,
+      select,
+      textarea {
+        background: var(--color-dark-lighter);
+        border: 1px solid rgba(217, 79, 4, 0.3);
+        border-radius: 6px;
+        padding: 10px;
+        color: var(--color-light);
+        transition: box-shadow 0.3s ease, border-color 0.3s ease;
+      }
+      input:focus,
+      select:focus,
+      textarea:focus {
+        border-color: var(--color-primary);
+        box-shadow: 0 0 10px rgba(217, 79, 4, 0.5);
+      }
+      ::placeholder {
+        color: var(--color-secondary);
+        opacity: 0.7;
+      }
+      ::-webkit-scrollbar {
+        width: 10px;
+      }
+      ::-webkit-scrollbar-track {
+        background: var(--color-dark);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: linear-gradient(
+          135deg,
+          var(--color-primary),
+          var(--color-accent)
+        );
+        border-radius: 5px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(
+          135deg,
+          var(--color-accent),
+          var(--color-primary)
+        );
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-texture min-h-screen">
+    <div
+      id="welcomeScreen"
+      class="fixed inset-0 flex items-center justify-center z-50 bg-black/90 backdrop-blur-lg bg-[url('image.png')] bg-cover bg-center"
+    >
+      <div class="text-center p-8 max-w-2xl mx-auto">
+        <h1
+          class="font-playfair text-5xl md:text-7xl mb-6 welcome-text text-white"
+        >
+          Welcome
+        </h1>
+        <p class="font-poppins text-[#C6A869]/80 text-lg md:text-xl mb-8">
+          to an exceptional dining experience
+        </p>
+        <button
+          id="startOrderingBtn"
+          class="luxury-button px-8 py-4 rounded-lg text-black font-semibold font-poppins transform transition hover:scale-105 bg-white"
+        >
+          Start Ordering
+        </button>
+      </div>
+    </div>
+    <div id="mainMenu" class="hidden min-h-screen">
+      <header
+        class="bg-[#2C2620]/95 backdrop-blur-md sticky top-0 z-40 border-b border-[#C6A869]/20"
+      >
+        <div
+          class="container mx-auto px-4 py-4 flex justify-between items-center"
+        >
+          <h2 class="font-playfair text-2xl md:text-3xl welcome-text">
+            Our Menu
+          </h2>
+          <div class="flex items-center gap-4">
+            <div class="relative">
+              <button
+                id="cartToggle"
+                class="luxury-button p-3 rounded-full text-white"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                  />
+                </svg>
+                <span
+                  id="cartBadge"
+                  class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center"
+                  >0</span
+                >
+              </button>
+            </div>
+          </div>
+        </div>
+      </header>
+      <div class="container mx-auto px-4 py-6">
+        <div class="flex flex-col md:flex-row gap-4 mb-8">
+          <div class="flex-1">
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Search menu..."
+              class="w-full px-4 py-3 bg-[#2C2620]/50 border border-[#C6A869]/20 rounded-lg text-[#C6A869] placeholder-[#C6A869]/40 focus:outline-none focus:border-[#C6A869] transition-colors"
+            />
+          </div>
+          <div class="w-full md:w-48">
+            <select
+              id="categoryFilter"
+              class="w-full px-4 py-3 bg-[#2C2620]/50 border border-[#C6A869]/20 rounded-lg text-[#C6A869] focus:outline-none focus:border-[#C6A869] transition-colors"
+            >
+              <option value="all">All Categories</option>
+              <option value="Non-Veg" class="bg-[#2C2620] text-[#C6A869]">
+                Non-Veg
+              </option>
+              <option value="Veg" class="bg-[#2C2620] text-[#C6A869]">
+                Veg
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="container mx-auto px-4 pb-24">
+        <div
+          id="menuGrid"
+          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        ></div>
+      </div>
+      <div
+        id="cart"
+        class="fixed top-0 right-0 h-full w-full md:w-96 bg-[#2C2620]/95 backdrop-blur-md transform translate-x-full transition-transform duration-300 z-50 border-l border-[#C6A869]/20"
+      >
+        <div class="h-full flex flex-col p-6">
+          <div class="flex justify-between items-center mb-6">
+            <h3 class="font-playfair text-2xl welcome-text">Your Order</h3>
+            <button id="cartClose" class="text-[#C6A869] hover:text-[#E5C687]">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
+          <div id="cartItems" class="flex-1 overflow-y-auto space-y-4"></div>
+          <div class="border-t border-[#C6A869]/20 pt-4 mt-4">
+            <div class="flex justify-between items-center mb-4">
+              <span class="text-[#C6A869]">Total</span>
+              <span id="cartTotal" class="text-2xl font-bold welcome-text"
+                >₹0.00</span
+              >
+            </div>
+            <button
+              onclick="showCheckout()"
+              class="luxury-button w-full py-4 rounded-lg text-black font-semibold"
+            >
+              Proceed to Checkout
+            </button>
+          </div>
+        </div>
+      </div>
+      <div
+        id="checkoutModal"
+        class="fixed inset-0 bg-black/90 backdrop-blur-lg flex items-center justify-center z-50 hidden"
+      >
+        <div
+          class="bg-[#2C2620] p-6 rounded-xl w-full max-w-md mx-4 max-h-[90vh] overflow-y-auto"
+        >
+          <h3 class="font-playfair text-2xl mb-6 welcome-text text-center">
+            Complete Your Order
+          </h3>
+          <form id="checkoutForm" class="space-y-6">
+            <div>
+              <label class="block text-[#C6A869] mb-2">Name</label>
+              <input
+                type="text"
+                name="name"
+                required
+                class="w-full px-4 py-3 bg-[#1A1611] border border-[#C6A869]/20 rounded-lg text-[#C6A869] focus:outline-none focus:border-[#C6A869]"
+              />
+            </div>
+            <div>
+              <label class="block text-[#C6A869] mb-2">Phone</label>
+              <input
+                type="tel"
+                name="phone"
+                required
+                class="w-full px-4 py-3 bg-[#1A1611] border border-[#C6A869]/20 rounded-lg text-[#C6A869] focus:outline-none focus:border-[#C6A869]"
+              />
+            </div>
+            <div>
+              <label class="block text-[#C6A869] mb-2">Special Requests</label>
+              <textarea
+                name="requests"
+                rows="3"
+                class="w-full px-4 py-3 bg-[#1A1611] border border-[#C6A869]/20 rounded-lg text-[#C6A869] focus:outline-none focus:border-[#C6A869]"
+              ></textarea>
+            </div>
+            <div>
+              <label class="block text-[#C6A869] mb-2">Payment Details</label>
+              <div id="qrCodeContainer" class="flex justify-center mb-4">
+                <!-- QR Code will be generated here -->
+              </div>
+              <div class="text-center text-[#C6A869] mb-4">
+                <p>UPI ID: 9834682725@ybl</p>
+                <p>Name: Pratik Rathod</p>
+                <p>Amount: ₹<span id="totalAmount">0.00</span></p>
+              </div>
+              <div>
+                <label class="block text-[#C6A869] mb-2"
+                  >Upload Payment Screenshot</label
+                >
+                <input
+                  type="file"
+                  name="paymentScreenshot"
+                  accept="image/*"
+                  required
+                  class="w-full px-4 py-3 bg-[#1A1611] border border-[#C6A869]/20 rounded-lg text-[#C6A869] focus:outline-none focus:border-[#C6A869]"
+                />
+              </div>
+            </div>
+            <div class="flex gap-4">
+              <button
+                type="button"
+                onclick="document.getElementById('checkoutModal').classList.add('hidden')"
+                class="flex-1 px-6 py-3 border border-[#C6A869] rounded-lg text-[#C6A869] hover:bg-[#C6A869]/10 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                class="flex-1 luxury-button px-6 py-3 rounded-lg text-black"
+              >
+                Place Order
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyC6roFFurjot-MBVr5coUGSryMAwEVjL14",
+        appId: "1:943927701191:web:ecad39207dbfdd720098e2",
+        messagingSenderId: "943927701191",
+        projectId: "e-learning-app-it-art",
+        authDomain: "e-learning-app-it-art.firebaseapp.com",
+        storageBucket: "e-learning-app-it-art.appspot.com",
+      };
+
+
+      let db,
+        cart = [],
+        menuItems = [];
+      function showToast(message, type = "success") {
+        const toast = document.createElement("div");
+        toast.className = `fixed bottom-4 right-4 p-4 rounded-lg shadow-lg transition-opacity duration-500 z-50 ${
+          type === "success" ? "bg-green-500" : "bg-red-500"
+        } text-white`;
+        toast.textContent = message;
+        document.body.appendChild(toast);
+        setTimeout(() => {
+          toast.style.opacity = "0";
+          setTimeout(() => {
+            document.body.removeChild(toast);
+          }, 500);
+        }, 3000);
+      }
+      function initialize() {
+        if (!firebase.apps.length) {
+          firebase.initializeApp(firebaseConfig);
+        }
+        db = firebase.firestore();
+        setupEventListeners();
+        setupCartToggle();
+        loadMenuItems();
+        showToast(
+          "Welcome to Tasty Bites! We're excited to have you here. Please enjoy your meal"
+        );
+      }
+      function setupEventListeners() {
+        document
+          .getElementById("startOrderingBtn")
+          ?.addEventListener("click", startOrdering);
+        document
+          .getElementById("searchInput")
+          ?.addEventListener("input", handleSearch);
+        document
+          .getElementById("categoryFilter")
+          ?.addEventListener("change", handleCategoryFilter);
+        document
+          .getElementById("checkoutForm")
+          ?.addEventListener("submit", handleCheckout);
+      }
+      function setupCartToggle() {
+        const cartToggle = document.getElementById("cartToggle");
+        const cartElement = document.getElementById("cart");
+        if (cartToggle && cartElement) {
+          cartToggle.addEventListener("click", () => {
+            cartElement.classList.toggle("translate-x-full");
+            if (!cartElement.classList.contains("translate-x-full")) {
+              showToast("Cart opened");
+            }
+          });
+        }
+      }
+      function handleSearch(e) {
+        const searchTerm = e.target.value.toLowerCase();
+        const filteredItems = menuItems.filter(
+          (item) =>
+            item.name.toLowerCase().includes(searchTerm) ||
+            item.description.toLowerCase().includes(searchTerm)
+        );
+        renderMenuItems(filteredItems);
+        showToast(`Found ${filteredItems.length} items matching your search`);
+      }
+      function handleCategoryFilter(e) {
+        const category = e.target.value;
+        const filteredItems =
+          category === "all"
+            ? menuItems
+            : menuItems.filter((item) => item.category === category);
+        renderMenuItems(filteredItems);
+        showToast(
+          `Showing ${category === "all" ? "all items" : category + " category"}`
+        );
+      }
+      async function loadMenuItems() {
+        try {
+          const snapshot = await db
+            .collection("menuItems")
+            .where("isDisplayed", "==", true)
+            .get();
+          menuItems = snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+          menuItems.sort((a, b) => a.category.localeCompare(b.category));
+          if (menuItems.length === 0) {
+            document.getElementById(
+              "menuItemsContainer"
+            ).innerHTML = `<div class="text-center py-8"><p class="text-[#C6A869]/60 text-lg">No menu items are currently available.</p></div>`;
+            showToast("No menu items available", "error");
+            return;
+          }
+          renderMenuItems();
+          updateCategoryFilter();
+        } catch (error) {
+          console.error("Error loading menu items:", error);
+          document.getElementById(
+            "menuItemsContainer"
+          ).innerHTML = `<div class="text-center py-8"><p class="text-[#C6A869] text-lg">Unable to load menu items. Please try refreshing the page.</p></div>`;
+          showToast("Failed to load menu items", "error");
+        }
+      }
+      function updateCategoryFilter() {
+        const categoryFilter = document.getElementById("categoryFilter");
+        if (!categoryFilter) return;
+        const categories = [...new Set(menuItems.map((item) => item.category))];
+        categories.sort();
+        categoryFilter.innerHTML = `<option value="all">All Categories</option>${categories
+          .map(
+            (category) =>
+              `<option value="${category}" class="bg-[#2C2620] text-[#C6A869]">${category}</option>`
+          )
+          .join("")}`;
+      }
+      function startOrdering() {
+        const welcomeScreen = document.getElementById("welcomeScreen");
+        const mainMenu = document.getElementById("mainMenu");
+        if (welcomeScreen && mainMenu) {
+          welcomeScreen.classList.add("hidden");
+          mainMenu.classList.remove("hidden");
+          showToast("Welcome to our restaurant! Start your order.");
+        }
+      }
+      function renderMenuItems(items = menuItems) {
+        const menuGrid = document.getElementById("menuGrid");
+        if (!menuGrid) return;
+        menuGrid.innerHTML = "";
+        items.forEach((item) => {
+          const itemElement = document.createElement("div");
+          itemElement.className =
+            "menu-item bg-gray-800/50 backdrop-blur-md rounded-xl overflow-hidden";
+          itemElement.innerHTML = `<img src="${
+            item.imageUrl || "/api/placeholder/400/200"
+          }" alt="${
+            item.name
+          }" class="w-full h-48 object-cover rounded-t-xl"><div class="p-4 md:p-6"><h3 class="text-xl font-bold mb-2 text-[#C6A869]">${
+            item.name
+          }</h3><p class="text-[#C6A869]/60 text-sm mb-4">${
+            item.description
+          }</p><div class="flex justify-between items-center"><span class="text-xl font-bold welcome-text">₹${item.price.toFixed(
+            2
+          )}</span><button onclick="addToCart('${
+            item.id
+          }')" class="luxury-button px-4 md:px-6 py-2 md:py-3 rounded-lg font-semibold">Add to Cart</button></div></div>`;
+          menuGrid.appendChild(itemElement);
+        });
+      }
+      function addToCart(itemId) {
+        const item = menuItems.find((item) => item.id === itemId);
+        if (item) {
+          const existingItem = cart.find((cartItem) => cartItem.id === itemId);
+          if (existingItem) {
+            existingItem.quantity++;
+            showToast(`Added another ${item.name} to cart`);
+          } else {
+            cart.push({ ...item, quantity: 1 });
+            showToast(`${item.name} added to cart`);
+          }
+          updateCart();
+        }
+      }
+      function updateCart() {
+        const cartItems = document.getElementById("cartItems");
+        const cartTotal = document.getElementById("cartTotal");
+        const cartBadge = document.getElementById("cartBadge");
+        if (!cartItems || !cartTotal || !cartBadge) return;
+        cartItems.innerHTML = "";
+        let total = 0;
+        cart.forEach((item) => {
+          const itemElement = document.createElement("div");
+          itemElement.className =
+            "flex justify-between items-center py-2 border-b border-[#C6A869]/20";
+          itemElement.innerHTML = `<div class="flex-1"><h4 class="font-medium text-[#C6A869]">${
+            item.name
+          }</h4><p class="text-sm text-[#C6A869]/60">₹${item.price.toFixed(
+            2
+          )}</p></div><div class="flex items-center gap-2"><div class="flex items-center bg-gray-800/50 rounded-lg"><button onclick="decrementQuantity('${
+            item.id
+          }')" class="px-3 py-1 text-[#C6A869] hover:text-[#E5C687] transition-colors">-</button><span class="px-3 text-[#C6A869]">${
+            item.quantity
+          }</span><button onclick="incrementQuantity('${
+            item.id
+          }')" class="px-3 py-1 text-[#C6A869] hover:text-[#E5C687] transition-colors">+</button></div><button onclick="removeFromCart('${
+            item.id
+          }')" class="text-[#C6A869] hover:text-[#E5C687] transition-colors ml-2"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586z"/></svg></button></div>`;
+          cartItems.appendChild(itemElement);
+          total += item.price * item.quantity;
+        });
+        cartTotal.textContent = `₹${total.toFixed(2)}`;
+        cartBadge.textContent = cart.reduce(
+          (sum, item) => sum + item.quantity,
+          0
+        );
+      }
+      function incrementQuantity(itemId) {
+        const item = cart.find((item) => item.id === itemId);
+        if (item) {
+          item.quantity++;
+          updateCart();
+          showToast(`Added another ${item.name} to cart`);
+        }
+      }
+      function decrementQuantity(itemId) {
+        const item = cart.find((item) => item.id === itemId);
+        if (item) {
+          if (item.quantity > 1) {
+            item.quantity--;
+            updateCart();
+            showToast(`Removed one ${item.name} from cart`);
+          } else {
+            removeFromCart(itemId);
+          }
+        }
+      }
+      function removeFromCart(itemId) {
+        const index = cart.findIndex((item) => item.id === itemId);
+        if (index !== -1) {
+          const item = cart[index];
+          cart.splice(index, 1);
+          updateCart();
+          showToast(`${item.name} removed from cart`);
+        }
+      }
+      function closeCart() {
+        const cart = document.getElementById("cart");
+        if (cart) {
+          cart.classList.add("translate-x-full");
+        } else {
+          console.error("Cart element not found.");
+        }
+      }
+      document.addEventListener("DOMContentLoaded", () => {
+        const cartClose = document.getElementById("cartClose");
+        if (cartClose) {
+          cartClose.addEventListener("click", closeCart);
+        } else {
+          console.error("Cart close button not found.");
+        }
+      });
+      function showCheckout() {
+        if (cart.length === 0) {
+          showToast("Cannot checkout with empty cart", "error");
+          return;
+        }
+
+        const checkoutModal = document.getElementById("checkoutModal");
+        if (checkoutModal) {
+          checkoutModal.classList.remove("hidden");
+          showToast("Please complete your order details");
+
+          // Calculate total amount
+          const totalAmount = cart.reduce(
+            (sum, item) => sum + item.price * item.quantity,
+            0
+          );
+          document.getElementById("totalAmount").textContent =
+            totalAmount.toFixed(2);
+
+          // Generate QR Code
+          const qrCodeContainer = document.getElementById("qrCodeContainer");
+          qrCodeContainer.innerHTML = ""; // Clear previous QR code
+
+          // Create a canvas element
+          const canvas = document.createElement("canvas");
+          qrCodeContainer.appendChild(canvas);
+
+          const upiId = "9834682725@ybl";
+          const name = "Pratik Rathod";
+          const amount = totalAmount.toFixed(2);
+          const upiLink = `upi://pay?pa=${upiId}&pn=${name}&am=${amount}&cu=INR`;
+
+          // Ensure the QRCode library is loaded
+          if (typeof QRCode === "undefined") {
+            console.error("QRCode library is not loaded.");
+            showToast("Failed to generate QR code. Please try again.", "error");
+            return;
+          }
+
+          // Generate QR Code
+          QRCode.toCanvas(
+            canvas,
+            upiLink,
+            { width: 200, height: 200 },
+            (error) => {
+              if (error) {
+                console.error("Error generating QR code:", error);
+                showToast(
+                  "Failed to generate QR code. Please try again.",
+                  "error"
+                );
+              }
+            }
+          );
+        }
+      }
+
+      async function handleCheckout(e) {
+        e.preventDefault();
+        if (cart.length === 0) {
+          showToast("Cannot place order with an empty cart", "error");
+          return;
+        }
+
+        const formData = new FormData(e.target);
+        const paymentScreenshot = formData.get("paymentScreenshot");
+
+        if (!paymentScreenshot || paymentScreenshot.size === 0) {
+          showToast("Please upload the payment screenshot", "error");
+          return;
+        }
+
+        const orderData = {
+          customerName: formData.get("name"),
+          customerPhone: formData.get("phone"),
+          specialRequests: formData.get("requests"),
+          items: cart.map((item) => ({
+            id: item.id,
+            name: item.name,
+            quantity: item.quantity,
+            price: item.price,
+            tax: item.tax,
+          })),
+          total: cart.reduce(
+            (sum, item) => sum + item.price * item.quantity,
+            0
+          ),
+          status: "pending",
+          timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+          paymentScreenshot: null, // Placeholder for the screenshot URL
+        };
+
+        try {
+          // Upload payment screenshot to Firebase Storage
+          const storageRef = firebase.storage().ref();
+          const fileRef = storageRef.child(
+            `payments/${Date.now()}_${paymentScreenshot.name}`
+          );
+          await fileRef.put(paymentScreenshot);
+          const screenshotUrl = await fileRef.getDownloadURL();
+
+          // Add screenshot URL to order data
+          orderData.paymentScreenshot = screenshotUrl;
+
+          // Save order to Firestore
+          await db.collection("orders").add(orderData);
+
+          // Clear cart and reset form
+          cart = [];
+          updateCart();
+          document.getElementById("checkoutModal").classList.add("hidden");
+          document.getElementById("checkoutForm").reset();
+          showToast("Order placed successfully! Thank you for your order.");
+        } catch (error) {
+          console.error("Error placing order:", error);
+          showToast("Failed to place order. Please try again.", "error");
+        }
+      }
+      document.addEventListener("DOMContentLoaded", initialize);
+      window.addEventListener("unhandledrejection", function (event) {
+        console.error("Unhandled promise rejection:", event.reason);
+        showToast("An error occurred. Please try again.", "error");
+      });
+    </script>
+  </body>
+</html>
