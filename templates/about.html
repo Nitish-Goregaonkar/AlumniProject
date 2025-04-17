@@ -845,19 +845,15 @@
               const stats = document.querySelectorAll('.stat-counter');
               stats.forEach(stat => {
                   const value = stat.innerText;
-
                   // Skip animation for non-numeric values
                   if (value.includes('+') || value.includes('M') || value.includes('%')) {
                       return;
                   }
-
                   let startValue = 0;
                   const endValue = parseInt(value.replace(/,/g, ''));
                   const duration = 2000;
-
                   let counter = setInterval(function() {
                       startValue += Math.floor(endValue / (duration / 50));
-
                       if (startValue >= endValue) {
                           clearInterval(counter);
                           stat.innerText = value;
