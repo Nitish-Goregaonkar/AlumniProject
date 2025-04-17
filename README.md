@@ -26,6 +26,6 @@ can highlight the career path they have taken.
 
 -- AlumniConnexa : Official Alumni Association Portal
 
---TechStack : HTML, CSS, Tailwind CSS, Javascript, 
+--TechStack : HTML, CSS, Tailwind CSS, Javascript, CSS.
 
---API's:- Google OAuth, Gemini, Razorpay.
+--API's:- Google OAuth, Gemini.
