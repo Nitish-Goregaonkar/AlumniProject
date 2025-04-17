@@ -813,10 +813,8 @@
                   offset: 100,
                   easing: 'ease-in-out'
               });
-
               // Back to Top Button
               const backToTopButton = document.getElementById('back-to-top');
-
               window.addEventListener('scroll', function() {
                   if (window.pageYOffset > 300) {
                       backToTopButton.classList.remove('opacity-0', 'invisible');
@@ -826,17 +824,14 @@
                       backToTopButton.classList.add('opacity-0', 'invisible');
                   }
               });
-
               backToTopButton.addEventListener('click', function() {
                   window.scrollTo({
                       top: 0,
                       behavior: 'smooth'
                   });
               });
-
               // GSAP animations
               gsap.registerPlugin(ScrollTrigger);
-
               gsap.from('.marquee', {
                   x: -100,
                   opacity: 0,
@@ -846,10 +841,8 @@
                       start: 'top bottom',
                   }
               });
-
               // Count up animation for statistics
               const stats = document.querySelectorAll('.stat-counter');
-
               stats.forEach(stat => {
                   const value = stat.innerText;
 
